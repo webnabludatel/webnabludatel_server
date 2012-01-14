@@ -1,0 +1,21 @@
+development:  &development_settings
+  adapter: postgresql
+  encoding: unicode
+  database: watcher_development
+  host: localhost
+  pool: 5
+  username: watcher
+  password:
+
+test:
+  <<: *development_settings
+  database: watcher_test
+
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: watcher
+  pool: 5
+  username: watcher
+  password: 123
