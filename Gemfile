@@ -13,6 +13,7 @@ group :assets do
 end
 
 gem 'carrierwave'
+gem 'devise'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'kaminari'
@@ -24,27 +25,26 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-ext'
 
-  gem 'growl' # don't forget install `brew install growlnotify`
-  gem 'growl_notify'
-
   gem 'guard'
-  gem 'guard-annotate'
-  gem 'guard-rspec'
   gem 'guard-bundler'
   gem 'guard-migrate'
+  gem 'guard-rspec'
+  gem 'guard-spork'
   gem 'rb-fsevent'
+
+  gem 'ruby_gntp' # for Growl notifications, works only with Growl >= 1.3
 
   gem 'yard'
 end
 
 group :development, :test do
-  gem 'autotest'
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem 'database_cleaner'
   gem 'fabrication'
   gem 'ffaker'
   gem 'fuubar'
   gem 'rspec-rails'
+  gem 'spork', '> 0.9.0.rc'
   gem 'steak'
   gem 'timecop'
 end
