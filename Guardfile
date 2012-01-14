@@ -1,7 +1,5 @@
 guard 'bundler' do
   watch('Gemfile')
-  # Uncomment next line if Gemfile contain `gemspec' command
-  # watch(/^.+\.gemspec/)
 end
 
 guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
@@ -20,7 +18,6 @@ guard 'rspec', :version => 2, :cli => "--colour --format Fuubar --drb", :all_on_
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec/" }
 
-  # Rails example
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^app/(.+)\.rb$})                           { |m| "spec/#{m[1]}_spec.rb" }
   watch(%r{^lib/(.+)\.rb$})                           { |m| "spec/lib/#{m[1]}_spec.rb" }

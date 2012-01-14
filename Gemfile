@@ -26,10 +26,9 @@ group :development do
   gem 'capistrano-ext'
 
   gem 'guard'
-  gem 'guard-annotate'
-  gem 'guard-rspec'
   gem 'guard-bundler'
   gem 'guard-migrate'
+  gem 'guard-rspec'
   gem 'guard-spork'
   gem 'rb-fsevent'
 
@@ -39,7 +38,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'autotest'
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem 'database_cleaner'
   gem 'fabrication'
