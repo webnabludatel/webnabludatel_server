@@ -1,11 +1,11 @@
 # encoding: utf-8
 
 class WatcherRefferal < ActiveRecord::Base
-  belongs_to :watcher
+  belongs_to :user
 
   STATUSES = [:pending, :approved, :rejected, :problem]
 
-  validates :watcher, presence: true
+  validates :user, presence: true
   validates :status, inclusion: { in: STATUSES }
 
   STATUSES.each do |status|
@@ -17,7 +17,7 @@ class WatcherRefferal < ActiveRecord::Base
 
   scope :not_done, where("status = 'approved' OR status = 'problem'")
 
-  mount_uploader :image, WatcherRefferalImageUploader
+  mount_uploader :image, WatcherReferalImageUploader
 
   attr_accessible :comment
 
@@ -45,8 +45,8 @@ class WatcherRefferal < ActiveRecord::Base
   protected
     def update_watcher_state
       if status != status_was
-        self.watcher.status = status
-        self.watcher.save
+        self.user.watcher_status = status
+        self.user.watcher_status.save
       end
     end
 end
