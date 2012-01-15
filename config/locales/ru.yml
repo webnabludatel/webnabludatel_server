@@ -1,2 +1,9 @@
 ru:
-  hello: "Привет мир"
+  activerecord:
+    attributes:
+      user:
+        email: "Е-мейл"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+        remember_me: "Запомнить меня"
+

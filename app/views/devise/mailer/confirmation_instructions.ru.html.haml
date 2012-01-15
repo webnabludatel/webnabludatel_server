@@ -1,0 +1,4 @@
+%p
+  Здравствуйте, #{@resource.email}!
+%p Чтобы подтвердить вашу регистрацию перейдите по ссылке ниже.
+%p= link_to 'Подтвердить мою регистрацию', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
