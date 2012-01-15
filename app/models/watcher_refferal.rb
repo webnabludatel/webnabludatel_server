@@ -5,8 +5,8 @@ class WatcherRefferal < ActiveRecord::Base
 
   STATUSES = [:pending, :approved, :rejected, :problem]
 
-  validates :watcher, :presence => true
-  validates :status, :inclusion => { :in => STATUSES }
+  validates :watcher, presence: true
+  validates :status, inclusion: { in: STATUSES }
 
   mount_uploader :image, WatcherRefferalImageUploader
 
