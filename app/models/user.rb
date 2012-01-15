@@ -15,16 +15,16 @@ class User < ActiveRecord::Base
 
   WATCHER_STATUSES = [:pending, :approved, :rejected, :problem, :blocked, :none]
 
-  WATCHER_STATUSES.each do |status|
-      class_eval <<-EOF
-      scope :#{status}, watchers.where(status: :#{status})
-
-      EOF
-    end
-
   scope :admins, where(role: "admin")
   scope :moderators, where(role: "moderators")
   scope :watchers, where(is_watcher: true)
+
+  WATCHER_STATUSES.each do |status|
+    class_eval <<-EOF
+    scope :#{status}, watchers.where(status: :#{status})
+
+    EOF
+  end
 
   validates :watcher_status, inclusion: { in: WATCHER_STATUSES }
 
