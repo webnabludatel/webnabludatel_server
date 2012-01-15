@@ -32,10 +32,6 @@ Spork.prefork do
     config.filter_run focus: true
     config.run_all_when_everything_filtered = true
 
-    config.before(:each) do
-      ActiveRecord::Observer.disable_observers
-    end
-
     config.after(:each) do
       Timecop.return
     end
