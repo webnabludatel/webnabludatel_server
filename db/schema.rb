@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115020011) do
+ActiveRecord::Schema.define(:version => 20120115050344) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -59,12 +59,12 @@ ActiveRecord::Schema.define(:version => 20120115020011) do
 
   create_table "device_messages", :force => true do |t|
     t.text     "message"
-    t.integer  "watcher_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "device_messages", ["watcher_id"], :name => "index_device_messages_on_watcher_id"
+  add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "title"
@@ -93,23 +93,28 @@ ActiveRecord::Schema.define(:version => 20120115020011) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"
+    t.string   "watcher_status"
+    t.integer  "organization_id"
+    t.boolean  "is_watcher"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["is_watcher", "watcher_status"], :name => "index_users_on_is_watcher_and_watcher_status"
+  add_index "users", ["organization_id"], :name => "index_users_on_organization_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
-  create_table "watchers", :force => true do |t|
-    t.string   "name"
-    t.string   "kind"
-    t.string   "state"
+  create_table "watcher_refferals", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "status"
+    t.string   "watcher_refferal_image"
     t.text     "comment"
-    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "watchers", ["organization_id"], :name => "index_watchers_on_organization_id"
+  add_index "watcher_refferals", ["status"], :name => "index_watcher_refferals_on_status"
+  add_index "watcher_refferals", ["user_id"], :name => "index_watcher_refferals_on_user_id"
 
 end
