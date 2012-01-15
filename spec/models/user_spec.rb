@@ -1,5 +1,10 @@
 require 'spec_helper'
 
 describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "with default values" do
+    it "should have none watcher status after initialize" do
+      user = Fabricate.build(:user)
+      user.watcher_status.none?.should be
+    end
+  end
 end

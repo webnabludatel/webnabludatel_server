@@ -11,9 +11,9 @@ class User < ActiveRecord::Base
   belongs_to :organization
 
   has_many :device_messages, dependent: :destroy
-  has_one :refferal, class_name: "WatcherRefferal", dependent: :destroy
+  has_one :referal, class_name: "WatcherRefferal", dependent: :destroy
 
-  WATCHER_STATUSES = [:pending, :approved, :rejected, :problem, :blocked, :none]
+  WATCHER_STATUSES = ["pending", "approved", "rejected", "problem", "blocked", "none"]
 
   scope :admins, where(role: "admin")
   scope :moderators, where(role: "moderators")
@@ -35,9 +35,13 @@ class User < ActiveRecord::Base
     User.where(email: data.email).first || User.create!(email: data.email, password: Devise.friendly_token[0,20])
   end
 
+  def watcher_status
+    ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
+  end
+
   protected
     def set_default_watcher_status
-      self.watcher_status = :none if self.watcher_status.blank?
+      self.watcher_status = "none" if self.watcher_status.blank?
     end
 
 end
