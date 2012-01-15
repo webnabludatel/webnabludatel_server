@@ -4,6 +4,7 @@ gem 'rails', '3.1.3'
 gem 'pg'
 
 gem 'auditor'
+gem 'cancan'
 gem 'carrierwave'
 gem 'delayed_job_active_record'
 gem 'devise'
