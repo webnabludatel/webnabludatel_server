@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class WatcherRefferal < ActiveRecord::Base
+class WatcherReferal < ActiveRecord::Base
   belongs_to :user
 
   STATUSES = [:pending, :approved, :rejected, :problem]
