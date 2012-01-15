@@ -6,4 +6,6 @@ class Watcher < ActiveRecord::Base
   STATES = [:pending, :approved, :rejected, :none]
 
   validates :states, :inclusion => { :in => STATES }
+
+  attr_accessible :name, :comment
 end
