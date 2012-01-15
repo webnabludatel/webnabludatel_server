@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Watcher < ActiveRecord::Base
   belongs_to :organization
 

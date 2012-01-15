@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class WatcherRefferal < ActiveRecord::Base
   belongs_to :watcher
 

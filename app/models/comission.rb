@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Comission < ActiveRecord::Base
   # TODO: add validations
 

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Organization < ActiveRecord::Base
   has_many :watchers, :dependent => :destroy
 
