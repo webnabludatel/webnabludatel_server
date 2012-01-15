@@ -1,5 +1,5 @@
 class Admin::WatcherReferalsController < Admin::Base
-  before_filter :find_refferal, :only => [:approve, :reject, :problem]
+  before_filter :find_referal, :only => [:approve, :reject, :problem]
 
   def moderate
     @refferal = WatcherReferal.not_done.first
@@ -24,7 +24,7 @@ class Admin::WatcherReferalsController < Admin::Base
   end
 
   protected
-    def find_refferal
+    def find_referal
       @refferal = WatcherReferal.find params[:id]
     end
 end
