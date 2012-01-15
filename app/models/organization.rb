@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class Organization < ActiveRecord::Base
-  has_many :watchers, dependent: :destroy
+  has_many :users, dependent: :destroy
 
   validates :title, presence: true, uniqueness: true
 
