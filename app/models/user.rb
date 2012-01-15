@@ -54,6 +54,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def watcher_status
+    ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
+  end
+
   protected
 
   def extract_omniauth_data
@@ -70,10 +74,6 @@ class User < ActiveRecord::Base
 
   def email_required?
     omniauth_data.blank?
-  end
-
-  def watcher_status
-    ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
   end
 
   def set_default_watcher_status

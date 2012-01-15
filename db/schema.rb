@@ -103,16 +103,17 @@ ActiveRecord::Schema.define(:version => 20120115075325) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "location"
-    t.text     "urls"
-    t.date     "birth_date"
     t.string   "role"
     t.string   "watcher_status"
     t.integer  "organization_id"
     t.boolean  "is_watcher",                            :default => false
+    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "location"
+    t.string   "phone"
+    t.text     "urls"
+    t.date     "birth_date"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

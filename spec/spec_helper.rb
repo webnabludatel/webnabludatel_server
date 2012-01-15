@@ -42,6 +42,8 @@ Spork.prefork do
         FileUtils.rm_rf(Rails.root.join('public', CarrierWave::Uploader::Base.store_dir))
       end
     end
+
+    OmniAuth.config.test_mode = true
   end
 
 end
