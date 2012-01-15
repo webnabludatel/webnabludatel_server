@@ -105,16 +105,16 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
-  create_table "watcher_refferals", :force => true do |t|
+  create_table "watcher_referals", :force => true do |t|
     t.integer  "user_id"
     t.string   "status"
-    t.string   "watcher_refferal_image"
+    t.string   "watcher_referal_image"
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "watcher_refferals", ["status"], :name => "index_watcher_refferals_on_status"
-  add_index "watcher_refferals", ["user_id"], :name => "index_watcher_refferals_on_user_id"
+  add_index "watcher_referals", ["status"], :name => "index_watcher_referals_on_status"
+  add_index "watcher_referals", ["user_id"], :name => "index_watcher_referals_on_user_id"
 
 end
