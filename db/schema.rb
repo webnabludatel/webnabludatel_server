@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
   add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
   add_index "audits", ["user_id", "user_type"], :name => "user_index"
 
+  create_table "authentications", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.string   "provider",   :null => false
+    t.string   "uid",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authentications", ["uid"], :name => "index_authentications_on_uid"
+  add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
+
   create_table "comissions", :force => true do |t|
     t.string   "number"
     t.float    "latitude"
@@ -59,12 +70,12 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
 
   create_table "device_messages", :force => true do |t|
     t.text     "message"
-    t.integer  "user_id"
+    t.integer  "watcher_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
+  add_index "device_messages", ["watcher_id"], :name => "index_device_messages_on_watcher_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "title"
@@ -74,8 +85,8 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -92,10 +103,16 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "location"
+    t.text     "urls"
+    t.date     "birth_date"
     t.string   "role"
     t.string   "watcher_status"
     t.integer  "organization_id"
-    t.boolean  "is_watcher"
+    t.boolean  "is_watcher",                            :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
@@ -116,5 +133,17 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
 
   add_index "watcher_referals", ["status"], :name => "index_watcher_referals_on_status"
   add_index "watcher_referals", ["user_id"], :name => "index_watcher_referals_on_user_id"
+
+  create_table "watchers", :force => true do |t|
+    t.string   "name"
+    t.string   "kind"
+    t.string   "state"
+    t.text     "comment"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "watchers", ["organization_id"], :name => "index_watchers_on_organization_id"
 
 end

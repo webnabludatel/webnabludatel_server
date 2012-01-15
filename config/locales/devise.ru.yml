@@ -1,0 +1,14 @@
+ru:
+  devise:
+    info:
+      signed_as: "Вы вошли как %{email}"
+    links:
+      sign_in:  "Войти"
+      sign_out: "Выйти"
+      sign_up:  "Зарегистрироваться"
+      forgot_password: "Забыли пароль?"
+      resend_confirmation: "Не получили инструкций по подтверждению регистрации?"
+      resend_unlock: "Не получили инструкций по разблокированию аккаунта?"
+      sign_in_with: "Войти с помощью %{provider}"
+    omniauth_callbacks:
+      linked: "Ваш аккаунт успешно тепсвязан с аккаунтом %{kind}"
