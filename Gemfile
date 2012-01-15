@@ -1,24 +1,26 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.3'
-
 gem 'pg'
-
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'coffee-rails', '~> 3.1.1'
-  gem 'uglifier', '>= 1.0.3'
-end
 
 gem 'carrierwave'
 gem 'devise'
+gem 'devise-russian'
+gem 'flash_messages_helper'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'kaminari'
 gem 'mini_magick'
 gem 'delayed_job_active_record'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
+gem 'russian'
+
+group :assets do
+  gem 'sass-rails',   '~> 3.1.5'
+  gem 'coffee-rails', '~> 3.1.1'
+  gem 'uglifier', '>= 1.0.3'
+end
 
 group :development do
   gem 'unicorn'
@@ -39,7 +41,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
+  gem 'capybara', git: 'https://github.com/jnicklas/capybara.git'
   gem 'database_cleaner'
   gem 'fabrication'
   gem 'ffaker'

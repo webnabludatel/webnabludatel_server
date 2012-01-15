@@ -2,7 +2,7 @@ guard 'bundler' do
   watch('Gemfile')
 end
 
-guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
+guard 'spork', rspec_env: {'RAILS_ENV' => 'test' } do
   watch('config/application.rb')
   watch('config/environment.rb')
   watch(%r{^config/environments/.+\.rb$})
@@ -13,7 +13,7 @@ guard 'spork', :rspec_env => { 'RAILS_ENV' => 'test' } do
   watch(%r{^spec/support/(.+)\.rb$})
 end
 
-guard 'rspec', :version => 2, :cli => "--colour --format Fuubar --drb", :all_on_start => false, :all_after_pass => false do
+guard 'rspec', version: 2, cli: "--colour --format Fuubar --drb", all_on_start: false, all_after_pass: false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec/" }
@@ -27,10 +27,6 @@ guard 'rspec', :version => 2, :cli => "--colour --format Fuubar --drb", :all_on_
   watch('config/routes.rb')                           { "spec/routing" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
 end
-
-#guard 'annotate', :position => "after" do
-#  watch(%r{db/migrate/.+\.rb})
-#end
 
 guard 'migrate' do
   watch(%r{^db/migrate/(\d+).+\.rb})
