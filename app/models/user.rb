@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_many :device_messages, dependent: :destroy
   has_one :referal, class_name: "WatcherRefferal", dependent: :destroy
 
-  WATCHER_STATUSES = ["pending", "approved", "rejected", "problem", "blocked", "none"]
+  WATCHER_STATUSES = %W(pending approved rejected problem blocked none)
 
   scope :admins, where(role: "admin")
   scope :moderators, where(role: "moderators")
