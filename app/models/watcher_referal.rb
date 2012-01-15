@@ -20,6 +20,7 @@ class WatcherReferal < ActiveRecord::Base
   mount_uploader :image, WatcherReferalImageUploader
 
   after_initialize :set_default_status
+  after_save :update_watcher_status
 
   attr_accessible :comment
 
@@ -52,7 +53,7 @@ class WatcherReferal < ActiveRecord::Base
     def update_watcher_status
       if status != status_was
         self.user.watcher_status = status
-        self.user.watcher_status.save
+        self.user.save
       end
     end
 

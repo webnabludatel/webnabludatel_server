@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115050344) do
+ActiveRecord::Schema.define(:version => 20120115075325) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20120115050344) do
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
   end
 
   add_index "watcher_referals", ["status"], :name => "index_watcher_referals_on_status"

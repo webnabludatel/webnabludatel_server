@@ -35,5 +35,21 @@ describe WatcherReferal do
       watcher_referal.status.problem?.should be
       watcher_referal.comment.should == comment
     end
+
+    it "should update user watcher status when referal status was changed" do
+      user = Fabricate(:user)
+      watcher_referal = Fabricate(:watcher_referal, :user => user)
+
+      user.reload
+
+      user.watcher_status.should == watcher_referal.status
+
+      watcher_referal.status = "approved"
+      watcher_referal.save
+
+      user.reload
+
+      user.watcher_status.should == watcher_referal.status
+    end
   end
 end

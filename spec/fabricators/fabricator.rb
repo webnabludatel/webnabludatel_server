@@ -9,5 +9,5 @@ Fabricator(:user) do
 end
 
 Fabricator(:watcher_referal) do
-  user
+  user!
 end

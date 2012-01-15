@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   belongs_to :organization
 
   has_many :device_messages, dependent: :destroy
-  has_one :referal, class_name: "WatcherRefferal", dependent: :destroy
+  has_one :referal, class_name: "WatcherReferal", dependent: :destroy
 
   WATCHER_STATUSES = ["pending", "approved", "rejected", "problem", "blocked", "none"]
 
