@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115014544) do
+ActiveRecord::Schema.define(:version => 20120115020011) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(:version => 20120115014544) do
   add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
   add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
   add_index "audits", ["user_id", "user_type"], :name => "user_index"
+
+  create_table "comissions", :force => true do |t|
+    t.string   "number"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "kind"
+    t.text     "address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
