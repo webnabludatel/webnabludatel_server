@@ -32,25 +32,27 @@ class User < ActiveRecord::Base
 
   validates :watcher_status, inclusion: { in: WATCHER_STATUSES }
 
-  after_initialize :set_default_watcher_status
+  after_initialize  :set_default_watcher_status
+  before_update     :generate_confirmation_token, if: :reconfirmation_required?
+  after_update      :send_confirmation_instructions, if: :reconfirmation_required?
 
   def self.find_or_create_by_omniauth!(omniauth)
     user = Authentication.find_by_provider_and_uid(omniauth['provider'].to_s, omniauth['uid'].to_s).try(:user)
 
     if user.blank?
       user = User.find_by_email(omniauth['info']['email']) || User.new
-      user.register_omniauth(omniauth)
+      user.register_omniauth!(omniauth)
     end
 
     user
   end
 
-  def register_omniauth(omniauth)
+  def register_omniauth!(omniauth)
     self.omniauth_data = omniauth
     unless authentications.exists?(provider: omniauth['provider'].to_s)
       extract_omniauth_data
-      self.authentications.build(provider: omniauth['provider'].to_s, uid: omniauth['uid'].to_s)
-      self.save
+      save!
+      authentications.create(provider: omniauth['provider'].to_s, uid: omniauth['uid'].to_s)
     end
   end
 
@@ -58,26 +60,41 @@ class User < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
   end
 
+  def to_s
+    name.presence || email.presence || authentications.first.to_s
+  end
+
   protected
 
   def extract_omniauth_data
-    omniauth_data['info'].each do |k, v|
-      write_attribute(k, v) if attribute_names.include?(k) && read_attribute(k).blank?
+    %W(name first_name last_name location phone).each do |attr|
+      write_attribute(attr, omniauth_data['info'][attr]) if read_attribute(attr).blank?
     end
 
-    # TODO: look on birth_date extraction and on merging of urls fields
-  end
+    self.urls ||= {}
+    self.urls.reverse_merge!(omniauth_data['info']['urls'].presence || {})
 
-  def password_required?
-    omniauth_data.blank? && (!persisted? || !password.nil? || !password_confirmation.nil?)
+    # Vkontakte-specific attribute
+    self.birth_date ||= omniauth_data['extra']['raw_info']['bdate'].try(:to_date)
   end
 
   def email_required?
     omniauth_data.blank?
   end
 
+  def password_required?
+    omniauth_data.blank? && (!persisted? || !password.nil? || !password_confirmation.nil?)
+  end
+
+  def confirmation_required?
+    omniauth_data.blank?
+  end
+
+  def reconfirmation_required?
+    email_changed? || (email.present? && confirmation_token.blank? && confirmed_at.blank? && confirmation_sent_at.blank?)
+  end
+
   def set_default_watcher_status
     self.watcher_status = "none" if self.watcher_status.blank?
   end
-
 end

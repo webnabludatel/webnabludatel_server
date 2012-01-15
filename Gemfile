@@ -18,6 +18,7 @@ gem 'mini_magick'
 gem 'omniauth-facebook'
 gem 'omniauth-vkontakte'
 gem 'russian'
+gem 'simple_form'
 
 group :assets do
   gem 'sass-rails',   '~> 3.1.5'
