@@ -18,6 +18,7 @@ gem 'haml-rails'
 gem 'jquery-rails'
 gem 'kaminari'
 gem 'mini_magick'
+gem 'delayed_job_active_record'
 
 group :development do
   gem 'unicorn'
