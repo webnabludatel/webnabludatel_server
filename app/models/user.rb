@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   has_many :authentications, dependent: :destroy
   has_many :device_messages, dependent: :destroy
   has_one :referal, class_name: "WatcherReferal", dependent: :destroy
+  has_many :user_locations, dependent: :destroy
+  has_many :comissions, :through => :user_locations
 
   WATCHER_STATUSES = %W(pending approved rejected problem blocked none)
 
@@ -58,6 +60,16 @@ class User < ActiveRecord::Base
 
   def watcher_status
     ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
+  end
+
+  # TODO: Maybe we need to cache it in DB
+  def current_location
+    @current_location ||= user_locations.order("created_at DESC").first
+  end
+
+  # TODO: Maybe we need to cache it in DB
+  def current_comission
+    @current_comission ||= current_location.try(:comission)
   end
 
   def to_s
