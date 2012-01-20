@@ -1,7 +1,34 @@
-- if user_signed_in?
-  = link_to current_user.to_s, edit_user_registration_path
-  = link_to t('devise.links.sign_out'), destroy_user_session_path
-- else
-  = link_to t('devise.links.sign_in'), new_user_session_path
-  или
-  = link_to t('devise.links.sign_up'), new_user_registration_path
+#topBar.clearfix
+  #links
+    =# link_to 'somelink', 'http://somesite/'
+
+#headingBar.clearfix
+  .logo
+    %a.hiddenText{:href => "#{Settings.base_url}"} ВебНаблюдатель
+
+  %nav
+    = render_navigation( :context => :main )
+
+  #authPanel
+    - if User.current
+      %ul
+        %li
+          .button
+            = link_to User.current.to_s, edit_user_registration_path
+        %li
+          .headerText
+            or
+        %li
+          .button
+            = link_to t('devise.links.sign_out'), destroy_user_session_path, 'data-skip-pjax' => true
+    - else
+      %ul
+        %li
+          .button
+            = link_to t('devise.links.sign_in'), new_user_session_path
+        %li
+          .headerText
+            or
+        %li
+          .button
+            = link_to t('devise.links.sign_up'), new_user_registration_path

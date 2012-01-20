@@ -1,0 +1,64 @@
+/*
+	LAYOUT TOOLS
+*/
+.floatLeft 			{ float: left; }
+.floatRight			{ float: right; }
+.clear				{ clear: both; }
+.layoutCenter		{ margin: 0 auto; } // don't forget to set width of element
+.textCenter			{ text-align: center; }
+.textRight			{ text-align: right; }
+.textLeft			{ text-align: left; }
+
+/*
+	PRINT TOOLS
+*/
+.page-break 		{ page-break-before: always; }
+
+
+/*
+	TYPOGRAPHIC TOOLS
+*/
+.callOut			{ font-size: 125%; font-weight: bold; }
+.strikeOut			{ text-decoration: line-through; }
+.underline			{ text-decoration: underline; }
+.uppercase          { text-transform: uppercase; }
+.resetTypeStyle		{ font-weight: normal; font-style: normal; font-size: 100%;
+					  text-decoration: none; background-color: none; word-spacing: normal;
+					  letter-spacing: 0px; text-transform: none; text-indent: 0px; }
+
+
+/*
+	DISPLAY VALUES
+*/
+.hide				{ display: none; }
+.show				{ display: block; }
+.invisible			{ visibility: hidden; }
+.hiddenText         { text-indent: -999999px; }
+
+/*
+    CLEARFIX
+*/
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+/*
+    Page center
+*/
+
+@mixin centrize($width: '400px', $height: '300px') {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: $width;
+    height: $height;
+    margin-left: -#{$width/2};
+    margin-top: -#{$height/2};
+}

@@ -1,0 +1,78 @@
+@import "blueprint/reset";
+
+@import "partials/base";
+
+@import "compass";
+@import "compass/layout";
+
+@import "blueprint";
+@import "blueprint/debug";
+
+
+html {
+    height: 100%;
+}
+
+body {
+    font: 14px Arial, Helvetica, sans-serif;
+}
+
+a { text-decoration: none; cursor: pointer;}
+a:hover { text-decoration: underline;}
+a:visited { text-decoration: none; cursor: pointer;}
+
+ol, ul {
+  list-style: none;
+}
+
+///// Main Layout
+
+#container {
+    @include container;
+    /* @include showgrid; // for development purposes*/
+}
+
+#topBar {
+   @include column(24, true);
+   @include prepend-top(5px);
+   @include append-bottom(5px);
+}
+
+#headingBar .logo {
+    @include column ( 4 );
+}
+
+#headingBar nav {
+    @include column ( 13 );
+}
+
+#headingBar #authPanel {
+    @include column ( 7, true );
+}
+
+section#mainContent {
+    @include column ( 24, true );
+    @include prepend-top (20px);
+}
+
+footer {
+    @include column (24, true);
+}
+
+///// Auth Panel
+
+#headingBar #authPanel ul {
+    @include float-right;
+    text-align: right;
+    margin-right: 20px;
+}
+
+#headingBar #authPanel ul li {
+    float: left;
+    min-width: 40px;
+    text-align: center !important;
+}
+
+#headingBar #authPanel  {
+    min-width: 100px;
+}

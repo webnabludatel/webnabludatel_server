@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 class User < ActiveRecord::Base
+  include SentientUser
+
   devise :database_authenticatable, :registerable, :confirmable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 

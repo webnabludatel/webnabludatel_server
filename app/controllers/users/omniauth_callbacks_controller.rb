@@ -20,7 +20,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     provider_name = omniauth['provider'].camelize
 
     if user_signed_in?
-      current_user.register_omniauth!(omniauth)
+      User.current.register_omniauth!(omniauth)
       redirect_to edit_user_registration_path, notice: I18n.t('devise.omniauth_callbacks.linked', :kind => provider_name)
     else
       user = User.find_or_create_by_omniauth!(omniauth)
