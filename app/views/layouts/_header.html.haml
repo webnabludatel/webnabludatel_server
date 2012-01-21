@@ -10,11 +10,11 @@
     = render_navigation( :context => :main )
 
   #authPanel
-    - if User.current
+    - if current_user
       %ul
         %li
           .button
-            = link_to User.current.to_s, edit_user_registration_path
+            = link_to current_user.to_s, edit_user_registration_path
         %li
           .headerText
             or

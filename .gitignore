@@ -1,13 +1,23 @@
 # Ignore bundler config
-/.bundle
-
-/config/database.yml
+.bundle
 .idea
+.DS_Store
+coverage
+coverage.data
+.redcar
+.sass-cache/**/*
 
-# Ignore all logfiles and tempfiles.
-/log/*.log
-/tmp
+config/database.yml
+db/*.sqlite3
+db/schema.*
+
+log/*.log
+tmp/**/*
 
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+
+public/sitemap*
+public/stylesheets/**/*
+public/uploads/**/*

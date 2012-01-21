@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2'
 gem 'pg'
 
 gem 'auditor'
@@ -22,27 +22,23 @@ gem 'simple_form'
 
 gem 'compass', :git => 'https://github.com/chriseppstein/compass.git'
 gem 'yajl-ruby'
-gem 'sentient_user'
 gem 'meta-tags', :require => 'meta_tags'
 gem 'simple-navigation'
 gem 'pjax_rails'
 gem 'high_voltage'
 gem 'rails_config'
-# gem 'newrelic_rpm'
 gem 'inherited_resources'
-gem 'timeline_fu'
 gem 'koala'
 gem 'vk-ruby'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'coffee-rails', '~> 3.1.1'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
 
 group :development do
   gem 'awesome_print'
-  gem 'lorem'
   gem 'erb2haml'
   gem 'letter_opener'
   gem 'rails-footnotes', '>= 3.7.5.rc4'

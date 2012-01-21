@@ -1,1 +1,9 @@
 base_url: http://webnabludatel.ru
+
+external_apps:
+  facebook:
+    app_id:
+    secret_key:
+  vkontakte:
+    app_id:
+    secret_key:
