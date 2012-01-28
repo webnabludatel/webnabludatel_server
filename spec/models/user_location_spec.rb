@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe User do
+describe UserLocation do
   context "with default values" do
     it "should have pending status after initialize" do
       user_location = Fabricate.build(:user_location)
