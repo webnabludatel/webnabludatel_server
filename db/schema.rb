@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115233718) do
+ActiveRecord::Schema.define(:version => 20120129145334) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -77,6 +77,16 @@ ActiveRecord::Schema.define(:version => 20120115233718) do
 
   add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
 
+  create_table "messages", :force => true do |t|
+    t.text     "body"
+    t.string   "status"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
+
   create_table "organizations", :force => true do |t|
     t.string   "title"
     t.string   "kind"
@@ -97,8 +107,8 @@ ActiveRecord::Schema.define(:version => 20120115233718) do
   add_index "user_locations", ["user_id", "comission_id"], :name => "index_user_locations_on_user_id_and_comission_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "",    :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -116,6 +126,9 @@ ActiveRecord::Schema.define(:version => 20120115233718) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role"
+    t.string   "watcher_status"
+    t.integer  "organization_id"
+    t.boolean  "is_watcher"
     t.string   "name"
     t.string   "first_name"
     t.string   "last_name"
@@ -123,9 +136,6 @@ ActiveRecord::Schema.define(:version => 20120115233718) do
     t.string   "phone"
     t.text     "urls"
     t.date     "birth_date"
-    t.string   "watcher_status"
-    t.integer  "organization_id"
-    t.boolean  "is_watcher",                            :default => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
