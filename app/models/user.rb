@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_many :device_messages, dependent: :destroy
   has_one :referal, class_name: "WatcherReferal", dependent: :destroy
   has_many :user_locations, dependent: :destroy
-  has_many :comissions, :through => :user_locations
+  has_many :comissions, through: :user_locations
   has_many :messages, dependent: :destroy
 
   WATCHER_STATUSES = %W(pending approved rejected problem blocked none)
