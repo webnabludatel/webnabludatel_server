@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115233718) do
+ActiveRecord::Schema.define(:version => 20120128221506) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -76,6 +76,16 @@ ActiveRecord::Schema.define(:version => 20120115233718) do
   end
 
   add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
+
+  create_table "flags", :force => true do |t|
+    t.string   "sneak_type"
+    t.integer  "sneak_id"
+    t.string   "flaggeable_type"
+    t.integer  "flaggeable_id"
+    t.string   "report_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "organizations", :force => true do |t|
     t.string   "title"

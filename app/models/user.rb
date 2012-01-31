@@ -39,6 +39,9 @@ class User < ActiveRecord::Base
   before_update     :generate_confirmation_token, if: :reconfirmation_required?
   after_update      :send_confirmation_instructions, if: :reconfirmation_required?
 
+  acts_as_sneak
+
+
   def self.find_or_create_by_omniauth!(omniauth)
     user = Authentication.find_by_provider_and_uid(omniauth['provider'].to_s, omniauth['uid'].to_s).try(:user)
 
