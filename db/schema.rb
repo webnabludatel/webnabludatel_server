@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120129145334) do
+ActiveRecord::Schema.define(:version => 20120201230130) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -77,16 +77,6 @@ ActiveRecord::Schema.define(:version => 20120129145334) do
 
   add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
 
-  create_table "messages", :force => true do |t|
-    t.text     "body"
-    t.string   "status"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
-
   create_table "organizations", :force => true do |t|
     t.string   "title"
     t.string   "kind"
@@ -144,6 +134,25 @@ ActiveRecord::Schema.define(:version => 20120129145334) do
   add_index "users", ["organization_id"], :name => "index_users_on_organization_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  create_table "watcher_logs", :force => true do |t|
+    t.string   "key"
+    t.string   "value"
+    t.datetime "recorded_at"
+    t.boolean  "is_violation"
+    t.integer  "user_id"
+    t.integer  "comission_id"
+    t.integer  "device_message_id"
+    t.string   "image"
+    t.string   "video_path"
+    t.string   "status"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "watcher_logs", ["comission_id"], :name => "index_watcher_logs_on_comission_id"
+  add_index "watcher_logs", ["device_message_id"], :name => "index_watcher_logs_on_device_message_id"
+  add_index "watcher_logs", ["user_id"], :name => "index_watcher_logs_on_user_id"
 
   create_table "watcher_referals", :force => true do |t|
     t.integer  "user_id"
