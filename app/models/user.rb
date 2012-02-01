@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :user_locations, dependent: :destroy
   has_many :comissions, through: :user_locations
   has_many :device_messages, dependent: :destroy
-  has_many :watcher_logs, dependent: :destroy
+  has_many :watcher_reports, dependent: :destroy
 
   WATCHER_STATUSES = %W(pending approved rejected problem blocked none)
 

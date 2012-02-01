@@ -3,7 +3,7 @@
 class DeviceMessage < ActiveRecord::Base
   belongs_to :user
 
-  has_many :watcher_logs, dependent: :destroy
+  has_many :watcher_reports, dependent: :destroy
 
   serialize :message
 

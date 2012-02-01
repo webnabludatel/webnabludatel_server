@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120201230130) do
+ActiveRecord::Schema.define(:version => 20120201232608) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -145,7 +145,20 @@ ActiveRecord::Schema.define(:version => 20120201230130) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
-  create_table "watcher_logs", :force => true do |t|
+  create_table "watcher_referals", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "status"
+    t.string   "watcher_referal_image"
+    t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image"
+  end
+
+  add_index "watcher_referals", ["status"], :name => "index_watcher_referals_on_status"
+  add_index "watcher_referals", ["user_id"], :name => "index_watcher_referals_on_user_id"
+
+  create_table "watcher_reports", :force => true do |t|
     t.string   "key"
     t.string   "value"
     t.datetime "recorded_at"
@@ -160,21 +173,8 @@ ActiveRecord::Schema.define(:version => 20120201230130) do
     t.datetime "updated_at",        :null => false
   end
 
-  add_index "watcher_logs", ["comission_id"], :name => "index_watcher_logs_on_comission_id"
-  add_index "watcher_logs", ["device_message_id"], :name => "index_watcher_logs_on_device_message_id"
-  add_index "watcher_logs", ["user_id"], :name => "index_watcher_logs_on_user_id"
-
-  create_table "watcher_referals", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "status"
-    t.string   "watcher_referal_image"
-    t.text     "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "image"
-  end
-
-  add_index "watcher_referals", ["status"], :name => "index_watcher_referals_on_status"
-  add_index "watcher_referals", ["user_id"], :name => "index_watcher_referals_on_user_id"
+  add_index "watcher_reports", ["comission_id"], :name => "index_watcher_logs_on_comission_id"
+  add_index "watcher_reports", ["device_message_id"], :name => "index_watcher_logs_on_device_message_id"
+  add_index "watcher_reports", ["user_id"], :name => "index_watcher_logs_on_user_id"
 
 end
