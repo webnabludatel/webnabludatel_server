@@ -3,10 +3,11 @@ class WatcherReport < ActiveRecord::Base
   belongs_to :comission
   belongs_to :device_message
 
+  STATUSES = %W(pending approved rejected problem training manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location)
+
   validates :key, presence: true
   validates :value, presence: true
-
-  STATUSES = %W(pending approved rejected problem training manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location)
+  validates :status, presence: true, inclusion: { in: STATUSES }
 
   STATUSES.each do |status|
     class_eval <<-EOF
