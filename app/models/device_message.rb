@@ -7,13 +7,14 @@ class DeviceMessage < ActiveRecord::Base
 
   serialize :message
 
-  after_create :create_watcher_report, if: Proc.new{ self.message["MSG_TYPE"] == "post" }
+  after_save :set_watcher_report, if: Proc.new{ self.message["MSG_TYPE"] == "post" }
 
   attr_accessible :message
 
   private
-    def create_watcher_report
-      watcher_report = self.watcher_report.new recorded_at: Time.at(self.message["TIMESTAMP"].to_i)
+    def set_watcher_report
+      watcher_report = self.watcher_report || self.watcher_report.new
+      watcher_report.recorded_at = Time.at(self.message["TIMESTAMP"].to_i)
       watcher_report.user = self.user
 
       watcher_report.comission = self.user.current_comission
@@ -23,4 +24,5 @@ class DeviceMessage < ActiveRecord::Base
 
       watcher_report.save!
     end
+
 end
