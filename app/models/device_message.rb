@@ -21,6 +21,6 @@ class DeviceMessage < ActiveRecord::Base
       watcher_report.key = self.message["PAYLOAD"] && self.message["PAYLOAD"].keys.first
       watcher_report.value = self.message["PAYLOAD"] && self.message["PAYLOAD"][watcher_report.key]
 
-      watcher_report.save
+      watcher_report.save!
     end
 end
