@@ -5,7 +5,7 @@ require 'bundler/capistrano' # Для работы bundler. При измене�
 set :application, "Webnabludatel"
 
 set :scm, :git
-set :repository,  "git@github.com:webnabludatel/webnabludatel_server.git"
+set :repository, "git://github.com/webnabludatel/webnabludatel_server.git"
 set :branch, "master"
 ssh_options[:forward_agent] = true
 
@@ -36,10 +36,10 @@ namespace :deploy do
     run "if [ -f #{unicorn_pid} ] && [ -e /proc/$(cat #{unicorn_pid}) ]; then kill -QUIT `cat #{unicorn_pid}`; fi"
   end
 
-   desc "Link in the production database.yml and assets"
-   task :symlink_shared do
-     run "ln -nfs #{deploy_to}/shared/system/database.yml #{release_path}/config/database.yml"
-   end
+  desc "Link in the production database.yml and assets"
+  task :symlink_shared do
+    run "ln -nfs #{deploy_to}/shared/system/database.yml #{release_path}/config/database.yml"
+  end
 end
 
 namespace :admin do

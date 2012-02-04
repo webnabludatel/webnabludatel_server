@@ -1,4 +1,4 @@
-deploy_to  = "/server/www/webnabludatel.ru"
+deploy_to  = "/server/www/webnabludatel.ru/main/deploy"
 rails_root = "#{deploy_to}/current"
 pid_file   = "#{deploy_to}/shared/pids/unicorn.pid"
 socket_file= "#{deploy_to}/shared/unicorn.sock"
