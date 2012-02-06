@@ -1,1 +1,0 @@
-CLAIM_TYPES = ["spam", "offensive", "attention"]

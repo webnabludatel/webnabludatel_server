@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2'
 gem 'pg'
 
 gem 'auditor'
@@ -30,8 +30,6 @@ gem 'rails_config'
 gem 'inherited_resources'
 gem 'koala'
 gem 'vk-ruby'
-
-gem 'sneak'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
