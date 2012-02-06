@@ -3,7 +3,7 @@ class WatcherReport < ActiveRecord::Base
   belongs_to :comission
   belongs_to :device_message
 
-  STATUSES = %W(pending approved rejected problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location none)
+  STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none)
 
   validates :key, presence: true
   validates :value, presence: true
@@ -21,16 +21,20 @@ class WatcherReport < ActiveRecord::Base
 
   attr_accessible :key, :value, :recorded_at
 
-  before_validation :calculate_status
+  before_validation :set_status
 
   def status
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
+  end
+
+  def user_location
+    @user_location ||= self.comission ? self.comission.user_locations.where(user: self.user).first : nil
   end
 
   protected
     attr_writer :status
 
     def set_status
-      self.status = WatcherReport::StatusCalculator.calculate(self.status, comission.try(:status), user.try(:watcher_status))
+      self.status = WatcherReport::StatusCalculator.calculate(self.status, user_location.try(:status), user.try(:watcher_status))
     end
 end

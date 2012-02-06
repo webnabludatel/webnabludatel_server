@@ -41,8 +41,10 @@ class User < ActiveRecord::Base
   before_update     :generate_confirmation_token, if: :reconfirmation_required?
   after_update      :send_confirmation_instructions, if: :reconfirmation_required?
 
-  acts_as_sneak
+  # TODO: Maybe we need to move it to an observer
+  after_save        :update_watcher_reports
 
+  acts_as_sneak
 
   def self.find_or_create_by_omniauth!(omniauth)
     user = Authentication.find_by_provider_and_uid(omniauth['provider'].to_s, omniauth['uid'].to_s).try(:user)
@@ -114,5 +116,19 @@ class User < ActiveRecord::Base
 
   def set_default_watcher_status
     self.watcher_status = "none" if self.watcher_status.blank?
+  end
+
+  def update_watcher_reports
+    return unless self.watcher_status_changed?
+
+    if self.watcher_status == "approved"
+      self.watcher_reports.each {|r| r.save! }
+    elsif self.watcher_status == "rejected"
+      self.watcher_reports.update_all(status: "rejected")
+    elsif self.watcher_status == "problem"
+      self.watcher_reports.update_all(status: "problem")
+    elsif self.watcher_status == "blocked"
+      self.watcher_reports.update_all(status: "blocked")
+    end
   end
 end

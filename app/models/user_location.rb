@@ -18,6 +18,7 @@ class UserLocation < ActiveRecord::Base
   end
 
   after_initialize :set_default_status
+  after_save :update_watcher_reports
 
   attr_accessible :latitude, :longitude
 
@@ -25,8 +26,24 @@ class UserLocation < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
+  def watcher_reports
+    @watcher_reports ||= self.user.watcher_reports.where(comission: self.comission)
+  end
+
   private
     def set_default_status
       self.status = "pending" if self.status.blank?
+    end
+
+    def update_watcher_reports
+      return unless self.status_changed?
+
+      if self.status == "approved"
+        self.watcher_reports.each{|r| r.save! }
+      elsif self.status == "rejected"
+        self.watcher_reports.update_all(status: "rejected")
+      elsif self.status == "suspicious"
+        self.watcher_reports.update_all(status: "location_suspicious")
+      end
     end
 end
