@@ -58,7 +58,12 @@ class User < ActiveRecord::Base
       extract_omniauth_data
       skip_confirmation! if !confirmed? && email.blank?
       save!
-      authentications.create(provider: omniauth['provider'].to_s, uid: omniauth['uid'].to_s)
+      authentications.create(
+          provider: omniauth['provider'],
+          uid: omniauth['uid'],
+          token: omniauth['credentials']['token'],
+          secret: omniauth['credentials']['secret']
+      )
     end
   end
 
@@ -87,7 +92,7 @@ class User < ActiveRecord::Base
   protected
 
   def extract_omniauth_data
-    %W(name first_name last_name location phone).each do |attr|
+    %W(email name first_name last_name location phone).each do |attr|
       write_attribute(attr, omniauth_data['info'][attr]) if read_attribute(attr).blank?
     end
 
