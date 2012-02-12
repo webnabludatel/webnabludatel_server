@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/chriseppstein/compass.git
-  revision: 8c84869b0b6bc5396e264fea15c71d4e346ac5d0
-  specs:
-    compass (0.12.alpha.4.8c84869)
-      chunky_png (~> 1.2)
-      fssm (>= 0.2.7)
-      sass (~> 3.1)
-
-GIT
   remote: https://github.com/jnicklas/capybara.git
   revision: edd4283edfe702674a4caa4b8278f3c2f4750e7d
   specs:
@@ -77,6 +68,12 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.2.0)
+    compass (0.12.rc.1)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+    compass-rails (1.0.0.rc.2)
+      compass (~> 0.12.rc.0)
     database_cleaner (0.7.1)
     delayed_job (3.0.1)
       activesupport (~> 3.0)
@@ -310,7 +307,7 @@ DEPENDENCIES
   capybara!
   carrierwave
   coffee-rails (~> 3.2.1)
-  compass!
+  compass-rails
   database_cleaner
   delayed_job_active_record
   devise

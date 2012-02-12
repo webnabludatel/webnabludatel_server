@@ -20,7 +20,6 @@ gem 'omniauth-vkontakte'
 gem 'russian'
 gem 'simple_form'
 
-gem 'compass', :git => 'https://github.com/chriseppstein/compass.git'
 gem 'yajl-ruby'
 gem 'meta-tags', :require => 'meta_tags'
 gem 'simple-navigation'
@@ -34,6 +33,7 @@ gem 'vk-ruby'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+  gem 'compass-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
