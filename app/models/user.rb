@@ -38,8 +38,6 @@ class User < ActiveRecord::Base
   validates :watcher_status, inclusion: { in: WATCHER_STATUSES }
 
   after_initialize  :set_default_watcher_status
-  before_update     :generate_confirmation_token, if: :reconfirmation_required?
-  after_update      :send_confirmation_instructions, if: :reconfirmation_required?
   # TODO: Maybe we need to move it to an observer
   after_save        :update_watcher_reports
 
@@ -58,6 +56,7 @@ class User < ActiveRecord::Base
     self.omniauth_data = omniauth
     unless authentications.exists?(provider: omniauth['provider'].to_s)
       extract_omniauth_data
+      skip_confirmation! if !confirmed? && email.blank?
       save!
       authentications.create(provider: omniauth['provider'].to_s, uid: omniauth['uid'].to_s)
     end
@@ -75,6 +74,10 @@ class User < ActiveRecord::Base
   # TODO: Maybe we need to cache it in DB
   def current_comission
     @current_comission ||= current_location.try(:comission)
+  end
+
+  def has_email?
+    email.present? || unconfirmed_email.present?
   end
 
   def to_s
@@ -101,14 +104,6 @@ class User < ActiveRecord::Base
 
   def password_required?
     omniauth_data.blank? && (!persisted? || !password.nil? || !password_confirmation.nil?)
-  end
-
-  def confirmation_required?
-    omniauth_data.blank?
-  end
-
-  def reconfirmation_required?
-    email_changed? || (email.present? && confirmation_token.blank? && confirmed_at.blank? && confirmation_sent_at.blank?)
   end
 
   def set_default_watcher_status

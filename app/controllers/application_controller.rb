@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :set_locale
-  before_filter :check_user_validity
+  before_filter :check_user_validity, if: :signed_in?
 
   before_filter :set_mobile_preferences
   before_filter :prepend_view_path_if_mobile
@@ -16,9 +16,11 @@ class ApplicationController < ActionController::Base
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
-  # enforce user to set the email if he signed up through Facebook or Vkontakte
+  # enforce user to set the email if he signed up through Omniauth
   def check_user_validity
-    redirect_to edit_user_registration_path if current_user && current_user.email.blank? && request.fullpath !~ /^.users/
+    if request.fullpath !~ /^.users/ && !current_user.has_email?
+      redirect_to edit_user_registration_path
+    end
   end
 
   private
