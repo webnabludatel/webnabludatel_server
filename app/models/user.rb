@@ -46,13 +46,13 @@ class User < ActiveRecord::Base
 
     if user.blank?
       user = User.find_by_email(omniauth['info']['email']) || User.new
-      user.register_omniauth!(omniauth)
+      user.apply_omniauth!(omniauth)
     end
 
     user
   end
 
-  def register_omniauth!(omniauth)
+  def apply_omniauth!(omniauth)
     self.omniauth_data = omniauth
     unless authentications.exists?(provider: omniauth['provider'].to_s)
       extract_omniauth_data
