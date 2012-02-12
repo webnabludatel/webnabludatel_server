@@ -70,12 +70,12 @@ ActiveRecord::Schema.define(:version => 20120201232608) do
 
   create_table "device_messages", :force => true do |t|
     t.text     "message"
-    t.integer  "user_id"
+    t.integer  "watcher_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
+  add_index "device_messages", ["watcher_id"], :name => "index_device_messages_on_watcher_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "title"
@@ -90,15 +90,15 @@ ActiveRecord::Schema.define(:version => 20120201232608) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   add_index "user_locations", ["user_id", "comission_id"], :name => "index_user_locations_on_user_id_and_comission_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(:version => 20120201232608) do
     t.string   "role"
     t.string   "watcher_status"
     t.integer  "organization_id"
-    t.boolean  "is_watcher"
+    t.boolean  "is_watcher",                            :default => false
     t.string   "name"
     t.string   "first_name"
     t.string   "last_name"
@@ -166,5 +166,17 @@ ActiveRecord::Schema.define(:version => 20120201232608) do
   add_index "watcher_reports", ["comission_id"], :name => "index_watcher_logs_on_comission_id"
   add_index "watcher_reports", ["device_message_id"], :name => "index_watcher_logs_on_device_message_id"
   add_index "watcher_reports", ["user_id"], :name => "index_watcher_logs_on_user_id"
+
+  create_table "watchers", :force => true do |t|
+    t.string   "name"
+    t.string   "kind"
+    t.string   "state"
+    t.text     "comment"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "watchers", ["organization_id"], :name => "index_watchers_on_organization_id"
 
 end
