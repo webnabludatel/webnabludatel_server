@@ -1,6 +1,6 @@
 %h2 Редактирование профиля
 
-= simple_form_for(resource, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+= simple_form_for(@user, :url => user_registration_path, :html => { :method => :put }) do |f|
   = f.input :email
   = f.input :first_name
   = f.input :last_name
@@ -9,13 +9,14 @@
   = f.input :location
   = f.submit
 
-- if resource.authentications.present?
-  %h3 Связанные аккаунты
+%h3 Связанные аккаунты
 
-  %ul
-    - resource.authentications.each do |a|
-      %li #{a.provider} (#{link_to "удалить", "#"})
-
+%ul
+  - User.omniauth_providers.each do |provider|
+    - if auth = @user.authentications.where(provider: provider).first
+      %li Your account is linked with #{provider.to_s.titleize} (#{link_to "unlink", users_authentication_path(auth), :method => :delete})
+    - else
+      %li= link_to t('devise.links.link_with', :provider => provider.to_s.titleize), omniauth_authorize_path(:user, provider)
 
 -# implement password changing
   %div

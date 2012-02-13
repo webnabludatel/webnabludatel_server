@@ -10,5 +10,7 @@ en:
       resend_confirmation: "Didn't receive confirmation instructions?"
       resend_unlock: "Didn't receive unlock instructions?"
       sign_in_with: "Sign in with %{provider}"
+      link_with: "Link your account with %{provider}"
     omniauth_callbacks:
       linked: "Your account is now linked to your %{kind} account."
+      link_failed: "We cannot link your account to your %{kind} account."

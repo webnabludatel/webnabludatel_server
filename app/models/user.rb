@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me,
                   :name, :first_name, :last_name, :location, :phone, :urls, :birth_date
 
-  attr_accessor :omniauth_data
-
   serialize :urls
 
   belongs_to :organization
@@ -41,32 +39,6 @@ class User < ActiveRecord::Base
   # TODO: Maybe we need to move it to an observer
   after_save        :update_watcher_reports
 
-  def self.find_or_create_by_omniauth!(omniauth)
-    user = Authentication.find_by_provider_and_uid(omniauth['provider'].to_s, omniauth['uid'].to_s).try(:user)
-
-    if user.blank?
-      user = User.find_by_email(omniauth['info']['email']) || User.new
-      user.apply_omniauth!(omniauth)
-    end
-
-    user
-  end
-
-  def apply_omniauth!(omniauth)
-    self.omniauth_data = omniauth
-    unless authentications.exists?(provider: omniauth['provider'].to_s)
-      extract_omniauth_data
-      skip_confirmation! if !confirmed? && email.blank?
-      save!
-      authentications.create(
-          provider: omniauth['provider'],
-          uid: omniauth['uid'],
-          token: omniauth['credentials']['token'],
-          secret: omniauth['credentials']['secret']
-      )
-    end
-  end
-
   def watcher_status
     ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
   end
@@ -89,26 +61,29 @@ class User < ActiveRecord::Base
     name.presence || email.presence || authentications.first.to_s
   end
 
-  protected
-
-  def extract_omniauth_data
-    %W(email name first_name last_name location phone).each do |attr|
-      write_attribute(attr, omniauth_data['info'][attr]) if read_attribute(attr).blank?
-    end
-
-    self.urls ||= {}
-    self.urls.reverse_merge!(omniauth_data['info']['urls'].presence || {})
-
-    # Vkontakte-specific attribute
-    self.birth_date ||= omniauth_data['extra']['raw_info']['bdate'].try(:to_date)
-  end
-
-  def email_required?
-    omniauth_data.blank?
+  def apply_omniauth(omniauth)
+    extract_omniauth_data(omniauth)
+    authentications.build(
+        provider: omniauth['provider'],
+        uid: omniauth['uid'],
+        token: omniauth['credentials']['token'],
+        secret: omniauth['credentials']['secret']
+    )
   end
 
   def password_required?
-    omniauth_data.blank? && (!persisted? || !password.nil? || !password_confirmation.nil?)
+    (authentications.empty? || !password.blank?) && super
+  end
+
+  protected
+
+  def extract_omniauth_data(omniauth)
+    %W(email name first_name last_name location phone).each do |attr|
+      self[attr] = omniauth['info'][attr] if self[attr].blank?
+    end
+
+    self.urls ||= {}
+    self.urls.reverse_merge!(omniauth['info']['urls'].presence || {})
   end
 
   def set_default_watcher_status

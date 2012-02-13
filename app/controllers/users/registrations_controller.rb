@@ -1,6 +1,11 @@
 # encoding: utf-8
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  def create
+    super
+    session[:omniauth] = nil unless @user.new_record?
+  end
+
   # Overriding this method to use User#update_without_password since we don't have a password
   # in case of registration through Omniauth.
   def update
@@ -18,6 +23,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       respond_with resource
+    end
+  end
+
+  private
+
+  def build_resource(*args)
+    super
+    if session[:omniauth]
+      @user.apply_omniauth(session[:omniauth])
+      @user.valid?
     end
   end
 end
