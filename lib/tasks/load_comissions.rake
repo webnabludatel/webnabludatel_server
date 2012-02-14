@@ -14,7 +14,7 @@ namespace :comissions do
       CSV.foreach(filename, :quote_char => '"', :col_sep =>',', :row_sep =>:auto) do |row|
         next if row[0] == "id"
 
-        row[0].gsub!(/^0+/,'')
+        row[1].gsub!(/^0+/,'')
 
         comission = Comission.find_by_number row[1]
         if comission && force
