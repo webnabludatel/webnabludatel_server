@@ -13,7 +13,9 @@ class DeviceMessage < ActiveRecord::Base
 
   private
     def set_watcher_report
-      watcher_report = self.watcher_report || self.watcher_report.new
+      watcher_report = self.watcher_report || WatcherReport.new
+      watcher_report.device_message = self
+
       watcher_report.recorded_at = Time.at(self.message["TIMESTAMP"].to_i)
       watcher_report.user = self.user
 

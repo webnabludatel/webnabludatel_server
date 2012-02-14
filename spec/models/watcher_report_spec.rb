@@ -1,0 +1,167 @@
+require 'spec_helper'
+
+describe WatcherReport do
+  context "updating user status" do
+    before(:each) do
+      WatcherReport.delete_all
+      DeviceMessage.delete_all
+      Comission.delete_all
+      UserLocation.delete_all
+      User.delete_all
+
+      @user = Fabricate(:user, watcher_status: "pending")
+      @location = Fabricate.build(:user_location)
+      @location.user = @user
+      @location.save
+
+      @device_message = DeviceMessage.new(message: { "MSG_TYPE" => "post", "TIMESTAMP" => Time.now.to_i, "PAYLOAD" => { "key" => "value" } })
+      @device_message.user = @user
+      @device_message.save
+      @device_message.reload
+      @watcher_report = @device_message.watcher_report
+    end
+
+    context "with pending" do
+      it "set all user watcher reports to pending user location is pending" do
+
+      end
+    end
+
+    context "with rejected" do
+      it "should set all user watcher reports to rejected when user location is pending" do
+        @user.watcher_status = "rejected"
+        @user.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.rejected?.should be
+      end
+    end
+
+
+    context "with blocked" do
+      it "should set all user watcher reports to blocked when user location is pending" do
+        @user.watcher_status = "blocked"
+        @user.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.blocked?.should be
+      end
+    end
+
+    context "with problem" do
+      it "should set all user watcher reports to problem when user location is pending" do
+        @user.watcher_status = "problem"
+        @user.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.problem?.should be
+      end
+    end
+
+    context "with approved" do
+      it "should set all user watcher reports to approved when location is approved" do
+        @location.status = "approved"
+        @location.save!
+
+        @user.watcher_status = "approved"
+        @user.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.approved?.should be
+      end
+    end
+  end
+
+  context "updating user location status" do
+    before(:each) do
+      WatcherReport.delete_all
+      DeviceMessage.delete_all
+      Comission.delete_all
+      UserLocation.delete_all
+      User.delete_all
+
+      @user = Fabricate(:user, watcher_status: "pending")
+      @location = Fabricate.build(:user_location)
+      @location.user = @user
+      @location.save
+
+      @device_message = DeviceMessage.new(message: { "MSG_TYPE" => "post", "TIMESTAMP" => Time.now.to_i, "PAYLOAD" => { "key" => "value" } })
+      @device_message.user = @user
+      @device_message.save
+      @device_message.reload
+      @watcher_report = @device_message.watcher_report
+    end
+
+    it "should set all user watcher reports at this location to rejected when location status changed to rejected" do
+      @location.status = "rejected"
+      @location.save!
+
+      @watcher_report.reload
+
+      @watcher_report.status.rejected?.should be
+    end
+
+    it "should set all user watcher reports at this location to suspicious when user status changed to problem" do
+      @location.status = "suspicious"
+      @location.save!
+
+      @watcher_report.reload
+
+      @watcher_report.status.location_suspicious?.should be
+    end
+
+    context "with approved" do
+      it "should set all user watcher reports at this location to approved when user is approved" do
+        @user.watcher_status = "approved"
+        @user.save!
+
+        @location.status = "approved"
+        @location.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.approved?.should be
+      end
+
+      it "should set all user watcher reports at this location to approved when user is rejected" do
+        @user.watcher_status = "rejected"
+        @user.save!
+
+        @location.status = "approved"
+        @location.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.rejected?.should be
+      end
+
+      it "should set all user watcher reports at this location to approved when l user is blocked" do
+        @user.watcher_status = "blocked"
+        @user.save!
+
+        @location.status = "approved"
+        @location.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.blocked?.should be
+      end
+
+      it "should set all user watcher reports at this location to approved when user is problem" do
+        @user.watcher_status = "problem"
+        @user.save!
+
+        @location.status = "approved"
+        @location.save!
+
+        @watcher_report.reload
+
+        @watcher_report.status.problem?.should be
+      end
+    end
+  end
+end

@@ -27,7 +27,7 @@ class UserLocation < ActiveRecord::Base
   end
 
   def watcher_reports
-    @watcher_reports ||= self.user.watcher_reports.where(comission: self.comission)
+    @watcher_reports ||= self.user.watcher_reports.where(comission_id: self.comission)
   end
 
   private

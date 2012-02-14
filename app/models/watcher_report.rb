@@ -28,11 +28,10 @@ class WatcherReport < ActiveRecord::Base
   end
 
   def user_location
-    @user_location ||= self.comission ? self.comission.user_locations.where(user: self.user).first : nil
+    @user_location ||= self.comission ? self.comission.user_locations.where(user_id: self.user).first : nil
   end
 
   protected
-    attr_writer :status
 
     def set_status
       self.status = WatcherReport::StatusCalculator.calculate(self.status, user_location.try(:status), user.try(:watcher_status))

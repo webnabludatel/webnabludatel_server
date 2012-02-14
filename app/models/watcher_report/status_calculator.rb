@@ -1,6 +1,6 @@
 module WatcherReport::StatusCalculator
 
-  def calculate(current_status, location_status, watcher_status)
+  def self.calculate(current_status, location_status, watcher_status)
     return current_status if %W(manual_approved manual_rejected manual_suspicious).include? current_status
     return nil unless watcher_status
     return watcher_status if watcher_status == "pending"
