@@ -4,6 +4,7 @@ class Api::V1::MessagesController < Api::V1::Base
 
   def create
     @message = DeviceMessage.new message: params[:message]
+    # HACK
     @message.user = nil
 
     if @message.create
