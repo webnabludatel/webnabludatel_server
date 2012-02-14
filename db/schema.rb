@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120212220703) do
+ActiveRecord::Schema.define(:version => 20120214042141) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20120212220703) do
     t.text     "address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status"
   end
 
   create_table "delayed_jobs", :force => true do |t|
