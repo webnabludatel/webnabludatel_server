@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 class Users::AuthenticationsController < Devise::OmniauthCallbacksController
+  before_filter :authenticate_user!, except: :create
+
   def create
     omniauth = request.env['omniauth.auth']
     provider_name = omniauth['provider'].camelize
@@ -25,7 +27,7 @@ class Users::AuthenticationsController < Devise::OmniauthCallbacksController
         sign_in_and_redirect(:user, user)
       else
         session[:omniauth] = omniauth.except('extra')
-        redirect_to new_user_registration_url
+        redirect_to new_user_registration_path
       end
     end
   end
