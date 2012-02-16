@@ -1,4 +1,5 @@
 Watcher::Application.routes.draw do
+  OmniAuth.config.path_prefix = "/users/auth"
   devise_for :users, controllers: { registrations: 'users/registrations' }, skip: :omniauth_callback
   devise_scope :user do
     namespace :users do
