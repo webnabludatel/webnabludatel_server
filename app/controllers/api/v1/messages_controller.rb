@@ -6,9 +6,9 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @message = current_user.device_messages.build(message: params[:payload])
 
     if @message.save
-      render json: { status: :ok, message_id: @message.id }
+      render_result(message_id: @message.id)
     else
-      render json: { status: :error, msg: @message.errors.full_messages.join("\n") }
+      render_error(@message.errors.full_messages)
     end
   end
 
@@ -16,9 +16,9 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @message = DeviceMessage.find params[:id]
 
     if @message.update_attributes(message: params[:payload])
-      render json: { status: :ok, message_id: @message.id }
+      render_result(message_id: @message.id)
     else
-      render json: { status: :error, msg: @message.errors.full_messages.join("\n") }
+      render_error(@message.errors.full_messages)
     end
   end
 

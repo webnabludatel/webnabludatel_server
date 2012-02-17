@@ -6,7 +6,7 @@ class Api::V1::BaseController < ApplicationController
   around_filter :log_data
   before_filter :authenticate_user!
 
-  private
+  protected
 
   def log_data
     body = env["rack.request.form_vars"]
@@ -26,5 +26,13 @@ class Api::V1::BaseController < ApplicationController
     yield
 
     logger.debug "[API] Result: [#{response.status}, #{response.content_type}, #{response.body}"
+  end
+
+  def render_result(result = {})
+    render json: { status: :ok, result: result }
+  end
+
+  def render_error(errors = [])
+    render json: { status: :error, errors: errors }
   end
 end
