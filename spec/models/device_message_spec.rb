@@ -8,15 +8,15 @@ describe DeviceMessage do
       location.user = user
       location.save
 
-      device_message = DeviceMessage.new(message: { "MSG_TYPE" => "post", "TIMESTAMP" => Time.now.to_i, "PAYLOAD" => { "key" => "value" } })
+      device_message = DeviceMessage.new(message: {"timestamp" => Time.now.to_i, "key" => "k", "value" => "v" })
       device_message.user = user
       device_message.save
       device_message.reload
 
       watcher_report = device_message.watcher_report
       watcher_report.should be
-      watcher_report.key.should == "key"
-      watcher_report.value.should == "value"
+      watcher_report.key.should == "k"
+      watcher_report.value.should == "v"
     end
 
     it "should update watcher report if updating existent message" do
@@ -25,7 +25,7 @@ describe DeviceMessage do
       location.user = user
       location.save
 
-      device_message = DeviceMessage.new(message: { "MSG_TYPE" => "post", "TIMESTAMP" => Time.now.to_i, "PAYLOAD" => { "key" => "value" } })
+      device_message = DeviceMessage.new(message: {"timestamp" => Time.now.to_i, "key" => "k", "value" => "v" })
       device_message.user = user
       device_message.save
 
@@ -33,7 +33,8 @@ describe DeviceMessage do
 
       report_id = device_message.watcher_report.id
 
-      device_message.message["PAYLOAD"] = { "key" => "value1" }
+      device_message.message["key"] = "k1"
+      device_message.message["value"] = "v1"
       device_message.save!
 
       device_message.reload
@@ -41,8 +42,8 @@ describe DeviceMessage do
       watcher_report = device_message.watcher_report
       watcher_report.should be
       watcher_report.id.should == report_id
-      watcher_report.key.should == "key"
-      watcher_report.value.should == "value1"
+      watcher_report.key.should == "k1"
+      watcher_report.value.should == "v1"
     end
   end
 

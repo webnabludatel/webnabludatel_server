@@ -14,7 +14,7 @@ describe WatcherReport do
       @location.user = @user
       @location.save
 
-      @device_message = DeviceMessage.new(message: { "MSG_TYPE" => "post", "TIMESTAMP" => Time.now.to_i, "PAYLOAD" => { "key" => "value" } })
+      @device_message = DeviceMessage.new(message: {"timestamp" => Time.now.to_i, "key" => "k", "value" => "v" })
       @device_message.user = @user
       @device_message.save
       @device_message.reload
@@ -89,9 +89,7 @@ describe WatcherReport do
       @location.user = @user
       @location.save
 
-      @device_message = DeviceMessage.new(message: { "MSG_TYPE" => "post", "TIMESTAMP" => Time.now.to_i, "PAYLOAD" => { "key" => "value" } })
-      @device_message.user = @user
-      @device_message.save
+      @device_message = @user.device_messages.create(message: {"timestamp" => Time.now.to_i, "key" => "k", "value" => "v" })
       @device_message.reload
       @watcher_report = @device_message.watcher_report
     end
