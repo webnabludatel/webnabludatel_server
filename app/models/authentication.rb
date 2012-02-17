@@ -14,8 +14,10 @@ class Authentication < ActiveRecord::Base
     where(provider: DEVICE_PROVIDER, uid: device_id.to_s).first
   end
 
-  def self.register_device!(device_id, email)
-    user = User.new(email: email)
+  def self.register_device!(device_id)
+    # устанавливаем е-мейл заглушку, так как на момент регистрации устройства у нас еще нет е-мейла пользователя
+    # мобильное приложение обязано следующим шагом получить у пользователя е-мейл и зарегистрировать его на сайте
+    user = User.new(email: "#{device_id}.api@webnabludatel.org")
     auth = user.authentications.build(
         provider: DEVICE_PROVIDER,
         uid: device_id,
