@@ -3,14 +3,12 @@
 class Api::V1::MessagesController < Api::V1::Base
 
   def create
-    @message = DeviceMessage.new message: params[:message]
-    # HACK
-    @message.user = nil
+    @message = current_user.device_messages.build(message: params[:message])
 
-    if @message.create
-      render json: { STATUS: "OK", MESSAGE_ID: @message.id }
+    if @message.save
+      render json: { status: "OK", message_id: @message.id }
     else
-      render json: { STATUS: "ERROR", MSG: @message.errors.full_messages.join("\n") }
+      render json: { status: "ERROR", msg: @message.errors.full_messages.join("\n") }
     end
   end
 
@@ -18,9 +16,9 @@ class Api::V1::MessagesController < Api::V1::Base
     @message = DeviceMessage.find params[:id]
 
     if @message.update_attributes message: params[:message]
-      render json: { STATUS: "OK", MESSAGE_ID: @message.id }
+      render json: { status: "OK", message_id: @message.id }
     else
-      render json: { STATUS: "ERROR", MSG: @message.errors.full_messages.join("\n") }
+      render json: { status: "ERROR", msg: @message.errors.full_messages.join("\n") }
     end
   end
 
