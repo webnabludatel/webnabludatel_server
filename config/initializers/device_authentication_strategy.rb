@@ -12,7 +12,7 @@ class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
   end
 
   def authenticate!
-    auth = Authentication.for_device(params['device_id']).first
+    auth = Authentication.for_device(params['device_id'])
 
     if validate(auth)
       params.delete(digest_key)

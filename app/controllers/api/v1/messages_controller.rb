@@ -3,22 +3,22 @@
 class Api::V1::MessagesController < Api::V1::BaseController
 
   def create
-    @message = current_user.device_messages.build(message: params[:message])
+    @message = current_user.device_messages.build(message: params[:payload])
 
     if @message.save
-      render json: { status: "OK", message_id: @message.id }
+      render json: { status: :ok, message_id: @message.id }
     else
-      render json: { status: "ERROR", msg: @message.errors.full_messages.join("\n") }
+      render json: { status: :error, msg: @message.errors.full_messages.join("\n") }
     end
   end
 
   def update
     @message = DeviceMessage.find params[:id]
 
-    if @message.update_attributes message: params[:message]
-      render json: { status: "OK", message_id: @message.id }
+    if @message.update_attributes(message: params[:payload])
+      render json: { status: :ok, message_id: @message.id }
     else
-      render json: { status: "ERROR", msg: @message.errors.full_messages.join("\n") }
+      render json: { status: :error, msg: @message.errors.full_messages.join("\n") }
     end
   end
 
