@@ -27,7 +27,9 @@ Watcher::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :authentications, only: :create
-      resources :messages, only: [:create, :update]
+      resources :messages, only: [:create, :update] do
+        resources :media_items, only: :create
+      end
     end
   end
 end

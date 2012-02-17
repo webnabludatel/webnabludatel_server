@@ -2,6 +2,15 @@
 
 class Api::V1::MessagesController < Api::V1::BaseController
 
+  # params[:payload]
+  #
+  # {
+  #   "key" : ключ элемента чеклиста,
+  #   "value" : значение элемента чеклиста,
+  #   "lat" : широта точки отправки сообщения,
+  #   "lng" : долгота точки отправки сообщения,
+  #   "timestamp" : UNIX-таймстемп момента внесения данных пользователем
+  # }
   def create
     @message = current_user.device_messages.build(message: params[:payload])
 
