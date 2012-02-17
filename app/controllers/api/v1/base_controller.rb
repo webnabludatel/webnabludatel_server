@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Api::V1::Base < ApplicationController
+class Api::V1::BaseController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   around_filter :log_data
@@ -11,7 +11,7 @@ class Api::V1::Base < ApplicationController
   def log_data
     body = env["rack.request.form_vars"]
     query = request.query_string
-    auth = Authentication.find_for_device_authentication(params['device_id'])
+    auth = Authentication.for_device(params['device_id'])
 
     logger.debug "[API] Params: #{params.inspect}"
     logger.debug "[API] Query: #{query}"

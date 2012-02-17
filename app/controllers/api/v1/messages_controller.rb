@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Api::V1::MessagesController < Api::V1::Base
+class Api::V1::MessagesController < Api::V1::BaseController
 
   def create
     @message = current_user.device_messages.build(message: params[:message])

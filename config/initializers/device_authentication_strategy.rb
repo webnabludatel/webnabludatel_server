@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'devise/strategies/base'
 
 class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
@@ -10,7 +12,7 @@ class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
   end
 
   def authenticate!
-    auth = Authentication.find_for_device_authentication(params['device_id'])
+    auth = Authentication.for_device(params['device_id']).first
 
     if validate(auth)
       params.delete(digest_key)

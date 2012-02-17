@@ -12,7 +12,7 @@ Watcher::Application.routes.draw do
   root :to => 'home#index'
 
   namespace :admin do
-    resources :watcher_referals, :only => [] do
+    resources :watcher_referals, only: [] do
       collection do
         get :moderate
       end
@@ -26,7 +26,8 @@ Watcher::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :messages, :only => [:create, :update]
+      resources :authentications, only: :create
+      resources :messages, only: [:create, :update]
     end
   end
 end
