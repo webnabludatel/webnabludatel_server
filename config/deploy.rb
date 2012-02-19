@@ -5,9 +5,9 @@ require 'airbrake/capistrano'
 
 server "176.34.112.34", :app, :web, :db, :primary => true
 
-set :application, "WebNabludatel"
+set :application, "webnabludatel.ru"
 
-set :deploy_to, "/server/www/webnabludatel.ru/main/deploy"
+set :deploy_to, "/server/www/#{application}/main/deploy"
 
 set :scm, :git
 set :repository, "git://github.com/webnabludatel/webnabludatel_server.git"
