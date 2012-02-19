@@ -25,8 +25,17 @@ describe WatcherReport do
     end
 
     context "with pending" do
-      it "set all user watcher reports to pending user location is pending" do
+      it "set all user watcher reports to pending when user location is pending" do
+        device_message = DeviceMessage.new(message: {"timestamp" => Time.now.to_i, "key" => "k", "value" => "v" })
+        device_message.user = @user
+        device_message.save!
 
+        device_message.reload
+
+        watcher_report = device_message.watcher_report
+
+        watcher_report.should be
+        watcher_report.status.pending?.should be
       end
     end
 
