@@ -11,7 +11,7 @@ set :deploy_to, "/server/www/#{application}/main/deploy"
 
 set :scm, :git
 set :repository, "git://github.com/webnabludatel/webnabludatel_server.git"
-set :branch, "origin/production"
+set :branch, "production"
 set :deploy_via, :remote_cache
 
 set :user, "www-data"
@@ -20,4 +20,6 @@ set :ssh_options, forward_agent: true
 
 set :rvm_ruby_string, '1.9.3' # Это указание на то, какой Ruby интерпретатор мы будем использовать.
 set :rvm_type, :system
+
+set :normalize_asset_timestamps, false # Don't need in rails 3
 
