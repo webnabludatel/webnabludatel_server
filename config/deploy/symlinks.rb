@@ -1,4 +1,4 @@
-set :symlinks, %w(config/database.yml config/sensitive_data.yml)
+set :symlinks, %w(config/database.yml config/settings.local.yml)
 
 namespace :deploy do
   namespace :symlinks do
