@@ -1,9 +1,1 @@
 base_url: http://watcher.local:8080
-
-external_apps:
-  facebook:
-    app_id: 228136253935037
-    secret_key: 60650fb1ac90be47e76defd2f1bba24f
-  vkontakte:
-    app_id: 2757507
-    secret_key: EGLTafWA7vi0P2iEBY9U
