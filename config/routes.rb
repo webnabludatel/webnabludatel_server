@@ -9,6 +9,8 @@ Watcher::Application.routes.draw do
     end
   end
 
+  match "/subscribe" => "splash_subscribers#create", via: :post
+
   root :to => 'home#index'
 
   namespace :admin do

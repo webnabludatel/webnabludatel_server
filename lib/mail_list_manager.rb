@@ -2,7 +2,7 @@ module MailListManager
   class << self
 
     def subscribe(email, list_name)
-      hominid.list_subscribe(config.send(list_name).list_id, email.email, options, 'html', false, true, true, false)
+      hominid.list_subscribe(config.send(list_name).list_id, email.email, {}, 'html', false, true, true, false)
     rescue Hominid::APIError => e
       Rails.logger.error("Hominid API error: #{e.message}")
     end

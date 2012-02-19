@@ -1,0 +1,445 @@
+/**
+* @package Watcher
+* @version 0.1
+* @author Sergey Eroshenkov <itechmeat@gmail.com>
+* @date 13.02.2012
+*/
+
+/**
+* @section reset
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/**
+* @section elements
+*/
+body {
+	margin:0 auto;
+	color: #313131;
+	text-align: left;
+	font: 1em/1.3 "Helvetica Neue", Helvetica, Arial, Tahoma, Geneva, "sans serif";
+	background: #FFF url(bg.png) repeat 0 0;
+}
+p {
+	margin:10px 0;
+}
+a {
+	color: #0A13F2;
+	text-decoration: underline;
+}
+a:hover {
+	text-decoration: none;
+}
+strong, b {
+	font-weight: bold;
+}
+ul {
+	margin: 10px 30px;
+}
+li {
+	list-style-type: disc;
+}
+label {
+	cursor: pointer;
+}
+.cf {
+	clear: both;
+}
+.ie7 .cf {
+	width: 100%;
+	height: 1px;
+	font-size: 1px;
+}
+.note {
+	color: #666;
+}
+.b-ligth {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -25px 0 0 -25px;
+	width:1px;
+	height:1px;
+	box-shadow: 0 0 600px 200px rgba(255,255,255,.6);
+	background: rgba(255,255,255,.6);
+}
+.i-wrapper {
+	position: relative;
+	width: 934px;
+	margin: 0 auto;
+}
+
+/**
+* @section header
+*/
+.i-header {
+	height: 80px;
+	padding: 10px 0 0 0;
+}
+.b-nav__list {
+	margin: 0;
+	text-align: center;
+}
+.b-nav__item {
+	display: inline-block;
+	padding: 0 17px;
+}
+.lt-ie8 .b-nav__item {
+	float:left;
+}
+.b-nav__link {
+	display: block;
+	position: relative;
+	/*padding: 5px 20px;*/
+	margin: 0 20px;
+	padding: 6px 0 4px 0;
+	height: 28px;
+	color: #333C47;
+}
+.lt-ie8 a.b-nav__link {
+	margin: 0;
+	padding: 6px 20px 4px 20px;
+}
+.b-nav__link_current {
+	/*border-radius: 20px;
+	box-shadow: 0 1px 0 rgba(0,0,0,.3);
+	background: #FFF;*/
+	background: url(bg_nav.png) no-repeat 50% 0;
+	font-weight: bold;
+	text-decoration: none;
+}
+/*.b-nav__link_current:after {
+	content: "";
+	display: block;
+	position: absolute;
+	margin: 0 0 0 -4px;
+	top: 25px;
+	left: 50%;
+	width: 8px;
+	height: 8px;
+	background: #FFF;
+	transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+	box-shadow: 1px 1px 0 rgba(0,0,0,.3);
+}*/
+.b-nav__link_current:before, .b-nav__link_current:after {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -20px;
+	width: 20px;
+	height: 38px;
+	background: url(bg_nav.png) no-repeat 0 0;
+}
+.b-nav__link_current:after {
+	left: auto;
+	right: -20px;
+	background-position: 100% 0;
+}
+/*.ie9 .b-nav__link_current:after, .lt-ie9 .b-nav__link_current:after {
+	display: none;
+}*/
+a.b-nav__link_disable {
+	color:#969BA0;
+	text-decoration: none;
+}
+.b-nav__info {
+	position: relative;
+	top: -10px;
+	margin: 0 0 0 10px;
+	color: #969BA0;
+	font-size: 80%;
+}
+
+/**
+* @section content
+*/
+.i-content {
+	float:right;
+	width: 454px;
+}
+.i-content_fullsize {
+	float: none;
+	width: auto;
+}
+.b-mainhead {
+	margin-bottom: 10px;
+	font-size: 100%;
+	font-weight: bold;
+}
+.b-mainhead__name {
+	margin-left: -2px;
+	font-size: 300%;
+}
+.b-mainhead__logo {
+	position: absolute;
+	margin-left: 15px;
+}
+.b-share {
+	margin: 0 0 10px 0;
+}
+.b-share__table {
+	width: 100%;
+}
+.b-marklist {
+	margin: 30px 0 40px -16px;
+}
+.b-marklist__item {
+	margin: 0 0 20px 0;
+	padding: 0 0 0 16px;
+	background: url(mark.png) no-repeat 0 8px;
+	list-style: none;
+}
+.b-marklist__item_double {
+	background-image: url(mark-double.png);
+}
+.b-know {
+	margin: 0 0 30px 0;
+}
+.b-know__set {
+	padding: 5px 0 0 0;
+}
+.b-know__name {
+	font-weight: bold;
+}
+.b-know__input {
+	margin: 0 20px 5px 0;
+	padding: 0 10px;
+	width: 200px;
+	height: 32px;
+	border: 1px solid #A2B1C2;
+	box-shadow: 0 0 1px #A2B1C2;
+	vertical-align: top;
+}
+.b-know__button {
+	padding: 0 30px;
+	height: 34px;
+	border: 1px solid #E5E6E8;
+	border-radius: 5px;
+	background: #dddee1;
+	background: -moz-linear-gradient(top,  #dddee1 0%, #b5b8be 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dddee1), color-stop(100%,#b5b8be));
+	background: -webkit-linear-gradient(top,  #dddee1 0%,#b5b8be 100%);
+	background: -o-linear-gradient(top,  #dddee1 0%,#b5b8be 100%);
+	background: -ms-linear-gradient(top,  #dddee1 0%,#b5b8be 100%);
+	background: linear-gradient(top,  #dddee1 0%,#b5b8be 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddee1', endColorstr='#b5b8be',GradientType=0 );
+	box-shadow: 0 2px 3px rgba(0,0,0,.7);
+	color: #32373C;
+	font-size: 90%;
+	font-weight: bold;
+	text-shadow: 0 1px 0 #FFF;
+	cursor: pointer;
+	vertical-align: top;
+}
+.lt-ie8 .b-know__button {
+	width: 150px;
+}
+.b-know__or {
+	padding-top: 10px;
+	font-size: 85%;
+}
+.b-download {
+	font-weight: bold;
+	line-height: 48px;
+}
+.b-download__apple {
+	display: inline-block;
+	margin:0 5px;
+	padding:0 10px 0 40px;
+	border-radius: 4px;
+	background: #000 url(ios.png) no-repeat 10px 50%;
+	color: #FFF;
+	text-decoration: none;
+}
+.b-download__android {
+	display: inline-block;
+	margin:0 0 0 5px;
+	padding:0 10px 0 70px;
+	border-radius: 4px;
+	background: url(amdroid.png) no-repeat 10px 50%;
+	color: #000;
+	text-decoration: none;
+	line-height: 63px;
+}
+.b-download__android-name {
+	display: none;
+}
+.b-gallery {
+	height:500px;
+}
+.jshowoff-play {
+	display: block;
+	position:absolute;
+	top: 405px;
+	left: 146px;
+	width: 44px;
+	height: 44px;
+	z-index: 5;
+}
+.b-gallery__control, .jshowoff-prev, .jshowoff-next {
+	display: block;
+	position: absolute;
+	top: 230px;
+	width: 28px;
+	height: 28px;
+	background: url(arrows.png) no-repeat 0 -41px;
+	cursor: pointer;
+	z-index: 5;
+}
+.b-gallery__control_left, .jshowoff-prev {
+	left: 0;
+}
+.b-gallery__control_left:hover, .jshowoff-prev:hover {
+	background-position: 0 0;
+}
+.b-gallery__control_right, .jshowoff-next {
+	right: 0;
+	background-position: 100% -41px;
+}
+.b-gallery__control_right:hover, .jshowoff-next:hover {
+	background-position: 100% 0;
+}
+.b-gallery__control_left-passive {
+	background-position: 0 -82px !important;
+	cursor: default;
+}
+.b-gallery__control_right-passive {
+	background-position: 100% -82px !important;
+	cursor: default;
+}
+.b-gallery__list {
+	position: absolute;
+	overflow: hidden;
+	top: 85px;
+	left: 62px;
+	margin: 0;
+	width: 209px;
+	height: 311px;
+}
+.b-gallery__item {
+	float: left;
+	width: 209px;
+	height: 311px;
+	list-style: none;
+}
+.b-gallery__phone {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 330px;
+	height: 500px;
+	background: url(phone.png) no-repeat 0 50%;
+}
+.i-golos {
+	min-height: 500px;
+	max-width: 800px;
+	margin: 0 auto;
+	box-shadow: 10px 0 10px -10px rgba(0,0,0,.5),  -10px 0 10px -10px rgba(0,0,0,.5);
+}
+
+/**
+* @section sidebar
+*/
+.i-sidebar {
+	float: left;
+	margin: 0 0 0 60px;
+	width: 330px;
+}
+.b-gallery {
+	position:relative;
+}
+
+/**
+* @section footer
+*/
+.i-footer {
+	clear: both;
+	padding: 20px 0;
+	text-align: center;
+	font-size: 100%;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 934px) { 
+	.i-wrapper {
+		width: auto;
+		padding: 0 10px;
+	}
+	.i-content {
+		float: none;
+		margin: 0 auto;
+		padding: 0 0 20px 0;
+		width: auto;
+		max-width: 480px;
+	}
+	.i-sidebar {
+		float: none;
+		width: auto;
+	}
+	.b-gallery {
+		margin: 0 auto;
+		width: 330px;
+	}
+}
+@media screen and (min-width: 600px) and (max-width: 799px) { 
+	
+}
+@media screen and (min-width: 480px) and (max-width: 599px) { 
+	
+}
+@media screen and (min-width: 320px) and (max-width: 479px) { 
+	
+}
+@media screen and (max-width: 320px) { 
+	
+}
+@media print {
+	
+}

@@ -1,2 +1,34 @@
-%h1 ВебНаблюдатель
-%p Мы за честные выборы!
+%h1.b-mainhead
+  Мобильное приложение
+  %br/
+  %strong.b-mainhead__name Веб-наблюдатель
+  = image_tag("logo.png", :class => "b-mainhead__logo")
+
+  = render :partial => "partials/share"
+
+%ul.b-marklist
+  %li.b-marklist__item Содержит полный список возможных нарушений.
+  %li.b-marklist__item Мгновенно отправляет информацию в базу данных.
+  %li.b-marklist__item.b-marklist__item_double Поддерживает загрузку фотографий и видео по частямв любой удобный момент.
+  %li.b-marklist__item Со встроенным справочником наблюдателя организации «Голос».
+.b-know
+  - if defined?(@subscriber) && @subscriber.persisted?
+    %b Спасибо! Уже скоро мы сообщим вам о готовности нашего приложения.
+  - else
+    %form.b-know__form{:action => subscribe_path, :method => "POST"}
+      %fieldset.b-know__set
+        %legend.b-know__name Узнайте о приложении первыми
+        - if defined?(@subscriber) && !@subscriber.valid?
+          %ul
+            - @subscriber.errors.full_messages.each do |message|
+              %li= message
+
+        %input.b-know__input{:placeholder => "@адрес", :type => "text", :name => "email", :value => (defined?(@subscriber) ? @subscriber.email : "")}/
+        %button.b-know__button Подписаться
+-#.b-download
+  Скачайте
+  %a.b-download__apple{:href => "#"} в Аппсторе
+  или на
+  %a.b-download__android{:href => "#"}
+    %span.b-download__android-name> Android
+    \-маркете

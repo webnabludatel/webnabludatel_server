@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.2.1'
 gem 'pg'
 
+gem 'active_link_to'
 gem 'auditor'
 gem 'cancan'
 gem 'carrierwave'
