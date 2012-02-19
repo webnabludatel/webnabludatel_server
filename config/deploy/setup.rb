@@ -1,5 +1,5 @@
 namespace :deploy do
-  desc "Setup shared configs"
+  desc "Creates initial templates for server-side configs."
   task :setup_configs do
     run "mkdir -p #{shared_path}/config"
     put File.read("config/examples/database.yml"), "#{shared_path}/config/database.yml"
