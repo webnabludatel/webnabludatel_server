@@ -4,6 +4,7 @@ class WatcherReport < ActiveRecord::Base
   belongs_to :user
   belongs_to :comission
   belongs_to :device_message
+  belongs_to :watcher_checklist_item
 
   STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none)
 
