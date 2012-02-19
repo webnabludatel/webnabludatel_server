@@ -1,4 +1,4 @@
-class Admin::WatcherReferalsController < Admin::Base
+class Admin::WatcherReferalsController < Admin::BaseController
   before_filter :find_referal, :only => [:approve, :reject, :problem]
 
   def moderate
