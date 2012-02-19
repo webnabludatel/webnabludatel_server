@@ -23,16 +23,22 @@ namespace :plist do
     screens.each_with_index do |item, index|
       if item.has_key? "items"
         puts "Parsing: #{item["title"]}"
-        section = section.children.find_or_create_by_title item["title"]
+
+        section = section.children.find_or_initialize_by_title item["title"]
+        section.order = index
+        section.save!
+
         parse_section(section, item["items"])
       elsif item.has_key? "switch_options"
         puts "Parsing: #{item["name"]}"
+
         leaf_item = section.children.find_or_initialize_by_name item["name"]
         leaf_item.update_attributes title: item["title"],
                                      lo_value: item["switch_options"]["lo_value"],
                                      hi_value: item["switch_options"]["hi_value"],
                                      lo_text: item["switch_options"]["lo_text"],
-                                     hi_text: item["switch_options"]["hi_text"]
+                                     hi_text: item["switch_options"]["hi_text"],
+                                     order: index
       end
     end
   end
