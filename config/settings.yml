@@ -22,3 +22,5 @@ mailchimp:
   splash:
     list_id: 'c8bc0982bd'
 
+airbrake:
+  api_key: 'override me'

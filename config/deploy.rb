@@ -1,8 +1,9 @@
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Для работы rvm
-require 'rvm/capistrano' # Для работы rvm
-require 'bundler/capistrano' # Для работы bundler. При изменении гемов bundler автоматически обновит все гемы на сервере, чтобы они в точности соответствовали гемам разработчика.
+require 'rvm/capistrano'
+require 'bundler/capistrano'
+require 'airbrake/capistrano'
 
-server "webnabludatel.ru", :app, :web, :db, :primary => true
+server "176.34.112.34", :app, :web, :db, :primary => true
 
 set :application, "Webnabludatel"
 

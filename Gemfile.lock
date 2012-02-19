@@ -42,6 +42,9 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.2.6)
+    airbrake (3.0.9)
+      activesupport
+      builder
     arel (3.0.0)
     auditor (2.1.1)
       activerecord (> 3.0.0)
@@ -303,6 +306,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
+  airbrake
   auditor
   awesome_print
   cancan
