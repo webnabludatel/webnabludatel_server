@@ -11,7 +11,12 @@ Watcher::Application.routes.draw do
 
   match "/subscribe" => "splash_subscribers#create", via: :post
 
-  root :to => 'home#index'
+  root :to => "pages#show", :id => "app"
+
+  # Pages (via high_voltage gem)
+  match "/about" => "pages#show", :id => "about"
+  match "/app" => "pages#show", :id => "app"
+  match "/help" => "pages#show", :id => "help"
 
   namespace :admin do
     resources :watcher_referals, only: [] do
