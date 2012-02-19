@@ -16,3 +16,6 @@ mailchimp:
 
 airbrake:
   api_key: 'enter me'
+
+beta:
+  password: 'enter me'

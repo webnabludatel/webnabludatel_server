@@ -24,3 +24,6 @@ mailchimp:
 
 airbrake:
   api_key: 'override me'
+
+beta:
+  password: 'override me'
