@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120214042141) do
+ActiveRecord::Schema.define(:version => 20120219203515) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -87,6 +87,12 @@ ActiveRecord::Schema.define(:version => 20120214042141) do
     t.datetime "updated_at"
   end
 
+  create_table "splash_subscribers", :force => true do |t|
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "user_locations", :force => true do |t|
     t.integer  "user_id"
     t.integer  "comission_id"
@@ -138,6 +144,19 @@ ActiveRecord::Schema.define(:version => 20120214042141) do
   add_index "users", ["organization_id"], :name => "index_users_on_organization_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  create_table "watcher_checklist_items", :force => true do |t|
+    t.string   "name"
+    t.string   "title"
+    t.integer  "order"
+    t.string   "lo_value"
+    t.string   "hi_value"
+    t.string   "lo_text"
+    t.string   "hi_text"
+    t.string   "ancestry"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "watcher_referals", :force => true do |t|
     t.integer  "user_id"
