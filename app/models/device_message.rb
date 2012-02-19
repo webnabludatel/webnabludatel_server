@@ -24,6 +24,9 @@ class DeviceMessage < ActiveRecord::Base
       watcher_report.key = self.message["key"]
       watcher_report.value = self.message["value"]
 
+      plist_item = WatcherChecklistItem.find_by_name! self.message["key"]
+      watcher_report.watcher_checklist_item = plist_item
+
       watcher_report.save!
     end
 
