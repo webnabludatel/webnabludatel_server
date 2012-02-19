@@ -1,0 +1,20 @@
+base:  &base
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: localhost
+  username: watcher
+  password:
+
+development:
+  database: watcher_development
+  <<: *base
+
+test:
+  database: watcher_test
+  <<: *base
+
+
+production:
+  database: watcher
+  <<: *base
