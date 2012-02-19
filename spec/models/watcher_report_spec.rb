@@ -3,11 +3,14 @@ require 'spec_helper'
 describe WatcherReport do
   context "updating user status" do
     before(:each) do
+      WatcherChecklistItem.delete_all
       WatcherReport.delete_all
       DeviceMessage.delete_all
       Comission.delete_all
       UserLocation.delete_all
       User.delete_all
+
+      WatcherChecklistItem.create name: "k", hi_value: "v"
 
       @user = Fabricate(:user, watcher_status: "pending")
       @location = Fabricate.build(:user_location)
@@ -78,11 +81,14 @@ describe WatcherReport do
 
   context "updating user location status" do
     before(:each) do
+      WatcherChecklistItem.delete_all
       WatcherReport.delete_all
       DeviceMessage.delete_all
       Comission.delete_all
       UserLocation.delete_all
       User.delete_all
+
+      WatcherChecklistItem.create name: "k", hi_value: "v"
 
       @user = Fabricate(:user, watcher_status: "pending")
       @location = Fabricate.build(:user_location)

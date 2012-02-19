@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe DeviceMessage do
-  context "with sending 'post' messages" do
+  context "with sending messages" do
+    before(:each) do
+      WatcherChecklistItem.delete_all
+      WatcherChecklistItem.create name: "k", hi_value: "v"
+    end
+
     it "should create watcher report if there is new message" do
       user = Fabricate(:user, watcher_status: "pending")
       location = Fabricate.build(:user_location)
@@ -32,6 +37,8 @@ describe DeviceMessage do
       device_message.reload
 
       report_id = device_message.watcher_report.id
+
+      WatcherChecklistItem.create name: "k1", hi_value: "v1"
 
       device_message.message["key"] = "k1"
       device_message.message["value"] = "v1"
