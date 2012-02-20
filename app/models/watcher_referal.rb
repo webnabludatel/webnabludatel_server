@@ -70,8 +70,8 @@ end
 #  status                :string(255)
 #  watcher_referal_image :string(255)
 #  comment               :text
-#  created_at            :datetime        not null
-#  updated_at            :datetime        not null
+#  created_at            :datetime
+#  updated_at            :datetime
 #  image                 :string(255)
 #
 # Indexes

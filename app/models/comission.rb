@@ -42,8 +42,8 @@ end
 #  longitude  :float
 #  kind       :string(255)
 #  address    :text
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  created_at :datetime
+#  updated_at :datetime
 #  status     :string(255)
 #
 

@@ -43,8 +43,8 @@ end
 #  user_id    :integer         not null
 #  provider   :string(255)     not null
 #  uid        :string(255)     not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  created_at :datetime
+#  updated_at :datetime
 #  token      :string(255)
 #  secret     :string(255)
 #
