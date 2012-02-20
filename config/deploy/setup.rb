@@ -3,7 +3,7 @@ namespace :deploy do
   task :setup_configs do
     run "mkdir -p #{shared_path}/config"
     put File.read("config/examples/database.yml"), "#{shared_path}/config/database.yml"
-    put File.read("config/examples/sensitive_data.yml"), "#{shared_path}/config/sensitive_data.yml"
+    put File.read("config/examples/settings.local.yml"), "#{shared_path}/config/settings.local.yml"
     puts "Now edit the config files in #{shared_path}/config."
   end
 end

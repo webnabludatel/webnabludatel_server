@@ -1,4 +1,6 @@
 Watcher::Application.routes.draw do
+  root :to => "home#index"
+
   OmniAuth.config.path_prefix = "/users/auth"
   devise_for :users, controllers: { registrations: 'users/registrations' }, skip: :omniauth_callback
   devise_scope :user do
@@ -9,7 +11,7 @@ Watcher::Application.routes.draw do
     end
   end
 
-  root :to => 'home#index'
+  post "/subscribe" => "splash_subscribers#create"
 
   namespace :admin do
     resources :watcher_referals, only: [] do

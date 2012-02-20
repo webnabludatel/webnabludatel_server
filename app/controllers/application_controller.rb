@@ -4,15 +4,27 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  before_filter :beta_authenticate
+
   before_filter :set_locale
   before_filter :set_mobile_preferences
-  before_filter :prepend_view_path_if_mobile
+  # before_filter :prepend_view_path_if_mobile
 
   protected
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
+
+  def beta_authenticate
+    public_controllers = [HomeController, SplashSubscribersController, Api::V1::BaseController]
+    if Rails.env.production? && !public_controllers.map {|c| self.kind_of?(c)}.inject {|c, a| c || a}
+      authenticate_or_request_with_http_basic do |username, password|
+        username == "webnabludatel" && password == Settings.beta.password
+      end
+    end
+  end
+
 
   private
 

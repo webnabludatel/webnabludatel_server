@@ -1,16 +1,53 @@
 !!!
-%html.no-js{"xmlns:fb" => "https://www.facebook.com/2008/fbml", "xmlns:og" => "http://ogp.me/ns#"}
-  = render :partial => 'layouts/head'
+/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+/[if IE 7] <html class="no-js lt-ie9 lt-ie8" lang="en">
+/[if IE 8] <html class="no-js lt-ie9" lang="en">
+/ [if gt IE 8]><!
+%html.no-js{:lang => "en"}
+  / <![endif]
+  %head
+    %meta{:charset => "UTF-8"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    %title Веб-наблюдатель
+    %meta{:content => "", :name => "description"}/
+    %meta{:content => "", :name => "keywords"}/
+    %meta{:content => "width=device-width", :name => "viewport"}/
 
-  %body{ :lang => 'en', :class => "#{controller.controller_name}" }
-    #container
-      %header
-        = render :partial => 'layouts/header'
+    %link{:href => "/favicon.ico", :rel => "shortcut icon"}/
+    %link{:href => "/apple-touch-icon.png", :rel => "apple-touch-icon"}/
 
-      #main{ :role => 'main' }
-        %section#mainContent
-          %div{:data => {"pjax-container" => true}}
-            = flash_messages
-            = yield
-      %footer
-        = render :partial => 'layouts/footer'
+    = stylesheet_link_tag "application"
+    = yield :stylesheets
+
+    = javascript_include_tag "application"
+    = yield :javascripts
+
+    = csrf_meta_tag
+  %body
+    .b-ligth
+    .i-wrapper
+      %header.i-header
+        %nav.b-nav
+          %ul.b-nav__list
+            %li.b-nav__item
+              %span.b-nav__info появятся 4 марта
+              %a.b-nav__link.b-nav__link_disable{ :href => "#" } Отчеты
+            %li.b-nav__item
+              %a.b-nav__link.b-nav__link_current{ :href => root_path } Приложение
+            -#%li.b-nav__item
+              %a.b-nav__link{:href => "#"} О проекте
+      %section.i-content{:role => "main"}
+        = yield
+      %aside.i-sidebar
+        .b-gallery
+          .b-gallery__container
+            %ul.b-gallery__list
+              / Все картинки должны быть размером 330*500px, PNG24
+              %li.b-gallery__item
+                %a.b-gallery__link{:href => "#"}
+                  = image_tag("slides/slide-1.png")
+
+          -#.b-gallery__control.b-gallery__control_left.b-gallery__control_left-passive
+          -#.b-gallery__control.b-gallery__control_right
+      %footer.i-footer
+        .b-copyright #{Date.today.year}. &copy; Команда проекта &laquo;Веб-наблюдатель&raquo;

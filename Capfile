@@ -9,4 +9,5 @@ load 'config/deploy/symlinks'
 load 'config/deploy/unicorn'
 load 'config/deploy/setup'
 load 'config/deploy/admin'
+load 'config/deploy/delayed_job'
 

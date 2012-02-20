@@ -1,10 +1,4 @@
 # These settings are for development-mode only, you should override them in production with real keys
-# using config/settings.local.yml or config/settings/production.local.yml.
-#
-# If some keys should be the same for production and development, put 'override me' placeholder in this file
-# and override it with config/settings.local.yml, which is gitignored.
-#
-# DON'T PUT ANY SENSITIVE DATA IN THIS FILE, IT'S PUBLIC
 
 session:
   secret_token: 'b1fa7708e5775f3288307dbb64ba56b87632cff551fe520bd657d2da8f9184af1bc58b08d751743f7f8ec1a6a21e8b89202729bb2cdb11e261f45b4a54fb21db'
@@ -18,12 +12,10 @@ vkontakte:
   secret_key: 'EGLTafWA7vi0P2iEBY9U'
 
 mailchimp:
-  api_key: 'override me'
-  splash:
-    list_id: 'c8bc0982bd'
+  api_key: 'enter me'
 
 airbrake:
-  api_key: 'override me'
+  api_key: 'enter me'
 
 beta:
-  password: 'override me'
+  password: 'enter me'

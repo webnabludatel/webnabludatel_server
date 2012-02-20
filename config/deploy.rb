@@ -1,16 +1,17 @@
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Для работы rvm
-require 'rvm/capistrano' # Для работы rvm
-require 'bundler/capistrano' # Для работы bundler. При изменении гемов bundler автоматически обновит все гемы на сервере, чтобы они в точности соответствовали гемам разработчика.
+require 'rvm/capistrano'
+require 'bundler/capistrano'
+require 'airbrake/capistrano'
 
-server "webnabludatel.ru", :app, :web, :db, :primary => true
+server "176.34.112.34", :app, :web, :db, :primary => true
 
-set :application, "Webnabludatel"
+set :application, "webnabludatel.ru"
 
-set :deploy_to, "/server/www/webnabludatel.ru/main/deploy"
+set :deploy_to, "/server/www/#{application}/main/deploy"
 
 set :scm, :git
 set :repository, "git://github.com/webnabludatel/webnabludatel_server.git"
-set :branch, "master"
+set :branch, "production"
 set :deploy_via, :remote_cache
 
 set :user, "www-data"
@@ -20,3 +21,6 @@ set :ssh_options, forward_agent: true
 set :rvm_ruby_string, '1.9.3' # Это указание на то, какой Ruby интерпретатор мы будем использовать.
 set :rvm_type, :system
 
+set :normalize_asset_timestamps, false # Don't need in rails 3
+
+after "deploy", "deploy:cleanup" # keeps only last 5 releases

@@ -18,8 +18,6 @@ config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
 
-config/sensitive_data.yml
-
 public/sitemap*
 public/stylesheets/**/*
 public/uploads/**/*
