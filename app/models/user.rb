@@ -14,7 +14,8 @@ class User < ActiveRecord::Base
 
   has_many :authentications, dependent: :destroy
   has_many :device_messages, dependent: :destroy
-  has_one :referal, class_name: "WatcherReferal", dependent: :destroy
+  has_many :user_messages, dependent: :destroy
+  has_one  :referal, class_name: "WatcherReferal", dependent: :destroy
   has_many :user_locations, dependent: :destroy
   has_many :comissions, through: :user_locations
   has_many :device_messages, dependent: :destroy
@@ -110,7 +111,7 @@ end
 #
 #  id                     :integer         not null, primary key
 #  email                  :string(255)     default(""), not null
-#  encrypted_password     :string(128)     default(""), not null
+#  encrypted_password     :string(255)     default(""), not null
 #  reset_password_token   :string(255)
 #  reset_password_sent_at :datetime
 #  remember_created_at    :datetime
@@ -125,12 +126,9 @@ end
 #  failed_attempts        :integer         default(0)
 #  unlock_token           :string(255)
 #  locked_at              :datetime
-#  created_at             :datetime
-#  updated_at             :datetime
+#  created_at             :datetime        not null
+#  updated_at             :datetime        not null
 #  role                   :string(255)
-#  watcher_status         :string(255)
-#  organization_id        :integer
-#  is_watcher             :boolean
 #  name                   :string(255)
 #  first_name             :string(255)
 #  last_name              :string(255)
@@ -138,6 +136,9 @@ end
 #  phone                  :string(255)
 #  urls                   :text
 #  birth_date             :date
+#  watcher_status         :string(255)
+#  organization_id        :integer
+#  is_watcher             :boolean         default(FALSE)
 #  unconfirmed_email      :string(255)
 #
 # Indexes

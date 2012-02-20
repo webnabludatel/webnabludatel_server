@@ -1,45 +1,78 @@
 # encoding: utf-8
 
 class DeviceMessage < ActiveRecord::Base
-  attr_accessible :message
-  serialize :message
+  attr_accessible :kind, :device_id, :payload
 
   belongs_to :user
+  belongs_to :user_message
+  belongs_to :media_item
 
-  has_one :watcher_report, dependent: :destroy
-
-  after_save :set_watcher_report
-
+  after_create :process_message
 
   private
-    def set_watcher_report
-      watcher_report = self.watcher_report || WatcherReport.new
-      watcher_report.device_message = self
 
-      watcher_report.recorded_at = Time.at(self.message["timestamp"].to_i)
-      watcher_report.user = self.user
-
-      watcher_report.comission = self.user.current_comission
-
-      watcher_report.key = self.message["key"]
-      watcher_report.value = self.message["value"]
-
-      plist_item = WatcherAttribute.find_by_name! self.message["key"]
-      watcher_report.watcher_attribute = plist_item
-
-      watcher_report.save!
+  def process_message
+    case kind
+      when 'media_item'
+        update_media_item
+      else
+        update_user_message
     end
+  end
 
+  def update_user_message
+    if user_message.blank?
+      msg = user.user_messages.create(attributes_for_user_message)
+      self.user_message = msg
+      save!
+    else
+      user_message.update_attributes(attributes_for_user_message)
+    end
+  end
+
+  def update_media_item
+    if media_item.blank?
+      item = user_message.media_items.create(attributes_for_media_item)
+      self.media_item = item
+      save!
+    else
+      media_item.update_attributes(attributes_for_media_item)
+    end
+  end
+
+  def attributes_for_user_message
+    data = JSON.parse(payload)
+    {
+      key: data['key'],
+      value: data['value'],
+      latitude: data['lat'],
+      longitude: data['lng'],
+      timestamp: Time.at(data['timestamp'].to_i)
+    }
+  end
+
+  def attributes_for_media_item
+    data = JSON.parse(payload)
+    {
+      url: data['url'],
+      media_type: data['type'],
+      timestamp: Time.at(data['timestamp'].to_i)
+    }
+  end
 end
 # == Schema Information
 #
 # Table name: device_messages
 #
-#  id         :integer         not null, primary key
-#  message    :text
-#  user_id    :integer
-#  created_at :datetime
-#  updated_at :datetime
+#  id              :integer         not null, primary key
+#  payload         :text
+#  user_id         :integer
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  kind            :string(255)     default("message"), not null
+#  device_id       :string(255)
+#  media_item_id   :integer
+#  user_message_id :integer
 #
 # Indexes
 #
