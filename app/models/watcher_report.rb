@@ -22,7 +22,7 @@ class WatcherReport < ActiveRecord::Base
   validates :value, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES }
 
-  before_validation :set_status, :set_is_violation
+  before_validation :set_status, :set_watcher_checklist_item, :set_is_violation
 
   def status
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
@@ -40,5 +40,10 @@ class WatcherReport < ActiveRecord::Base
 
     def set_is_violation
       self.is_violation = watcher_checklist_item && value && watcher_checklist_item.hi_value == value
+      true
+    end
+
+    def set_watcher_checklist_item
+      self.watcher_checklist_item = WatcherChecklistItem.find_by_name(key) if self.watcher_checklist_item.blank?
     end
 end

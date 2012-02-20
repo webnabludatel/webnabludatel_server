@@ -1,6 +1,28 @@
 require 'spec_helper'
 
 describe WatcherReport do
+  it "should set watcher check list item when it wasn't set manually" do
+
+  end
+
+  it "should correctly set is_violation" do
+    plist = WatcherChecklistItem.create name: "k", hi_value: "violation", lo_value: "ok"
+
+    violation_watcher_report = WatcherReport.new key: "k", value: "violation"
+    violation_watcher_report.watcher_checklist_item = plist
+    violation_watcher_report.status = "manual_approved"
+    violation_watcher_report.save!
+
+    violation_watcher_report.is_violation?.should be
+
+    ok_watcher_report = WatcherReport.new key: "k", value: "violat"
+    ok_watcher_report.watcher_checklist_item = plist
+    ok_watcher_report.status = "manual_approved"
+    ok_watcher_report.save!
+
+    ok_watcher_report.is_violation?.should_not be
+  end
+
   context "updating user status" do
     before(:each) do
       WatcherChecklistItem.delete_all
