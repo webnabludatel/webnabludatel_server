@@ -1,10 +1,32 @@
+# encoding: utf-8
+
 namespace :plist do
 
   task load: :environment do
+    url_base = "https://raw.github.com/webnabludatel/watcher-ios/master/ElectionsWatcher/"
+    files = %W(WatcherChecklist.plist WatcherProfile.plist WatcherSOS.plist WatcherSettings.plist WatcherPollingPlace.plist)
 
-    filename = ENV["filename"] || ENV["FILENAME"]
+    files.each do |filename|
+      url = "#{url_base}#{filename}"
+      uri = URI.parse(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-    result = Plist::parse_xml(filename)
+      puts "Getting: #{url}"
+      request = Net::HTTP::Get.new(uri.request_uri)
+      response = http.request(request)
+      response.body.force_encoding('UTF-8')
+      parse(response.body)
+    end
+  end
+
+  task load_from_file: :environment do
+    parse(ENV["filename"] || ENV["FILENAME"])
+  end
+
+  def parse(filename_or_xml)
+    result = Plist::parse_xml(filename_or_xml)
 
     result.each_with_index do |(key, value), index|
       puts "Parsing root section: #{key}"
@@ -16,7 +38,6 @@ namespace :plist do
 
       parse_section(section, value["screens"] || value["items"])
     end
-
   end
 
   def parse_section(section, items)
