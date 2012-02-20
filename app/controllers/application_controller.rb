@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :beta_authenticate
 
   before_filter :set_locale
-  before_filter :set_mobile_preferences
+  #before_filter :set_mobile_preferences
   # before_filter :prepend_view_path_if_mobile
 
   protected
