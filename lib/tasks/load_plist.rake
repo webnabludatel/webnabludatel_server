@@ -31,34 +31,34 @@ namespace :plist do
     result.each_with_index do |(key, value), index|
       puts "Parsing root section: #{key}"
 
-      section = WatcherAttribute.find_or_initialize_by_name key
-      section.order = value["order"] || index
-      section.title = value["title"]
-      section.save!
+      node = WatcherAttribute.find_or_initialize_by_name key
+      node.order = value["order"] || index
+      node.title = value["title"]
+      node.save!
 
-      parse_section(section, value["screens"] || value["items"])
+      parse_node(node, value["screens"] || value["items"])
     end
   end
 
-  def parse_section(section, items)
+  def parse_node(node, items)
     items.each_with_index do |item, index|
       if item.has_key? "items"
         puts "Parsing: #{item["title"]}"
 
-        section = section.children.find_or_initialize_by_title item["title"]
-        section.order = index
-        section.save!
+        current_node = node.children.find_or_initialize_by_title item["title"]
+        current_node.order = index
+        current_node.save!
 
-        parse_section(section, item["items"])
+        parse_node(current_node, item["items"])
       else
         puts "Parsing: #{item["name"]}"
 
-        leaf_item = section.children.find_or_initialize_by_name item["name"]
-        leaf_item.title = item["title"]
-        leaf_item.order = index
+        leaf = node.children.find_or_initialize_by_name item["name"]
+        leaf.title = item["title"]
+        leaf.order = index
 
         if item.has_key? "switch_options"
-          leaf_item.attributes = {
+          leaf.attributes = {
                                     lo_value: item["switch_options"]["lo_value"],
                                     hi_value: item["switch_options"]["hi_value"],
                                     lo_text: item["switch_options"]["lo_text"],
@@ -66,7 +66,7 @@ namespace :plist do
                                   }
         end
 
-        leaf_item.save!
+        leaf.save!
       end
     end
   end
