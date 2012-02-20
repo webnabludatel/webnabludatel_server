@@ -6,17 +6,17 @@ describe WatcherReport do
   end
 
   it "should correctly set is_violation" do
-    plist = WatcherChecklistItem.create name: "k", hi_value: "violation", lo_value: "ok"
+    plist = WatcherAttribute.create name: "k", hi_value: "violation", lo_value: "ok"
 
     violation_watcher_report = WatcherReport.new key: "k", value: "violation"
-    violation_watcher_report.watcher_checklist_item = plist
+    violation_watcher_report.watcher_attribute = plist
     violation_watcher_report.status = "manual_approved"
     violation_watcher_report.save!
 
     violation_watcher_report.is_violation?.should be
 
     ok_watcher_report = WatcherReport.new key: "k", value: "violat"
-    ok_watcher_report.watcher_checklist_item = plist
+    ok_watcher_report.watcher_attribute = plist
     ok_watcher_report.status = "manual_approved"
     ok_watcher_report.save!
 
@@ -25,14 +25,14 @@ describe WatcherReport do
 
   context "updating user status" do
     before(:each) do
-      WatcherChecklistItem.delete_all
+      WatcherAttribute.delete_all
       WatcherReport.delete_all
       DeviceMessage.delete_all
       Comission.delete_all
       UserLocation.delete_all
       User.delete_all
 
-      WatcherChecklistItem.create name: "k", hi_value: "v"
+      WatcherAttribute.create name: "k", hi_value: "v"
 
       @user = Fabricate(:user, watcher_status: "pending")
       @location = Fabricate.build(:user_location)
@@ -112,14 +112,14 @@ describe WatcherReport do
 
   context "updating user location status" do
     before(:each) do
-      WatcherChecklistItem.delete_all
+      WatcherAttribute.delete_all
       WatcherReport.delete_all
       DeviceMessage.delete_all
       Comission.delete_all
       UserLocation.delete_all
       User.delete_all
 
-      WatcherChecklistItem.create name: "k", hi_value: "v"
+      WatcherAttribute.create name: "k", hi_value: "v"
 
       @user = Fabricate(:user, watcher_status: "pending")
       @location = Fabricate.build(:user_location)

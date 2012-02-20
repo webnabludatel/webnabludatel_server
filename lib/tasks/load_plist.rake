@@ -9,7 +9,7 @@ namespace :plist do
     result.each_with_index do |(key, value), index|
       puts "Parsing root section: #{key}"
 
-      section = WatcherChecklistItem.find_or_initialize_by_name key
+      section = WatcherAttribute.find_or_initialize_by_name key
       section.order = value["order"] || index
       section.title = value["title"]
       section.save!

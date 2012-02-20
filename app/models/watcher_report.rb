@@ -4,7 +4,7 @@ class WatcherReport < ActiveRecord::Base
   belongs_to :user
   belongs_to :comission
   belongs_to :device_message
-  belongs_to :watcher_checklist_item
+  belongs_to :watcher_attribute
 
   STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none)
 
@@ -22,7 +22,7 @@ class WatcherReport < ActiveRecord::Base
   validates :value, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES }
 
-  before_validation :set_status, :set_watcher_checklist_item, :set_is_violation
+  before_validation :set_status, :set_watcher_attribute, :set_is_violation
 
   def status
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
@@ -39,11 +39,11 @@ class WatcherReport < ActiveRecord::Base
     end
 
     def set_is_violation
-      self.is_violation = watcher_checklist_item && value && watcher_checklist_item.hi_value == value
+      self.is_violation = watcher_attribute && value && watcher_attribute.hi_value == value
       true
     end
 
-    def set_watcher_checklist_item
-      self.watcher_checklist_item = WatcherChecklistItem.find_by_name(key) if self.watcher_checklist_item.blank?
+    def set_watcher_attribute
+      self.watcher_attribute = WatcherAttribute.find_by_name(key) if self.watcher_attribute.blank?
     end
 end

@@ -3,8 +3,8 @@ require 'spec_helper'
 describe DeviceMessage do
   context "with sending messages" do
     before(:each) do
-      WatcherChecklistItem.delete_all
-      WatcherChecklistItem.create name: "k", hi_value: "v"
+      WatcherAttribute.delete_all
+      WatcherAttribute.create name: "k", hi_value: "v"
     end
 
     it "should create watcher report if there is new message" do
@@ -38,7 +38,7 @@ describe DeviceMessage do
 
       report_id = device_message.watcher_report.id
 
-      WatcherChecklistItem.create name: "k1", hi_value: "v1"
+      WatcherAttribute.create name: "k1", hi_value: "v1"
 
       device_message.message["key"] = "k1"
       device_message.message["value"] = "v1"

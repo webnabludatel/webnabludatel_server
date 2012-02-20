@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120219212512) do
+ActiveRecord::Schema.define(:version => 20120220014245) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -145,7 +145,7 @@ ActiveRecord::Schema.define(:version => 20120219212512) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
-  create_table "watcher_checklist_items", :force => true do |t|
+  create_table "watcher_attributes", :force => true do |t|
     t.string   "name"
     t.string   "title"
     t.integer  "order"
@@ -182,14 +182,14 @@ ActiveRecord::Schema.define(:version => 20120219212512) do
     t.string   "image"
     t.string   "video_path"
     t.string   "status"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-    t.integer  "watcher_checklist_item_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "watcher_attribute_id"
   end
 
   add_index "watcher_reports", ["comission_id"], :name => "index_watcher_logs_on_comission_id"
   add_index "watcher_reports", ["device_message_id"], :name => "index_watcher_logs_on_device_message_id"
   add_index "watcher_reports", ["user_id"], :name => "index_watcher_logs_on_user_id"
-  add_index "watcher_reports", ["watcher_checklist_item_id"], :name => "index_watcher_reports_on_watcher_checklist_item_id"
+  add_index "watcher_reports", ["watcher_attribute_id"], :name => "index_watcher_reports_on_watcher_checklist_item_id"
 
 end
