@@ -31,3 +31,18 @@ class DeviceMessage < ActiveRecord::Base
     end
 
 end
+# == Schema Information
+#
+# Table name: device_messages
+#
+#  id         :integer         not null, primary key
+#  message    :text
+#  user_id    :integer
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+# Indexes
+#
+#  index_device_messages_on_user_id  (user_id)
+#
+
