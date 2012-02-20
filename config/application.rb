@@ -52,6 +52,7 @@ module Watcher
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+    config.action_mailer.default_url_options = { :host => 'watcher.local:8080' }
   end
 end
+

@@ -23,3 +23,4 @@ set :rvm_type, :system
 
 set :normalize_asset_timestamps, false # Don't need in rails 3
 
+after "deploy", "deploy:cleanup" # keeps only last 5 releases

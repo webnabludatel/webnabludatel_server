@@ -2,7 +2,7 @@
 # using config/settings.local.yml or config/settings/production.local.yml.
 #
 # If some keys should be the same for production and development, put 'override me' placeholder in this file
-# and override in with config/settings.local.yml, which is gitignored.
+# and override it with config/settings.local.yml, which is gitignored.
 #
 # DON'T PUT ANY SENSITIVE DATA IN THIS FILE, IT'S PUBLIC
 
