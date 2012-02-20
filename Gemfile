@@ -46,6 +46,7 @@ group :assets do
 end
 
 group :development do
+  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'awesome_print'
   gem 'capistrano'
   gem 'capistrano-ext'

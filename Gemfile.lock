@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/ctran/annotate_models.git
+  revision: a43c08f0eb4d69a48c6830630ebb60e35ccb2d2d
+  specs:
+    annotate (2.4.1.beta1)
+
+GIT
   remote: https://github.com/jnicklas/capybara.git
   revision: c387abafd94a053b7f741e2bd7105b5fc2227a08
   specs:
@@ -316,6 +322,7 @@ DEPENDENCIES
   active_link_to
   airbrake
   ancestry
+  annotate!
   auditor
   awesome_print
   cancan

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class SplashSubscriber < ActiveRecord::Base
   validates :email, :length => { :within => 3..60 }, :format => { :with => /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i }, :uniqueness => true
 
@@ -16,3 +18,13 @@ class SplashSubscriber < ActiveRecord::Base
     self.delay.subscribe
   end
 end
+# == Schema Information
+#
+# Table name: splash_subscribers
+#
+#  id         :integer         not null, primary key
+#  email      :string(255)
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class WatcherReport < ActiveRecord::Base
   attr_accessible :key, :value, :recorded_at, :latitude, :longitude
 
@@ -47,3 +49,30 @@ class WatcherReport < ActiveRecord::Base
       self.watcher_checklist_item = WatcherChecklistItem.find_by_name(key) if self.watcher_checklist_item.blank?
     end
 end
+# == Schema Information
+#
+# Table name: watcher_reports
+#
+#  id                        :integer         not null, primary key
+#  key                       :string(255)
+#  value                     :string(255)
+#  recorded_at               :datetime
+#  is_violation              :boolean
+#  user_id                   :integer
+#  comission_id              :integer
+#  device_message_id         :integer
+#  image                     :string(255)
+#  video_path                :string(255)
+#  status                    :string(255)
+#  created_at                :datetime        not null
+#  updated_at                :datetime        not null
+#  watcher_checklist_item_id :integer
+#
+# Indexes
+#
+#  index_watcher_logs_on_comission_id                  (comission_id)
+#  index_watcher_logs_on_device_message_id             (device_message_id)
+#  index_watcher_logs_on_user_id                       (user_id)
+#  index_watcher_reports_on_watcher_checklist_item_id  (watcher_checklist_item_id)
+#
+

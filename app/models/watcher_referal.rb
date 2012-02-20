@@ -61,3 +61,22 @@ class WatcherReferal < ActiveRecord::Base
       self.status = "pending" if self.status.blank?
     end
 end
+# == Schema Information
+#
+# Table name: watcher_referals
+#
+#  id                    :integer         not null, primary key
+#  user_id               :integer
+#  status                :string(255)
+#  watcher_referal_image :string(255)
+#  comment               :text
+#  created_at            :datetime        not null
+#  updated_at            :datetime        not null
+#  image                 :string(255)
+#
+# Indexes
+#
+#  index_watcher_referals_on_status   (status)
+#  index_watcher_referals_on_user_id  (user_id)
+#
+

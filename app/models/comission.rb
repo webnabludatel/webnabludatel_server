@@ -32,3 +32,18 @@ class Comission < ActiveRecord::Base
       self.status = "pending"
     end
 end
+# == Schema Information
+#
+# Table name: comissions
+#
+#  id         :integer         not null, primary key
+#  number     :string(255)
+#  latitude   :float
+#  longitude  :float
+#  kind       :string(255)
+#  address    :text
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#  status     :string(255)
+#
+
