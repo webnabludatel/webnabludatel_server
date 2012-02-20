@@ -9,9 +9,9 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
     @auth = Authentication.register_device!(params[:device_id])
 
     if @auth.errors.blank?
-      render_result(secret: @auth.secret, user_id: @auth.user.id)
+      render_result secret: @auth.secret, user_id: @auth.user.id
     else
-      render_error(@auth.errors.full_messages)
+      render_error @auth.errors.full_messages
     end
   end
 
@@ -21,6 +21,6 @@ class Api::V1::AuthenticationsController < Api::V1::BaseController
   def check_existing_authentication
     @auth = Authentication.for_device(params[:device_id])
 
-    render_result(secret: @auth.secret, user_id: @auth.user.id) if @auth
+    render_result secret: @auth.secret, user_id: @auth.user.id if @auth
   end
 end

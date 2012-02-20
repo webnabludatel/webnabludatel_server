@@ -33,7 +33,7 @@ class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
   end
 
   def form_data
-    env["rack.request.form_vars"] || ""
+    params[device_key] + params[:payload]
   end
 
   def digest
