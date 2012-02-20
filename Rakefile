@@ -4,10 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-require 'annotate/tasks'
-ENV['position_in_class']   = "after"
-ENV['show_indexes']        = "true"
-ENV['exclude_tests']       = "true"
-ENV['exclude_fixtures']    = "true"
-
 Watcher::Application.load_tasks
