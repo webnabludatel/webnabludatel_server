@@ -274,8 +274,6 @@ GEM
       json_pure
       rubyzip
     sexp_processor (3.0.10)
-    simple-navigation (3.6.0)
-      activesupport (>= 2.3.2)
     simple_form (1.5.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
@@ -372,7 +370,6 @@ DEPENDENCIES
   ruby_gntp
   russian
   sass-rails (~> 3.2.3)
-  simple-navigation
   simple_form
   spork (> 0.9.0.rc)
   steak

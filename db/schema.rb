@@ -82,7 +82,9 @@ ActiveRecord::Schema.define(:version => 20120220051146) do
     t.integer  "user_message_id"
   end
 
+  add_index "device_messages", ["media_item_id"], :name => "index_device_messages_on_media_item_id"
   add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
+  add_index "device_messages", ["user_message_id"], :name => "index_device_messages_on_user_message_id"
 
   create_table "media_items", :force => true do |t|
     t.integer  "user_message_id"
@@ -92,6 +94,8 @@ ActiveRecord::Schema.define(:version => 20120220051146) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  add_index "media_items", ["user_message_id"], :name => "index_media_items_on_user_message_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "title"

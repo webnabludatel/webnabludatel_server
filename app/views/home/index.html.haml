@@ -3,11 +3,14 @@
   %br/
   %strong.b-mainhead__name Веб-наблюдатель
   = image_tag("logo.png", :class => "b-mainhead__logo")
+
+  %p
+    = render :partial => "partials/share"
 %ul.b-marklist
   %li.b-marklist__item Содержит полный список возможных нарушений.
   %li.b-marklist__item Мгновенно отправляет информацию в базу данных.
-  %li.b-marklist__item.b-marklist__item_double Поддерживает загрузку фотографий и видео по частямв любой удобный момент.
-  %li.b-marklist__item Со встроенным справочником наблюдателя организации «Голос».
+  %li.b-marklist__item.b-marklist__item_double Поддерживает загрузку фотографий и видео по частям в любой удобный момент.
+  %li.b-marklist__item Со встроенным справочником наблюдателя организации «Голос».
 .b-know
   - if defined?(@subscriber) && @subscriber.persisted?
     %b Спасибо! Уже скоро мы сообщим вам о готовности нашего приложения.
@@ -29,3 +32,15 @@
   %a.b-download__android{:href => "#"}
     %span.b-download__android-name> Android
     \-маркете
+
+- content_for :sidebar do
+  .b-gallery
+    .b-gallery__container
+      %ul.b-gallery__list
+        / Все картинки должны быть размером 330*500px, PNG24
+        %li.b-gallery__item
+          %a.b-gallery__link{:href => "#"}
+            = image_tag("slides/slide-1.png")
+
+    -#.b-gallery__control.b-gallery__control_left.b-gallery__control_left-passive
+    -#.b-gallery__control.b-gallery__control_right
