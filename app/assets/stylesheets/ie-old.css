@@ -6,7 +6,7 @@
 }
 .b-user-login__arrow {
 	color: #000;
-	background: url(/assets/status.png) no-repeat 0 200px;
+	background: url(status.png) no-repeat 0 200px;
 }
 .b-content ol li {
 	/list-style-type: decimal;

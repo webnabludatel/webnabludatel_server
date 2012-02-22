@@ -7,10 +7,10 @@
   %p
     = render :partial => "partials/share"
 %ul.b-marklist
-  %li.b-marklist__item Содержит полный список возможных нарушений.
-  %li.b-marklist__item Мгновенно отправляет информацию в базу данных.
-  %li.b-marklist__item.b-marklist__item_double Поддерживает загрузку фотографий и видео по частям в любой удобный момент.
-  %li.b-marklist__item Со встроенным справочником наблюдателя организации «Голос».
+  %li.b-marklist__item Содержит список всех возможных нарушений для проверки участка.
+  %li.b-marklist__item Поможет составить и подать жалобу по замеченным нарушениям.
+  %li.b-marklist__item.b-marklist__item_double Поддерживает загрузку фото и видео доказательств в любой удобный момент.
+  %li.b-marklist__item Со встроенным справочниками наблюдателя ЦИК и организации «Голос».
 .b-know
   - if defined?(@subscriber) && @subscriber.persisted?
     %b Спасибо! Уже скоро мы сообщим вам о готовности нашего приложения.
@@ -35,12 +35,27 @@
 
 - content_for :sidebar do
   .b-gallery
-    .b-gallery__container
-      %ul.b-gallery__list
-        / Все картинки должны быть размером 330*500px, PNG24
-        %li.b-gallery__item
-          %a.b-gallery__link{:href => "#"}
-            = image_tag("slides/slide-1.png")
+    %ul#slidingFeatures.b-gallery__list
+      / Все картинки должны быть размером 209*311px, PNG24
+      %li.b-gallery__item
+        %a.b-gallery__link{:href => "#"}
+          %img{:alt => "", :src => image_path("slides/slide-1.jpg") }/
+      %li.b-gallery__item
+        %a.b-gallery__link{:href => "#"}
+          %img{:alt => "", :src => image_path("slides/slide-2.jpg")}/
+      %li.b-gallery__item
+        %a.b-gallery__link{:href => "#"}
+          %img{:alt => "", :src => image_path("slides/slide-3.jpg")}/
+    .b-gallery__phone
+    /
+      <div class="b-gallery__control b-gallery__control_left b-gallery__control_left-passive"></div>
+      <div class="b-gallery__control b-gallery__control_right"></div>
 
-    -#.b-gallery__control.b-gallery__control_left.b-gallery__control_left-passive
-    -#.b-gallery__control.b-gallery__control_right
+:javascript
+  $(document).ready(function(){ $('#slidingFeatures').jshowoff({
+    effect: 'slideLeft',
+    hoverPause: true,
+    links: false,
+    controlText:{play:'',pause:'',previous:'',next:''},
+    controls: true
+  }); });
