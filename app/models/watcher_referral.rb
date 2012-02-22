@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class WatcherReferal < ActiveRecord::Base
+class WatcherReferral < ActiveRecord::Base
   belongs_to :user
 
   STATUSES = ["pending", "approved", "rejected", "problem"]
@@ -17,7 +17,7 @@ class WatcherReferal < ActiveRecord::Base
 
   scope :not_done, where("status = 'approved' OR status = 'problem'")
 
-  mount_uploader :image, WatcherReferalImageUploader
+  mount_uploader :image, WatcherReferralImageUploader
 
   after_initialize :set_default_status
   after_save :update_watcher_status

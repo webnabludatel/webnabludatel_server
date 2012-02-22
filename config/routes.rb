@@ -14,7 +14,7 @@ Watcher::Application.routes.draw do
   post "/subscribe" => "splash_subscribers#create"
 
   namespace :admin do
-    resources :watcher_referals, only: [] do
+    resources :watcher_referrals, only: [] do
       collection do
         get :moderate
       end

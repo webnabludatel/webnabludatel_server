@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class WatcherReferalImageUploader < CarrierWave::Uploader::Base
+class WatcherReferralImageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
