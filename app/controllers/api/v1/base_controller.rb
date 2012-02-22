@@ -16,6 +16,7 @@ class Api::V1::BaseController < ApplicationController
     logger.debug "[API] Params: #{params.inspect}"
     logger.debug "[API] Query: #{query}"
     logger.debug "[API] Body: #{body}"
+    logger.debug "[API] Payload: #{params[:payload]}"
 
     if auth && auth.secret
       logger.debug "[API] Found #{auth.to_s}, owner: #{auth.user.email.presence || '<blank email>'}"

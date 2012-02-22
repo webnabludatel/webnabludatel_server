@@ -12,7 +12,7 @@ class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
   end
 
   def authenticate!
-    auth = Authentication.for_device(params['device_id'])
+    auth = Authentication.for_device(params[device_key])
 
     if validate(auth)
       params.delete(digest_key)
@@ -33,7 +33,7 @@ class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
   end
 
   def form_data
-    params[device_key] + params[:payload]
+    params[device_key] + params[payload_key]
   end
 
   def digest
@@ -46,6 +46,10 @@ class Devise::Strategies::DeviceAuthenticatable < Devise::Strategies::Base
 
   def digest_key
     'digest'
+  end
+
+  def payload_key
+    'payload'
   end
 end
 
