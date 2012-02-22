@@ -44,12 +44,11 @@
         %nav.b-nav
           %ul.b-nav__list
             %li.b-nav__item
-              %span.b-nav__info появятся 4 марта
-              = active_link_to "Отчеты", '#', :class => 'b-nav__link b-nav__link_disable'
+              %span.b-nav__link.b-nav__link_disable
+                Отчеты
+                %small.b-nav__info появятся 4 марта
             %li.b-nav__item
               = active_link_to "Приложение", root_path, :class_active => 'b-nav__link b-nav__link_current', :class_inactive => 'b-nav__link'
-            -#%li.b-nav__item
-              %a.b-nav__link{:href => "#"} О проекте
       %section.i-content{:role => "main", :data => {"pjax-container" => true}}
         = yield
       - if content_for? :sidebar
