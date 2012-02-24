@@ -3,6 +3,8 @@ class UserMessage < ActiveRecord::Base
   has_many :device_messages
   has_many :media_items
 
+  belongs_to :user_location
+
   #has_one :watcher_report, dependent: :destroy
   #after_save :set_watcher_report
 

@@ -2,7 +2,8 @@ class Admin::WatcherReferralsController < Admin::BaseController
   before_filter :find_referral, :only => [:approve, :reject, :problem]
 
   def moderate
-    @referral = WatcherReferral.not_done.first
+    # Not the best way because two moderators can moderate one user at the same time.
+    @user = User.pending.first
   end
 
   def approve
