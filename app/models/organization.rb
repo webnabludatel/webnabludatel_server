@@ -7,14 +7,3 @@ class Organization < ActiveRecord::Base
 
   attr_accessible :title
 end
-# == Schema Information
-#
-# Table name: organizations
-#
-#  id         :integer         not null, primary key
-#  title      :string(255)
-#  kind       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#
-

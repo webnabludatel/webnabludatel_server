@@ -28,18 +28,3 @@ class UserMessage < ActiveRecord::Base
   #end
 
 end
-# == Schema Information
-#
-# Table name: user_messages
-#
-#  id         :integer         not null, primary key
-#  user_id    :integer
-#  key        :string(255)
-#  value      :string(255)
-#  latitude   :decimal(11, 8)
-#  longitude  :decimal(11, 8)
-#  timestamp  :datetime
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#
-

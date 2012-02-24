@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module WatcherReport::StatusCalculator
 
   def self.calculate(current_status, location_status, watcher_status)
