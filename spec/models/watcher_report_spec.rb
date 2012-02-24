@@ -28,7 +28,7 @@ describe WatcherReport do
       WatcherAttribute.delete_all
       WatcherReport.delete_all
       DeviceMessage.delete_all
-      Comission.delete_all
+      Commission.delete_all
       UserLocation.delete_all
       User.delete_all
 
@@ -115,7 +115,7 @@ describe WatcherReport do
       WatcherAttribute.delete_all
       WatcherReport.delete_all
       DeviceMessage.delete_all
-      Comission.delete_all
+      Commission.delete_all
       UserLocation.delete_all
       User.delete_all
 
