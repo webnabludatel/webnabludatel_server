@@ -8,16 +8,16 @@ Fabricator(:user) do
   password_confirmation "123456"
 end
 
-Fabricator(:watcher_referal) do
+Fabricator(:watcher_referral) do
   user!
 end
 
-Fabricator(:comission) do
+Fabricator(:commission) do
   number { rand(1000000) }
   address { Faker::Address.street_address }
 end
 
 Fabricator(:user_location) do
   user!
-  comission!
+  commission!
 end

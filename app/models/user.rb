@@ -15,9 +15,9 @@ class User < ActiveRecord::Base
   has_many :authentications, dependent: :destroy
   has_many :device_messages, dependent: :destroy
   has_many :user_messages, dependent: :destroy
-  has_many :referrals, class_name: "WatcherReferral", dependent: :destroy
-  has_many :user_locations, dependent: :destroy
-  has_many :comissions, through: :user_locations
+  has_many :referrals, class_name: "WatcherReferral", dependent: :destroy, order: :created_at
+  has_many :locations, class_name: "UserLocation", dependent: :destroy, order: :created_at
+  has_many :commissions, through: :locations
   has_many :device_messages, dependent: :destroy
   has_many :watcher_reports, dependent: :destroy
 
@@ -44,14 +44,14 @@ class User < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
   end
 
-  # TODO: Maybe we need to cache it in DB
+  # TODO: Maybe we need to cache it in DB. Change order.
   def current_location
-    @current_location ||= user_locations.order("created_at DESC").first
+    @current_location ||= locations.order("created_at DESC").first
   end
 
   # TODO: Maybe we need to cache it in DB
-  def current_comission
-    @current_comission ||= current_location.try(:comission)
+  def current_commission
+    @current_commission ||= current_location.try(:commission)
   end
 
   def has_email?

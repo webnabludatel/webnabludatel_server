@@ -4,7 +4,7 @@ class WatcherReport < ActiveRecord::Base
   attr_accessible :key, :value, :recorded_at, :latitude, :longitude
 
   belongs_to :user
-  belongs_to :comission
+  belongs_to :commission
   belongs_to :device_message
   belongs_to :watcher_attribute
 
@@ -31,7 +31,7 @@ class WatcherReport < ActiveRecord::Base
   end
 
   def user_location
-    @user_location ||= self.comission ? self.comission.user_locations.where(user_id: self.user).first : nil
+    @user_location ||= self.commission ? self.commission.user_locations.where(user_id: self.user).first : nil
   end
 
   protected

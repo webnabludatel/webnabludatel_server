@@ -2,6 +2,7 @@
 
 class WatcherReferral < ActiveRecord::Base
   belongs_to :user
+  belongs_to :media_item
 
   STATUSES = ["pending", "approved", "rejected", "problem"]
 
@@ -15,7 +16,8 @@ class WatcherReferral < ActiveRecord::Base
     EOF
   end
 
-  scope :not_done, where("status = 'approved' OR status = 'problem'")
+  #scope :not_done, where("status = 'approved' OR status = 'problem'")
+  scope :recent, order(:created_at)
 
   mount_uploader :image, WatcherReferralImageUploader
 
@@ -53,7 +55,7 @@ class WatcherReferral < ActiveRecord::Base
     def update_watcher_status
       if status != status_was
         self.user.watcher_status = status
-        self.user.save
+        self.user.save!
       end
     end
 

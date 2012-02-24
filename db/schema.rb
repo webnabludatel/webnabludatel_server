@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120222134527) do
+ActiveRecord::Schema.define(:version => 20120224023400) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20120222134527) do
   add_index "authentications", ["uid"], :name => "index_authentications_on_uid"
   add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
 
-  create_table "comissions", :force => true do |t|
+  create_table "commissions", :force => true do |t|
     t.string   "number"
     t.float    "latitude"
     t.float    "longitude"
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(:version => 20120222134527) do
 
   create_table "user_locations", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "comission_id"
+    t.integer  "commission_id"
     t.float    "latitude"
     t.float    "longitude"
     t.string   "status"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(:version => 20120222134527) do
     t.datetime "updated_at"
   end
 
-  add_index "user_locations", ["user_id", "comission_id"], :name => "index_user_locations_on_user_id_and_comission_id"
+  add_index "user_locations", ["user_id", "commission_id"], :name => "index_user_locations_on_user_id_and_comission_id"
 
   create_table "user_messages", :force => true do |t|
     t.integer  "user_id"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(:version => 20120222134527) do
     t.datetime "recorded_at"
     t.boolean  "is_violation"
     t.integer  "user_id"
-    t.integer  "comission_id"
+    t.integer  "commission_id"
     t.integer  "device_message_id"
     t.string   "image"
     t.string   "video_path"
@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(:version => 20120222134527) do
     t.integer  "watcher_attribute_id"
   end
 
-  add_index "watcher_reports", ["comission_id"], :name => "index_watcher_logs_on_comission_id"
+  add_index "watcher_reports", ["commission_id"], :name => "index_watcher_logs_on_comission_id"
   add_index "watcher_reports", ["device_message_id"], :name => "index_watcher_logs_on_device_message_id"
   add_index "watcher_reports", ["user_id"], :name => "index_watcher_logs_on_user_id"
   add_index "watcher_reports", ["watcher_attribute_id"], :name => "index_watcher_reports_on_watcher_checklist_item_id"

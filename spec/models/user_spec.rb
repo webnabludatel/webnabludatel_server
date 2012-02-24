@@ -17,12 +17,12 @@ describe User do
       user.current_location.should == second_location
     end
 
-    it "current_comission should return comission from last location" do
+    it "current_commission should return commission from last location" do
       user = Fabricate(:user)
       first_location = Fabricate(:user_location, :user => user)
       second_location = Fabricate(:user_location, :user => user)
 
-      user.current_comission.should == second_location.comission
+      user.current_commission.should == second_location.commission
     end
   end
 end

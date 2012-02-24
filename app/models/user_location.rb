@@ -2,13 +2,13 @@
 
 class UserLocation < ActiveRecord::Base
   belongs_to :user
-  belongs_to :comission
+  belongs_to :commission
 
-  STATUSES = %W(pending approved rejected suspicious)
+  STATUSES = %W(pending approved rejected suspicious waiting_for_data)
 
   validates :status, inclusion: { in: STATUSES }
   validates :user, :presence => true
-  validates :comission, :presence => true
+  validates :commission, :presence => true
 
   STATUSES.each do |status|
     class_eval <<-EOF
