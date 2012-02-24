@@ -18,13 +18,3 @@ class SplashSubscriber < ActiveRecord::Base
     self.delay.subscribe
   end
 end
-# == Schema Information
-#
-# Table name: splash_subscribers
-#
-#  id         :integer         not null, primary key
-#  email      :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#
-

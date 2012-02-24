@@ -47,21 +47,3 @@ class UserLocation < ActiveRecord::Base
       end
     end
 end
-# == Schema Information
-#
-# Table name: user_locations
-#
-#  id           :integer         not null, primary key
-#  user_id      :integer
-#  comission_id :integer
-#  latitude     :float
-#  longitude    :float
-#  status       :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#
-# Indexes
-#
-#  index_user_locations_on_user_id_and_comission_id  (user_id,comission_id)
-#
-

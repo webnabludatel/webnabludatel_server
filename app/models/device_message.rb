@@ -60,22 +60,3 @@ class DeviceMessage < ActiveRecord::Base
     }
   end
 end
-# == Schema Information
-#
-# Table name: device_messages
-#
-#  id              :integer         not null, primary key
-#  payload         :text
-#  user_id         :integer
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#  kind            :string(255)     default("message"), not null
-#  device_id       :string(255)
-#  media_item_id   :integer
-#  user_message_id :integer
-#
-# Indexes
-#
-#  index_device_messages_on_user_id  (user_id)
-#
-
