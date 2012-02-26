@@ -34,6 +34,8 @@ class MediaItemAnalyzer
     end
 
     def process_user_location_photo
+      return
+
       user_message = @media_item.user_message
       location = user_message.user_location
 
