@@ -70,7 +70,5 @@ class UserMessagesAnalyzer
     end
 
     def process_checklist_item
-
     end
-
 end

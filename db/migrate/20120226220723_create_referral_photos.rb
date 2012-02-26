@@ -4,7 +4,7 @@ class CreateReferralPhotos < ActiveRecord::Migration
       t.integer :watcher_referral_id
       t.integer :media_item_id
 
-      t.string :referral_photo_image
+      t.string :image
 
       t.datetime :timestamp
 
