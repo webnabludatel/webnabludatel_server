@@ -26,6 +26,7 @@ class MediaItemAnalyzer
 
       referral_photo = referral.referral_photos.find_or_initialize_by_media_item_id @media_item.id
       referral_photo.remote_image_url = @media_item.url
+      referral_photo.timestamp = @media_item.timestamp
 
       referral_photo.save!
 
