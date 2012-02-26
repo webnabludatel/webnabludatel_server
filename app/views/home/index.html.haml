@@ -17,7 +17,7 @@
   - else
     %form.b-know__form{:action => subscribe_path, :method => "POST"}
       %fieldset.b-know__set
-        %legend.b-know__name Узнайте о приложении первыми
+        %legend.b-know__name Узнайте о выходе приложения для Android первыми
         - if defined?(@subscriber) && !@subscriber.valid?
           %ul
             - @subscriber.errors.full_messages.each do |message|
@@ -25,10 +25,10 @@
 
         %input.b-know__input{:placeholder => "@адрес", :type => "text", :name => "email", :value => (defined?(@subscriber) ? @subscriber.email : "")}/
         %button.b-know__button Подписаться
--#.b-download
+.b-download
   Скачайте
-  %a.b-download__apple{:href => "#"} в Аппсторе
-  или на
+  %a.b-download__apple{:href => "http://itunes.apple.com/ru/app/nabludatel/id505350851?ls=1&mt=8"} в Аппсторе
+-#  или на
   %a.b-download__android{:href => "#"}
     %span.b-download__android-name> Android
     \-маркете
