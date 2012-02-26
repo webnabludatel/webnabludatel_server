@@ -47,6 +47,8 @@ class DeviceMessage < ActiveRecord::Base
       value: data['value'],
       polling_place_region: data["polling_place_region"],
       polling_place_id: data['polling_place_id'],
+      polling_place_internal_id: data["polling_place_internal_id"],
+      internal_id: data["internal_id"],
       latitude: data['lat'],
       longitude: data['lng'],
       timestamp: Time.at(data['timestamp'].to_i)

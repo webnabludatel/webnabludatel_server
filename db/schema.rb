@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120226222246) do
+ActiveRecord::Schema.define(:version => 20120226230046) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -137,13 +137,15 @@ ActiveRecord::Schema.define(:version => 20120226222246) do
     t.integer  "user_id"
     t.string   "key"
     t.string   "value"
-    t.decimal  "latitude",             :precision => 11, :scale => 8
-    t.decimal  "longitude",            :precision => 11, :scale => 8
+    t.decimal  "latitude",                  :precision => 11, :scale => 8
+    t.decimal  "longitude",                 :precision => 11, :scale => 8
     t.datetime "timestamp"
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
     t.string   "polling_place_region"
     t.string   "polling_place_id"
+    t.string   "internal_id"
+    t.string   "polling_place_internal_id"
   end
 
   create_table "users", :force => true do |t|
