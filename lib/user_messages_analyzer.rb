@@ -5,6 +5,8 @@ class UserMessagesAnalyzer
   COMMISSION_KEYS = %W(district_region district_type district_number district_chairman district_secretary district_banner_photo)
   REQUIRED_COMMISSION_KEYS = %W(district_region district_type district_number)
 
+  CHECKLIST_KEYS= %W()
+
   def initialize(user_message)
     @user_message = user_message
   end
@@ -12,6 +14,8 @@ class UserMessagesAnalyzer
   def process!
     if COMMISSION_KEYS.include? @user_message.key
       process_commission
+    elsif CHECKLIST_KEYS.include? @user_message.key
+      process_checklist_item
     end
   end
 
@@ -63,6 +67,9 @@ class UserMessagesAnalyzer
 
       location.user_message = current_batch["district_banner_photo"] if current_batch["district_banner_photo"]
       location.save!
+    end
+
+    def process_checklist_item
 
     end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120224031550) do
+ActiveRecord::Schema.define(:version => 20120226222246) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -104,6 +104,17 @@ ActiveRecord::Schema.define(:version => 20120224031550) do
     t.datetime "updated_at"
   end
 
+  create_table "referral_photos", :force => true do |t|
+    t.integer  "watcher_referral_id"
+    t.integer  "media_item_id"
+    t.string   "referral_photo_image"
+    t.datetime "timestamp"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "referral_photos", ["watcher_referral_id"], :name => "index_referral_photos_on_watcher_referral_id"
+
   create_table "splash_subscribers", :force => true do |t|
     t.string   "email"
     t.datetime "created_at", :null => false
@@ -191,7 +202,6 @@ ActiveRecord::Schema.define(:version => 20120224031550) do
   create_table "watcher_referrals", :force => true do |t|
     t.integer  "user_id"
     t.string   "status"
-    t.string   "watcher_referal_image"
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"

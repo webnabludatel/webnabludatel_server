@@ -19,10 +19,15 @@ class MediaItemAnalyzer
     def process_observer_referral_photo
       user = @media_item.user_message.user
 
-      referral = user.referrals.new
-      referral.remote_image_url = @media_item.url
+      referral = user.referral || WatcherReferral.new
+      referral.user = user
 
       referral.save!
+
+      referral_photo = referral.referral_photos.find_or_initialize_by_media_item_id @media_item.id
+      referral_photo.remote_image_url = @media_item.url
+
+      referral_photo.save!
 
       user.update_attribute :status, "pending" if user.status.none?
     end

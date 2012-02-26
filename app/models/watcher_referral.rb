@@ -2,7 +2,8 @@
 
 class WatcherReferral < ActiveRecord::Base
   belongs_to :user
-  belongs_to :media_item
+
+  has_many :referral_photos, dependent: :destroy
 
   STATUSES = ["pending", "approved", "rejected", "problem"]
 
@@ -18,8 +19,6 @@ class WatcherReferral < ActiveRecord::Base
 
   #scope :not_done, where("status = 'approved' OR status = 'problem'")
   scope :recent, order(:created_at)
-
-  mount_uploader :image, WatcherReferralImageUploader
 
   after_initialize :set_default_status
   after_save :update_watcher_status
