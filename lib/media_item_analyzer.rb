@@ -30,7 +30,7 @@ class MediaItemAnalyzer
 
       referral_photo.save!
 
-      user.update_attribute :status, "pending" if user.status.none?
+      user.update_attribute :watcher_status, "pending" if user.watcher_status.none?
     end
 
     def process_user_location_photo
