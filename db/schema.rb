@@ -95,10 +95,13 @@ ActiveRecord::Schema.define(:version => 20120227041025) do
     t.string   "url"
     t.string   "media_type"
     t.datetime "timestamp"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.boolean  "deleted",         :default => true, :null => false
+    t.integer  "user_id"
   end
 
+  add_index "media_items", ["user_id"], :name => "index_media_items_on_user_id"
   add_index "media_items", ["user_message_id"], :name => "index_media_items_on_user_message_id"
 
   create_table "organizations", :force => true do |t|
@@ -126,6 +129,30 @@ ActiveRecord::Schema.define(:version => 20120227041025) do
     t.datetime "updated_at",  :null => false
     t.integer  "position"
   end
+
+  create_table "sos_message_photos", :force => true do |t|
+    t.integer  "sos_message_id"
+    t.string   "image"
+    t.datetime "timestamp"
+    t.integer  "media_item_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "sos_message_photos", ["sos_message_id"], :name => "index_sos_message_photos_on_sos_message_id"
+
+  create_table "sos_messages", :force => true do |t|
+    t.text     "body"
+    t.integer  "user_id"
+    t.datetime "timestamp"
+    t.decimal  "latitude",        :precision => 11, :scale => 8
+    t.decimal  "longitude",       :precision => 11, :scale => 8
+    t.integer  "user_message_id"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+  end
+
+  add_index "sos_messages", ["user_id"], :name => "index_sos_messages_on_user_id"
 
   create_table "splash_subscribers", :force => true do |t|
     t.string   "email"

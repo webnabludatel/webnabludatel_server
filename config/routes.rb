@@ -30,7 +30,12 @@ Watcher::Application.routes.draw do
     namespace :v1 do
       resources :authentications, only: :create
       resources :messages, only: [:create, :update] do
-        resources :media_items, only: :create
+        resources :media_items, only: [:create, :update], shallow: true
+      end
+      resources :commissions, only: [] do
+        collection do
+          get :lookup
+        end
       end
     end
   end

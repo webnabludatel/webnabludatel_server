@@ -45,14 +45,14 @@ class DeviceMessage < ActiveRecord::Base
     {
       key: data['key'],
       value: data['value'],
-      polling_place_region: data["polling_place_region"],
+      polling_place_region: data['polling_place_region'],
       polling_place_id: data['polling_place_id'],
       polling_place_internal_id: data["polling_place_internal_id"],
       internal_id: data["internal_id"],
       latitude: data['lat'],
       longitude: data['lng'],
       timestamp: Time.at(data['timestamp'].to_i)
-    }
+    }.select {|k, v| v.present?}
   end
 
   def attributes_for_media_item
@@ -60,7 +60,8 @@ class DeviceMessage < ActiveRecord::Base
     {
       url: data['url'],
       media_type: data['type'],
+      deleted: data['deleted'],
       timestamp: Time.at(data['timestamp'].to_i)
-    }
+    }.select {|k, v| v.present?}
   end
 end
