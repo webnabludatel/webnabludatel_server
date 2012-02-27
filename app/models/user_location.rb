@@ -4,8 +4,6 @@ class UserLocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :commission
 
-  has_one :district_banner_photo, class_name: "UserMessage", foreign_key: :user_message_id
-
   STATUSES = %W(pending approved rejected suspicious waiting_for_data)
 
   validates :status, inclusion: { in: STATUSES }
