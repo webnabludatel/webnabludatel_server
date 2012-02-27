@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120224031550) do
+ActiveRecord::Schema.define(:version => 20120227004324) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -53,7 +53,10 @@ ActiveRecord::Schema.define(:version => 20120224031550) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
+    t.integer  "region_id"
   end
+
+  add_index "commissions", ["region_id"], :name => "index_commissions_on_region_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -102,6 +105,24 @@ ActiveRecord::Schema.define(:version => 20120224031550) do
     t.string   "kind"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "referral_photos", :force => true do |t|
+    t.integer  "watcher_referral_id"
+    t.integer  "media_item_id"
+    t.string   "image"
+    t.datetime "timestamp"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "referral_photos", ["watcher_referral_id"], :name => "index_referral_photos_on_watcher_referral_id"
+
+  create_table "regions", :force => true do |t|
+    t.string   "name"
+    t.string   "external_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "splash_subscribers", :force => true do |t|
