@@ -10,7 +10,7 @@ class UserLocation < ActiveRecord::Base
 
   validates :status, inclusion: { in: STATUSES }
   validates :user, presence: true
-  validates :commission, resence: true
+  validates :commission, presence: true
 
   STATUSES.each do |status|
     class_eval <<-EOF
