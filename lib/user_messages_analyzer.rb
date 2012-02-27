@@ -38,11 +38,11 @@ class UserMessagesAnalyzer
       end.first
 
       # 3.1 Finding a commission, if there is no such commission creating not-system pending commission.
-      region = Region.find_by_external_id! current_batch["district_region"].to_s
-      commission = region.commissions.where(kind: current_batch["district_type"], number: current_batch["district_number"]).first
+      region = Region.find_by_external_id! current_batch["district_region"].value
+      commission = region.commissions.where(kind: current_batch["district_type"].value, number: current_batch["district_number"].value).first
 
       unless commission
-        commission = region.comissions.new kind: current_batch["district_type"], number: current_batch["district_number"]
+        commission = region.comissions.new kind: current_batch["district_type"].value, number: current_batch["district_number"].value
         commission.is_system = false
         commission.save!
       end
