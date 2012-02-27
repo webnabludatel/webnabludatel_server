@@ -45,7 +45,7 @@ class DeviceMessage < ActiveRecord::Base
     {
       key: data['key'],
       value: data['value'],
-      polling_place_region: data["polling_place_region"],
+      polling_place_region: data['polling_place_region'],
       polling_place_id: data['polling_place_id'],
       latitude: data['lat'],
       longitude: data['lng'],

@@ -33,7 +33,7 @@ class Api::V1::BaseController < ApplicationController
     render json: { status: :ok, result: result }
   end
 
-  def render_error(errors = [])
+  def render_error(*errors)
     render json: { status: :error, errors: errors }
   end
 end
