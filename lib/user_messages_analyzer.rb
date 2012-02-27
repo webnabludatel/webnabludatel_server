@@ -22,11 +22,13 @@ class UserMessagesAnalyzer
   protected
     # For now we do believe that we have all commissions in the DB
     def process_commission
+      Rails.logger.info "===============: #{@user_message.key} :==============="
       user = @user_message.user
 
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
       current_batch = get_location_messages_for_current
-      Rails.logger.info "> current_batch: #{current_batch.inspect}"
+      #Rails.logger.info "> current_batch: #{current_batch.inspect}"
+      current_batch.each {|m| Rails.logger.info ">> #{m.key}" }
 
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
