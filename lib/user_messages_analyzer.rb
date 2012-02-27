@@ -79,7 +79,7 @@ class UserMessagesAnalyzer
       photo_message = current_batch["district_banner_photo"]
       if photo_message
         photo_message.user_location = location
-        photo_message.update_column user_location_id: location.id
+        photo_message.update_column :user_location_id, location.id
       end
 
       if photo_message && photo_message.media_items.present?
