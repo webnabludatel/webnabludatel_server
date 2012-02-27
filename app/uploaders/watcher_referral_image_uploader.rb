@@ -8,7 +8,6 @@ class WatcherReferralImageUploader < CarrierWave::Uploader::Base
 
   # Choose what kind of storage to use for this uploader:
 
-  # TODO: in future we need to work with S3
   storage :file
   # storage :fog
 
