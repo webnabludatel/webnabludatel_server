@@ -66,9 +66,15 @@ class UserMessagesAnalyzer
       location.save!
 
       # 4 Setting location photos
-      if current_batch["district_banner_photo"] && current_batch["district_banner_photo"].media_items.present?
-        processed_items = location.photos.where(media_item_id: current_batch["district_banner_photo"].media_items.map(&:id))
-        media_items = current_batch["district_banner_photo"].media_items.reject{|media_item| processed_items.include? media_item.id }
+      photo_message = current_batch["district_banner_photo"]
+      if photo_message
+        photo_message.user_location = location
+        photo_message.save!
+      end
+
+      if photo_message && photo_message.media_items.present?
+        processed_items = location.photos.where(media_item_id: photo_message.media_items.map(&:id))
+        media_items = photo_message.media_items.reject{|media_item| processed_items.include? media_item.id }
 
         media_items.each do |media_item|
           photo = location.photos.build
