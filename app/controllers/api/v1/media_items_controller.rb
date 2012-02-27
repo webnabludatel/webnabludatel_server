@@ -19,4 +19,16 @@ class Api::V1::MediaItemsController < Api::V1::BaseController
       render_error @message.errors.full_messages
     end
   end
+
+  def update
+    @media_item = current_user.media_items.find(params[:id])
+    @user_message = @media_item.user_message
+    @message = @user_message.device_messages.build(kind: 'media_item', device_id: params['device_id'], payload: params['payload'])
+
+    if @message.save
+      render_result media_item_id: @media_item.id
+    else
+      render_error @message.errors.full_messages
+    end
+  end
 end

@@ -50,7 +50,7 @@ class DeviceMessage < ActiveRecord::Base
       latitude: data['lat'],
       longitude: data['lng'],
       timestamp: Time.at(data['timestamp'].to_i)
-    }
+    }.select {|k, v| v.present?}
   end
 
   def attributes_for_media_item
@@ -58,7 +58,8 @@ class DeviceMessage < ActiveRecord::Base
     {
       url: data['url'],
       media_type: data['type'],
+      deleted: data['deleted'],
       timestamp: Time.at(data['timestamp'].to_i)
-    }
+    }.select {|k, v| v.present?}
   end
 end
