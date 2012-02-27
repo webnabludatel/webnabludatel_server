@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class SosMessagePhoto < Activrecord::Base
+class SosMessagePhoto < ActivRecord::Base
   belongs_to :sos_message
   belongs_to :user_media
 
