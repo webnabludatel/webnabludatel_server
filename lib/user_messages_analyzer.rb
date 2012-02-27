@@ -45,7 +45,7 @@ class UserMessagesAnalyzer
       commission = region.commissions.where(kind: current_batch["district_type"].value, number: current_batch["district_number"].value).first
 
       unless commission
-        commission = region.comissions.new kind: current_batch["district_type"].value, number: current_batch["district_number"].value
+        commission = region.commissions.new kind: current_batch["district_type"].value, number: current_batch["district_number"].value
         commission.is_system = false
         commission.save!
       end
