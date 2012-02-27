@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227010915) do
+ActiveRecord::Schema.define(:version => 20120227012739) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(:version => 20120227010915) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "external_id"
   end
 
   add_index "user_locations", ["user_id", "commission_id"], :name => "index_user_locations_on_user_id_and_comission_id"
