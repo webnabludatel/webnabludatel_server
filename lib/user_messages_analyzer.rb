@@ -87,6 +87,7 @@ class UserMessagesAnalyzer
 
     private
       def get_location_messages_for_current
+        user = @user_message.user
 
         if @user_message.polling_place_internal_id.present? # NEW API
           messages = user.user_messages.where(polling_place_internal_id: @user_message.polling_place_internal_id).where(key: COMMISSION_KEYS).order(:timestamp)
