@@ -63,6 +63,7 @@ class UserMessagesAnalyzer
       location = user.locations.new unless location
 
       message_for_coordinates = current_batch["district_banner_photo"] || current_batch.first.second
+      Rails.logger.info ">>> #{message_for_coordinates.inspect} <<<"
       location.latitude = message_for_coordinates.latitude
       location.longitude = message_for_coordinates.longitude
       location.external_id = message_for_coordinates.polling_place_internal_id
