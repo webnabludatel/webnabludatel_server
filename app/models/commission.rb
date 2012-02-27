@@ -5,6 +5,8 @@ class Commission < ActiveRecord::Base
   has_many :users, through: :user_locations
   has_many :watcher_reports, dependent: :destroy
 
+  belongs_to :region
+
   # TODO: add validations
 
   STATUSES = %W(pending approved rejected)
