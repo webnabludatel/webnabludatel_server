@@ -7,8 +7,8 @@ class UserLocation < ActiveRecord::Base
   STATUSES = %W(pending approved rejected suspicious waiting_for_data)
 
   validates :status, inclusion: { in: STATUSES }
-  validates :user, :presence => true
-  validates :commission, :presence => true
+  validates :user, presence: true
+  validates :commission, resence: true
 
   STATUSES.each do |status|
     class_eval <<-EOF
