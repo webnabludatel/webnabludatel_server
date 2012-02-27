@@ -25,50 +25,93 @@ class UserMessagesAnalyzer
       user = @user_message.user
 
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
-      messages = user.user_messages.where(key: COMMISSION_KEYS).order(:timestamp)
+      current_batch = get_location_messages_for_current
 
-      message_batches, tmp_batch, current_batch = [], {}, {}
-      messages.each do |message|
-        if tmp_batch[message.key]
-          message_batches << tmp_batch
-          tmp_batch = { message.key => message }
-        else
-          tmp_batch[message.key] = message
-        end
-
-        current_batch = tmp_batch if message == @user_message
-      end
-      message_batches << tmp_batch
-
-      # 2. Do we have enough message to find a commission?
+      # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
 
-      # 2. Finding a +user_location+ for a +current_batch+. If it is present updating it, otherwise create it if it's possible
+      # 3. Finding a +user_location+ for a +current_batch+. If it is present updating it, otherwise create it if it's possible
       # TODO: Add pg_advisory_lock to prevent creating two same locations or race conditions on editing a location.
       location = REQUIRED_COMMISSION_KEYS.inject(user.locations) do |result, key|
         result.where(key: key)
         result
       end.first
 
-      location_attributes = current_batch.inject({}) do |result, message|
-        result[message.key] = message.value
-        result
+      # 3.1 Finding a commission, if there is no such commission creating not-system pending commission.
+      region = Region.find_by_external_id! current_batch["district_region"]
+      commission = region.commissions.where(kind: current_batch["district_type"], number: current_batch["district_number"]).first
+
+      unless commission
+        commission = region.comissions.new kind: current_batch["district_type"], number: current_batch["district_number"]
+        commission.is_system = false
+        commission.save!
       end
-      location_attributes.delete "district_banner_photo"
+
+      # 3.2 Updating +user_location+ +commission+
+      if location && location.commission != commission
+        location.commission = commission
+        location.status = "pending"
+      end
+
+      location = user.locations.new unless location
+
       message_for_coordinates = current_batch["district_banner_photo"] || current_batch.first
-      location_attributes["latitude"] = message_for_coordinates.lat
-      location_attributes["longitude"] = message_for_coordinates.lng
+      location.latitude = message_for_coordinates.latitude
+      location.longitude = message_for_coordinates.longitude
+      location.external_id = message_for_coordinates.polling_place_internal_id
+      location.commission = commission if location.new_record?
+      location.chairman = current_batch["district_chairman"].value if current_batch["district_chairman"]
+      location.secretary = current_batch["district_secretary"].value if current_batch["district_secretary"]
 
-      if location
-        location.attributes = location_attributes
-      else
-        location = user.locations.new location_attributes
+      location.save!
+
+      # 4 Setting location photos
+      if current_batch["district_banner_photo"] && current_batch["district_banner_photo"].media_items.present?
+        processed_items = location.photos.where(media_item_id: current_batch["district_banner_photo"].media_items.map(&:id))
+        media_items = current_batch["district_banner_photo"].media_items.reject{|media_item| processed_items.include? media_item.id }
+
+        media_items.each do |media_item|
+          photo = location.photos.build
+          photo.media_item = media_item
+          photo.image.remote_image_url = media_item.url
+          photo.timestamp = media_item.timestamp
+
+          photo.save!
+        end
       end
 
-      location.user_message = current_batch["district_banner_photo"] if current_batch["district_banner_photo"]
-      location.save!
     end
 
     def process_checklist_item
     end
+
+    private
+      def get_location_messages_for_current
+
+        if @user_message.polling_place_internal_id.present? # NEW API
+          messages = user.user_messages.where(polling_place_internal_id: @user_message.polling_place_internal_id).where(key: COMMISSION_KEYS).order(:timestamp)
+
+          current_batch = messages.inject({}) do |result, message|
+            result[message.key] = message
+            result
+          end
+        else # OLD API
+          messages = user.user_messages.where(key: COMMISSION_KEYS).order(:timestamp)
+
+          message_batches, tmp_batch, current_batch = [], {}, {}
+          messages.each do |message|
+            if tmp_batch[message.key]
+              message_batches << tmp_batch
+              tmp_batch = { message.key => message }
+            else
+              tmp_batch[message.key] = message
+            end
+
+            current_batch = tmp_batch if message == @user_message
+          end
+          message_batches << tmp_batch
+        end
+
+        current_batch
+      end
 end

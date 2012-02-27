@@ -34,15 +34,19 @@ class MediaItemAnalyzer
     end
 
     def process_user_location_photo
-      return
-
       user_message = @media_item.user_message
       location = user_message.user_location
 
-      if location
-        location.remote_image_url = @media_item.url
-        location.save!
-      end
+      return unless location
+
+      return if location.photos.where(media_item_id: @media_item.id).exists?
+
+      photo = location.photos.build
+      photo.media_item = @media_item
+      photo.image.remote_image_url = media_item.url
+      photo.timestamp = media_item.timestamp
+
+      photo.save!
     end
 
   private
