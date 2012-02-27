@@ -3,8 +3,6 @@ class UserMessage < ActiveRecord::Base
   has_many :device_messages
   has_many :media_items
 
-  belongs_to :user_location
-
   after_save :process
 
   private
