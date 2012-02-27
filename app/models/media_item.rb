@@ -11,7 +11,6 @@ class MediaItem < ActiveRecord::Base
     end
 
     def process
-      analyzer = MediaItemAnalyzer.new self
-      analyzer.process!
+      Delayed::Job.enqueue AnalyzeMediaJob.new(self.id)
     end
 end

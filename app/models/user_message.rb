@@ -9,8 +9,7 @@ class UserMessage < ActiveRecord::Base
 
   private
     def process
-      analyzer = UserMessagesAnalyzer.new self
-      analyzer.process!
+      Delayed::Job.enqueue AnalyzeUserMessageJob.new(self.id)
     end
 
 end
