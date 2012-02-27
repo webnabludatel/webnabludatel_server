@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227004324) do
+ActiveRecord::Schema.define(:version => 20120227010915) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20120227004324) do
     t.string   "external_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "position"
   end
 
   create_table "splash_subscribers", :force => true do |t|
