@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227012739) do
+ActiveRecord::Schema.define(:version => 20120227023433) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20120227012739) do
     t.datetime "updated_at"
     t.string   "status"
     t.integer  "region_id"
+    t.boolean  "is_system",  :default => false
   end
 
   add_index "commissions", ["region_id"], :name => "index_commissions_on_region_id"
@@ -132,6 +133,17 @@ ActiveRecord::Schema.define(:version => 20120227012739) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "user_location_photos", :force => true do |t|
+    t.integer  "user_location_id"
+    t.integer  "media_item_id"
+    t.string   "image"
+    t.datetime "timestamp"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "user_location_photos", ["user_location_id"], :name => "index_user_location_photos_on_user_location_id"
+
   create_table "user_locations", :force => true do |t|
     t.integer  "user_id"
     t.integer  "commission_id"
@@ -141,6 +153,8 @@ ActiveRecord::Schema.define(:version => 20120227012739) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "external_id"
+    t.string   "chairman"
+    t.string   "secretary"
   end
 
   add_index "user_locations", ["user_id", "commission_id"], :name => "index_user_locations_on_user_id_and_comission_id"
