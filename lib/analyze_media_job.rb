@@ -5,4 +5,8 @@ class AnalyzeMediaJob < Struct.new(:id)
 
     analyzer.process!
   end
+
+  def error(job, exception)
+    Airbrake.notify(exception)
+  end
 end
