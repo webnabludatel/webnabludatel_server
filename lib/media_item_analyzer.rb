@@ -54,7 +54,7 @@ class MediaItemAnalyzer
 
       Rails.logger.info ">>2 #{photo.inspect}"
 
-      photo.image.remote_image_url = @media_item.url
+      photo.remote_image_url = @media_item.url
 
       Rails.logger.info ">>3 #{photo.inspect}"
       Rails.logger.info ">>4 #{@media_item.timestamp.inspect} - #{@media.item.timestamp.class.name}"
