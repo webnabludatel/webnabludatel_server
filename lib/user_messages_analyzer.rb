@@ -82,7 +82,7 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report.value = @message.value
       watcher_report.timestamp = @message.timestamp
       watcher_report.latitude = @message.latitude
-      wacther_report.longitude = @message.longitude
+      watсher_report.longitude = @message.longitude
       watcher_report.check_list_item = check_list_item
 
       watcher_report.save!
