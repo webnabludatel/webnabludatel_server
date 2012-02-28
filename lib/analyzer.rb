@@ -45,7 +45,7 @@ class Analyzer
       return unless region
       commission = @user.commissions.where(region_id: region.id, number: @message.polling_place_id).first
       return unless commission
-      commission.locations.find_by_user_id @user.id
+      commission.user_locations.find_by_user_id @user.id
     end
 
     def get_location_new_api
