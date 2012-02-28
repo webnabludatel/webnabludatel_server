@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120228134234) do
+ActiveRecord::Schema.define(:version => 20120228140528) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -292,15 +292,15 @@ ActiveRecord::Schema.define(:version => 20120228134234) do
     t.string   "image"
     t.string   "video_path"
     t.string   "status"
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
-    t.integer  "check_list_id"
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
+    t.integer  "check_list_item_id"
     t.integer  "user_location_id"
-    t.decimal  "latitude",         :precision => 11, :scale => 8
-    t.decimal  "longitude",        :precision => 11, :scale => 8
+    t.decimal  "latitude",           :precision => 11, :scale => 8
+    t.decimal  "longitude",          :precision => 11, :scale => 8
   end
 
-  add_index "watcher_reports", ["check_list_id"], :name => "index_watcher_reports_on_watcher_checklist_item_id"
+  add_index "watcher_reports", ["check_list_item_id"], :name => "index_watcher_reports_on_watcher_checklist_item_id"
   add_index "watcher_reports", ["timestamp"], :name => "index_watcher_reports_on_timestamp"
   add_index "watcher_reports", ["user_id"], :name => "index_watcher_reports_on_user_id"
   add_index "watcher_reports", ["user_location_id"], :name => "index_watcher_reports_on_user_location_id"
