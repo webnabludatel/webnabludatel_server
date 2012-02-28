@@ -35,27 +35,19 @@
 
 - content_for :sidebar do
   .b-gallery
-    %ul#slidingFeatures.b-gallery__list
-      / Все картинки должны быть размером 209*311px, PNG24
-      %li.b-gallery__item
-        %a.b-gallery__link{:href => "#"}
-          %img{:alt => "", :src => image_path("slides/slide-1.jpg") }/
-      %li.b-gallery__item
-        %a.b-gallery__link{:href => "#"}
-          %img{:alt => "", :src => image_path("slides/slide-2.jpg")}/
-      %li.b-gallery__item
-        %a.b-gallery__link{:href => "#"}
-          %img{:alt => "", :src => image_path("slides/slide-3.jpg")}/
+    %ul#mycarousel
+      %li
+        %img{:alt => "", :src => image_path("slides/slide-1.jpg")}/
+      %li
+        %img{:alt => "", :src => image_path("slides/slide-2.jpg")}/
+      %li
+        %img{:alt => "", :src => image_path("slides/slide-3.jpg")}/
     .b-gallery__phone
-    /
-      <div class="b-gallery__control b-gallery__control_left b-gallery__control_left-passive"></div>
-      <div class="b-gallery__control b-gallery__control_right"></div>
 
 :javascript
-  $(document).ready(function(){ $('#slidingFeatures').jshowoff({
-    effect: 'slideLeft',
-    hoverPause: true,
-    links: false,
-    controlText:{play:'',pause:'',previous:'',next:''},
-    controls: true
-  }); });
+  $(document).ready(function(){
+    $("#mycarousel").jcarousel({
+        wrap: 'circular',
+        auto: 3
+    });
+  });

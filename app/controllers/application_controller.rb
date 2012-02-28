@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def beta_authenticate
-    public_controllers = [HomeController, SplashSubscribersController, Api::V1::BaseController]
+    public_controllers = [HomeController, SplashSubscribersController, HighVoltage::PagesController, Api::V1::BaseController]
     if Rails.env.production? && !public_controllers.map {|c| self.kind_of?(c)}.inject {|c, a| c || a}
       authenticate_or_request_with_http_basic do |username, password|
         username == "webnabludatel" && password == Settings.beta.password

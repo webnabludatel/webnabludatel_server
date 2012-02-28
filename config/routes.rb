@@ -1,6 +1,8 @@
 Watcher::Application.routes.draw do
   root :to => "home#index"
 
+  match "/about" => "high_voltage/pages#show", :id => "about"
+
   OmniAuth.config.path_prefix = "/users/auth"
   devise_for :users, controllers: { registrations: 'users/registrations' }, skip: :omniauth_callback
   devise_scope :user do

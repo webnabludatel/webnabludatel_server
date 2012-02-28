@@ -49,6 +49,9 @@
                 %small.b-nav__info появятся 4 марта
             %li.b-nav__item
               = active_link_to "Приложение", root_path, :class_active => 'b-nav__link b-nav__link_current', :class_inactive => 'b-nav__link'
+            %li.b-nav__item
+              = active_link_to "О проекте", '/about', :class_active => 'b-nav__link b-nav__link_current', :class_inactive => 'b-nav__link'
+
       %section{:class => content_for?(:sidebar) ? "i-content" : "", :role => "main", :data => {"pjax-container" => true}}
         = yield
       - if content_for? :sidebar

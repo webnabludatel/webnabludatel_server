@@ -1,0 +1,59 @@
+/**
+ * This <div> element is wrapped by jCarousel around the list
+ * and has the classname "jcarousel-container".
+ */
+.jcarousel-container {position: relative;width:209px;padding: 85px 0px 0px 62px;height:311px;}
+.jcarousel-clip {z-index: 2;overflow: hidden;position: relative;width:209px;height:311px;}
+.jcarousel-list {z-index: 1;overflow: hidden;position: relative;top: 0;left: 0;}
+
+.jcarousel-list li {
+	/*border-left:2px solid white;*/
+	float: left;
+	list-style: none;
+	display:block;
+	position:relative;
+	margin-right: 0px;
+}
+
+.jcarousel-list li, .jcarousel-item {width: 209px;height: 311px;text-align:center;}
+.jcarousel-list li .img {width:209px;height:311px;text-align:center;}
+.jcarousel-next, .jcarousel-prev {z-index: 3;display: none;}
+
+/* Tango skin */
+
+.jcarousel-item-placeholder {background: #fff;color: #000;}
+
+/*  Horizontal Buttons */
+.jcarousel-next-horizontal {
+    position: absolute;
+    top: 230px;
+    left: 0px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    background: transparent url('arrows.png') no-repeat 0px -41px;
+	z-index: 5;
+}
+
+.jcarousel-next-horizontal:hover {background-position: 0px 0px;}
+.jcarousel-next-horizontal:active {background-position: 0px 0px;}
+.jcarousel-next-disabled-horizontal,
+.jcarousel-next-disabled-horizontal:hover,
+.jcarousel-next-disabled-horizontal:active {cursor: default;background-position: 0px -82px;}
+
+.jcarousel-prev-horizontal {
+    position: absolute;
+    top: 230px;
+    right: -68px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    background: transparent url('arrows.png') no-repeat 100% -41px;
+	z-index: 5;
+}
+
+.jcarousel-prev-horizontal:hover {background-position: 100% 0px;}
+.jcarousel-prev-horizontal:active {background-position: 100% 0px;}
+.jcarousel-prev-disabled-horizontal,
+.jcarousel-prev-disabled-horizontal:hover,
+.jcarousel-prev-disabled-horizontal:active {cursor: default;background-position: 100% -82px;}
