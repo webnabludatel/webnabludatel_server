@@ -11,7 +11,7 @@ set :deploy_to, "/server/www/#{application}/main/deploy"
 
 set :scm, :git
 set :repository, 'git://github.com/webnabludatel/webnabludatel_server.git'
-set :branch, 'production'
+set :branch, 'messages_analyzer'
 set :deploy_via, :remote_cache
 
 set :user, 'www-data'
