@@ -68,25 +68,25 @@ class MediaItemAnalyzer
       photo.save!
     end
 
-    private
-      def get_sos_messages_for_current
-        user = @media_item.user
+  private
+    def get_sos_messages_for_current
+      user = @media_item.user
 
-        messages = user.user_messages.where(key: UserMessagesAnalyzer::SOS_KEYS).order(:timestamp)
+      messages = user.user_messages.where(key: UserMessagesAnalyzer::SOS_KEYS).order(:timestamp)
 
-        message_batches, tmp_batch, current_batch = [], {}, {}
-        messages.each do |message|
-          if tmp_batch[message.key]
-           message_batches << tmp_batch
-           tmp_batch = { message.key => message }
-          else
-           tmp_batch[message.key] = message
-          end
-
-          current_batch = tmp_batch if message == @media_item.user_message
+      message_batches, tmp_batch, current_batch = [], {}, {}
+      messages.each do |message|
+        if tmp_batch[message.key]
+         message_batches << tmp_batch
+         tmp_batch = { message.key => message }
+        else
+         tmp_batch[message.key] = message
         end
-        message_batches << tmp_batch
 
-        current_batch
+        current_batch = tmp_batch if message == @media_item.user_message
       end
+      message_batches << tmp_batch
+
+      current_batch
+    end
 end
