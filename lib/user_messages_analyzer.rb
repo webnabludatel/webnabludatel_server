@@ -33,26 +33,23 @@ class UserMessagesAnalyzer
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
 
-      # 3. Finding a +user_location+ for a +current_batch+. If it is present updating it, otherwise create it if it's possible
-      # TODO: Add pg_advisory_lock to prevent creating two same locations or race conditions on editing a location.
-      location = REQUIRED_COMMISSION_KEYS.inject(user.locations) do |result, key|
-        result.where(key: key)
-        result
-      end.first
-
-      Rails.logger.info "> location: #{location.inspect}"
-
       # 3.1 Finding a commission, if there is no such commission creating not-system pending commission.
       region = Region.find_by_external_id! current_batch["district_region"].value
       commission = region.commissions.where(kind: current_batch["district_type"].value, number: current_batch["district_number"].value).first
 
-      unless commission
+      location = @user_message.user_location
+
+      if commission && !location
+        location = user.locations.where(commission_id: commission.id).first
+      else
         commission = region.commissions.new kind: current_batch["district_type"].value, number: current_batch["district_number"].value
         commission.is_system = false
         commission.save!
       end
 
       Rails.logger.info "> commission: #{commission.inspect}"
+      Rails.logger.info "> location: #{location.inspect}"
+
 
       # 3.2 Updating +user_location+ +commission+
       if location && location.commission != commission
@@ -75,13 +72,7 @@ class UserMessagesAnalyzer
 
       Rails.logger.info "> location: #{location.inspect}"
 
-      # 4 Setting location photos
       photo_message = current_batch["district_banner_photo"]
-      if photo_message
-        photo_message.user_location = location
-        photo_message.update_column :user_location_id, location.id
-      end
-
       if photo_message && photo_message.media_items.present?
         processed_items = location.photos.where(media_item_id: photo_message.media_items.map(&:id))
         media_items = photo_message.media_items.reject{|media_item| processed_items.include? media_item.id }
@@ -96,9 +87,16 @@ class UserMessagesAnalyzer
         end
       end
 
+      current_batch.each do |_,message|
+        message.update_column :user_location_id, location.id
+      end
+
     end
 
     def process_checklist_item
+    end
+
+    def process_sos
     end
 
     private
