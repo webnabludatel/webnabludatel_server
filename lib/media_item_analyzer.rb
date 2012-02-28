@@ -12,6 +12,9 @@ class MediaItemAnalyzer
         process_observer_referral_photo
       when "district_banner_photo"
         process_user_location_photo
+      when "sos_report_photo"
+        process_sos_photo
+      end
     end
   end
 
@@ -49,4 +52,41 @@ class MediaItemAnalyzer
       photo.save!
     end
 
+    def process_sos_photo
+      user = @media_item.user
+
+      user_sos_messages = get_sos_messages_for_current
+      sos_message = user.sos_messages.where(user_message_id: user_sos_messages["sos_report_text"].id).first
+
+      return if sos_message.photos.where(media_item_id: @media_item.id).exists?
+
+      photo = sos_message.photos.build
+      photo.media_item = @media_item
+      photo.remote_image_url = @media_item.url
+      photo.timestamp = @media_item.timestamp
+
+      photo.save!
+    end
+
+    private
+      def get_sos_messages_for_current
+        user = @media_item.user
+
+        messages = user.user_messages.where(key: UserMessagesAnalyzer::SOS_KEYS).order(:timestamp)
+
+        message_batches, tmp_batch, current_batch = [], {}, {}
+        messages.each do |message|
+          if tmp_batch[message.key]
+           message_batches << tmp_batch
+           tmp_batch = { message.key => message }
+          else
+           tmp_batch[message.key] = message
+          end
+
+          current_batch = tmp_batch if message == @media_item.user_message
+        end
+        message_batches << tmp_batch
+
+        current_batch
+      end
 end

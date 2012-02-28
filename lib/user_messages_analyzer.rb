@@ -6,7 +6,7 @@ class UserMessagesAnalyzer
   REQUIRED_COMMISSION_KEYS = %W(district_region district_type district_number)
 
   CHECKLIST_KEYS= %W()
-  SOS_KEYS = %W(sos_report_text)
+  SOS_KEYS = %W(sos_report_text sos_report_video sos_report_photo)
 
   def initialize(user_message)
     @user_message = user_message
@@ -90,9 +90,12 @@ class UserMessagesAnalyzer
     end
 
     def process_sos
-      #user = @user_message.user
-      #user.sos_messages.new body: @user_message.value, latitude: @user_message.latitude, longitude: @user_message.longitude, user_message: @user_message
-      #user.save!
+      user = @user_message.user
+
+      if @user_message.key == "sos_report_text"
+        message = user.sos_messages.new body: @user_message.value, latitude: @user_message.latitude, longitude: @user_message.longitude, user_message: @user_message
+        message.save!
+      end
     end
 
     private
