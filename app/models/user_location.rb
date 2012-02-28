@@ -30,10 +30,6 @@ class UserLocation < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
-  def watcher_reports
-    @watcher_reports ||= self.user.watcher_reports.where(comission_id: self.comission)
-  end
-
   private
     def set_default_status
       self.status = "pending" if self.status.blank?
