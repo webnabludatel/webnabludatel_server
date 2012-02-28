@@ -1,23 +1,13 @@
 # encoding: utf-8
 
-class UserMessagesAnalyzer
-
-  COMMISSION_KEYS = %W(district_region district_type district_number district_chairman district_secretary district_banner_photo)
-  REQUIRED_COMMISSION_KEYS = %W(district_region district_type district_number)
-
-  CHECKLIST_KEYS= %W()
-  SOS_KEYS = %W(sos_report_text sos_report_video sos_report_photo)
-
-  def initialize(user_message)
-    @user_message = user_message
-  end
+class UserMessagesAnalyzer < Analyzer
 
   def process!
-    if COMMISSION_KEYS.include? @user_message.key
+    if COMMISSION_KEYS.include? @message.key
       process_commission
-    elsif SOS_KEYS.include? @user_message.key
+    elsif SOS_KEYS.include? @message.key
       process_sos
-    elsif CHECKLIST_KEYS.include? @user_message.key
+    elsif CHECKLIST_KEYS.include? @message.key
       process_checklist_item
     end
   end
@@ -25,8 +15,6 @@ class UserMessagesAnalyzer
   protected
     # For now we do believe that we have all commissions in the DB
     def process_commission
-      user = @user_message.user
-
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
       current_batch = get_location_messages_for_current
 
@@ -37,10 +25,10 @@ class UserMessagesAnalyzer
       region = Region.find_by_external_id! current_batch["district_region"].value
       commission = region.commissions.where(kind: current_batch["district_type"].value, number: current_batch["district_number"].value).first
 
-      location = @user_message.user_location
+      location = @message.user_location
 
       if commission && !location
-        location = user.locations.where(commission_id: commission.id).first
+        location = @user.locations.where(commission_id: commission.id).first
       else
         commission = region.commissions.new kind: current_batch["district_type"].value, number: current_batch["district_number"].value
         commission.is_system = false
@@ -53,7 +41,7 @@ class UserMessagesAnalyzer
         location.status = "pending"
       end
 
-      location = user.locations.new unless location
+      location = @user.locations.new unless location
 
       message_for_coordinates = current_batch["district_banner_photo"] || current_batch.first.second
       location.latitude = message_for_coordinates.latitude
@@ -90,42 +78,27 @@ class UserMessagesAnalyzer
     end
 
     def process_sos
-      user = @user_message.user
-
-      if @user_message.key == "sos_report_text"
-        message = user.sos_messages.new body: @user_message.value, latitude: @user_message.latitude, longitude: @user_message.longitude, user_message: @user_message
+      if @message.key == "sos_report_text"
+        message = @user.sos_messages.new body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message
         message.save!
       end
     end
 
     private
       def get_location_messages_for_current
-        user = @user_message.user
-
-        if @user_message.polling_place_internal_id.present? # NEW API
-          messages = user.user_messages.where(polling_place_internal_id: @user_message.polling_place_internal_id).where(key: COMMISSION_KEYS).order(:timestamp)
+        if @message.polling_place_internal_id.present?
+          # NEW API
+          messages = @user.user_messages.where(polling_place_internal_id: @message.polling_place_internal_id).where(key: COMMISSION_KEYS).order(:timestamp)
 
           current_batch = messages.inject({}) do |result, message|
             result[message.key] = message
             result
           end
-        else # OLD API
-          messages = user.user_messages.where(key: COMMISSION_KEYS).order(:timestamp)
 
-          message_batches, tmp_batch, current_batch = [], {}, {}
-          messages.each do |message|
-            if tmp_batch[message.key]
-              message_batches << tmp_batch
-              tmp_batch = { message.key => message }
-            else
-              tmp_batch[message.key] = message
-            end
-
-            current_batch = tmp_batch if message == @user_message
-          end
-          message_batches << tmp_batch
+          current_batch
+        else
+           # OLD API
+          get_messages_for_current(COMMISSION_KEYS)
         end
-
-        current_batch
       end
 end

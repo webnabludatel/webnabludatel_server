@@ -1,13 +1,15 @@
 # encoding: utf-8
 
-class MediaItemAnalyzer
+class MediaItemAnalyzer < Analyzer
 
   def initialize(media_item)
     @media_item = media_item
+    @message = media_item.user_message
+    @user = @media_item.user
   end
 
   def process!
-    case @media_item.user_message.key
+    case @message.user_message.key
       when "official_observer"
         process_observer_referral_photo
       when "district_banner_photo"
@@ -19,10 +21,8 @@ class MediaItemAnalyzer
 
   protected
     def process_observer_referral_photo
-      user = @media_item.user_message.user
-
-      referral = user.referral || WatcherReferral.new
-      referral.user = user
+      referral = @user.referral || WatcherReferral.new
+      referral.user = @user
 
       referral.save!
 
@@ -32,12 +32,11 @@ class MediaItemAnalyzer
 
       referral_photo.save!
 
-      user.update_attribute :watcher_status, "pending" if user.watcher_status.none?
+      @user.update_attribute :watcher_status, "pending" if @user.watcher_status.none?
     end
 
     def process_user_location_photo
-      user_message = @media_item.user_message
-      location = user_message.user_location
+      location = @message.user_location
 
       return unless location
 
@@ -52,10 +51,8 @@ class MediaItemAnalyzer
     end
 
     def process_sos_photo
-      user = @media_item.user
-
-      user_sos_messages = get_sos_messages_for_current
-      sos_message = user.sos_messages.where(user_message_id: user_sos_messages["sos_report_text"].id).first
+      user_sos_messages = get_messages_for_current(SOS_KEYS)
+      sos_message = @user.sos_messages.where(user_message_id: user_sos_messages["sos_report_text"].id).first
 
       return if sos_message.photos.where(media_item_id: @media_item.id).exists?
 
@@ -65,27 +62,5 @@ class MediaItemAnalyzer
       photo.timestamp = @media_item.timestamp
 
       photo.save!
-    end
-
-  private
-    def get_sos_messages_for_current
-      user = @media_item.user
-
-      messages = user.user_messages.where(key: UserMessagesAnalyzer::SOS_KEYS).order(:timestamp)
-
-      message_batches, tmp_batch, current_batch = [], {}, {}
-      messages.each do |message|
-        if tmp_batch[message.key]
-         message_batches << tmp_batch
-         tmp_batch = { message.key => message }
-        else
-         tmp_batch[message.key] = message
-        end
-
-        current_batch = tmp_batch if message == @media_item.user_message
-      end
-      message_batches << tmp_batch
-
-      current_batch
     end
 end
