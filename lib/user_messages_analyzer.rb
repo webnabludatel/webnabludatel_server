@@ -22,13 +22,10 @@ class UserMessagesAnalyzer
   protected
     # For now we do believe that we have all commissions in the DB
     def process_commission
-      Rails.logger.info "===============: #{@user_message.key} :==============="
       user = @user_message.user
 
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
       current_batch = get_location_messages_for_current
-      #Rails.logger.info "> current_batch: #{current_batch.inspect}"
-      current_batch.each {|_,m| Rails.logger.info ">> #{m.key}" }
 
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
@@ -47,10 +44,6 @@ class UserMessagesAnalyzer
         commission.save!
       end
 
-      Rails.logger.info "> commission: #{commission.inspect}"
-      Rails.logger.info "> location: #{location.inspect}"
-
-
       # 3.2 Updating +user_location+ +commission+
       if location && location.commission != commission
         location.commission = commission
@@ -60,7 +53,6 @@ class UserMessagesAnalyzer
       location = user.locations.new unless location
 
       message_for_coordinates = current_batch["district_banner_photo"] || current_batch.first.second
-      Rails.logger.info ">>> #{message_for_coordinates.inspect} <<<"
       location.latitude = message_for_coordinates.latitude
       location.longitude = message_for_coordinates.longitude
       location.external_id = message_for_coordinates.polling_place_internal_id
