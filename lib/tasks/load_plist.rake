@@ -25,13 +25,29 @@ namespace :plist do
     parse(ENV["filename"] || ENV["FILENAME"])
   end
 
-  def parse(filename_or_xml)
+  task load_check_list: :environment do
+    url = "https://raw.github.com/webnabludatel/watcher-ios/master/ElectionsWatcher/WatcherChecklist.plist"
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    puts "Getting: #{url}"
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    response.body.force_encoding('UTF-8')
+    parse(response.body, for: :check_list)
+  end
+
+  def parse(filename_or_xml, options = {})
     result = Plist::parse_xml(filename_or_xml)
+
+    check_list = options[:for] == :check_list
 
     result.each_with_index do |(key, value), index|
       puts "Parsing root section: #{key}"
 
-      node = WatcherAttribute.find_or_initialize_by_name key
+      node = check_list ? CheckListItem.find_or_initialize_by_name(key) : WatcherAttribute.find_or_initialize_by_name(key)
       node.order = value["order"] || index
       node.title = value["title"]
       node.save!

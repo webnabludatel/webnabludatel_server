@@ -1,12 +1,13 @@
 # encoding: utf-8
 
 class WatcherReport < ActiveRecord::Base
-  attr_accessible :key, :value, :recorded_at, :latitude, :longitude
+  attr_accessible :key, :value, :timestamp, :latitude, :longitude
 
   belongs_to :user
-  belongs_to :commission
-  belongs_to :device_message
-  belongs_to :watcher_attribute
+  belongs_to :user_location
+  belongs_to :check_list_item
+
+  has_many :user_messages, dependent: :nullify
 
   STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none)
 
@@ -30,10 +31,6 @@ class WatcherReport < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
-  def user_location
-    @user_location ||= self.commission ? self.commission.user_locations.where(user_id: self.user).first : nil
-  end
-
   protected
 
     def set_status
@@ -41,11 +38,11 @@ class WatcherReport < ActiveRecord::Base
     end
 
     def set_is_violation
-      self.is_violation = watcher_attribute && value && watcher_attribute.hi_value == value
+      self.is_violation = check_list_item && value && check_list_item.hi_value == value
       true
     end
 
-    def set_watcher_attribute
-      self.watcher_attribute = WatcherAttribute.find_by_name(key) if self.watcher_attribute.blank?
+    def set_check_list_item
+      self.check_list_item = CheckListItem.find_by_name(key) if self.check_list_item.blank?
     end
 end

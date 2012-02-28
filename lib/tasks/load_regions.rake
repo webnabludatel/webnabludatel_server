@@ -13,10 +13,10 @@ namespace :regions do
     request = Net::HTTP::Get.new(uri.request_uri)
     response = http.request(request)
     response.body.force_encoding('UTF-8')
-    parse(response.body)
+    parse_r(response.body)
   end
 
-  def parse(filename_or_xml)
+  def parse_r(filename_or_xml)
     result = Plist::parse_xml(filename_or_xml)
 
     result["ballot_district_info"]["items"].each do |item|

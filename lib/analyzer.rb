@@ -4,7 +4,6 @@ class Analyzer
   COMMISSION_KEYS = %W(district_region district_type district_number district_chairman district_secretary district_banner_photo)
   REQUIRED_COMMISSION_KEYS = %W(district_region district_type district_number)
 
-  CHECKLIST_KEYS= %W()
   SOS_KEYS = %W(sos_report_text sos_report_video sos_report_photo)
 
   def initialize(message)

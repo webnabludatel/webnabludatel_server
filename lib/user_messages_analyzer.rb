@@ -7,8 +7,9 @@ class UserMessagesAnalyzer < Analyzer
       process_commission
     elsif SOS_KEYS.include? @message.key
       process_sos
-    elsif CHECKLIST_KEYS.include? @message.key
-      process_checklist_item
+    else
+      check_list_item = CheckListItem.find_by_name @message.key
+      process_checklist_item(check_list_item) if check_list_item && check_list_item.lo_value.present?
     end
   end
 
@@ -74,7 +75,19 @@ class UserMessagesAnalyzer < Analyzer
 
     end
 
-    def process_checklist_item
+    def process_checklist_item(check_list_item)
+      watcher_report = parsed_location.watcher_reports.find_by_name @message.key
+      watcher_report = parsed_location.watcher_reports.new key: @message.key unless watcher_report
+      watcher_report.user = @user
+      watcher_report.value = @message.value
+      watcher_report.timestamp = @message.timestamp
+      watcher_report.latitude = @message.latitude
+      wacther_report.longitude = @message.longitude
+      watcher_report.check_list_item = check_list_item
+
+      watcher_report.save!
+
+      @message.update_column :watcher_report_id, watcher_report.id
     end
 
     def process_sos
