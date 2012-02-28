@@ -9,7 +9,7 @@
 	background: url(status.png) no-repeat 0 200px;
 }
 .b-content ol li {
-	/list-style-type: decimal;
+	list-style-type: decimal;
 	color: #9E9E9E;
 	}
 	.b-content__li-7 {
