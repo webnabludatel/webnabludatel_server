@@ -5,6 +5,7 @@ class UserLocation < ActiveRecord::Base
   belongs_to :commission
 
   has_many :photos, class_name: "UserLocationPhoto", dependent: :destroy, order: :timestamp
+  has_many :sos_messages, dependent: :nullify
 
   STATUSES = %W(pending approved rejected suspicious waiting_for_data)
 

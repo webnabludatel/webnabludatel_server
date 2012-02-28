@@ -5,7 +5,7 @@ class MediaItemAnalyzer < Analyzer
   def initialize(media_item)
     @media_item = media_item
     @message = media_item.user_message
-    @user = @media_item.user
+    @user = media_item.user
   end
 
   def process!

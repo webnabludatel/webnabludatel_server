@@ -13,8 +13,8 @@ class Analyzer
   end
 
   protected
-    def get_location
-      if @message.polling_place_internal_id.present?
+    def parsed_location
+      @parsed_location ||= if @message.polling_place_internal_id.present?
         get_location_new_api
       elsif @message.polling_place_id.present? && @message.polling_place_region.present?
         get_location_old_api

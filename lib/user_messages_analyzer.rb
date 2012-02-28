@@ -79,8 +79,9 @@ class UserMessagesAnalyzer < Analyzer
 
     def process_sos
       if @message.key == "sos_report_text"
-        message = @user.sos_messages.new body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message
-        message.save!
+        sos_message = @user.sos_messages.new body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message
+        sos_message.location = parsed_location
+        sos_message.save!
       end
     end
 
