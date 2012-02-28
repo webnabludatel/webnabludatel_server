@@ -34,10 +34,15 @@ class MediaItemAnalyzer
     end
 
     def process_user_location_photo
+      Rails.logger.info ">> PROCESS PHOTO: #{@media_item.inspect}"
       user_message = @media_item.user_message
       location = user_message.user_location
 
+      Rails.logger.info ">> #{location.inspect}"
+
       return unless location
+
+      Rails.logger.info ">> #{location.photos.where(media_item_id: @media_item.id).exists?.inspect}"
 
       return if location.photos.where(media_item_id: @media_item.id).exists?
 
@@ -47,12 +52,8 @@ class MediaItemAnalyzer
       photo.timestamp = media_item.timestamp
 
       photo.save!
+
+      Rails.logger.info ">> #{photo.inspect}"
     end
 
-  private
-    # We catch all exceptions in the +process+ method because bugs it it should not fail creating and logging data from
-    # users and so +log+ method is used for sending exception data to the Airbrake app.
-    def log
-
-    end
 end
