@@ -14,6 +14,7 @@ Watcher::Application.routes.draw do
   post "/subscribe" => "splash_subscribers#create"
 
   resources :users, :only => [:show]
+  match "/user/:id" => "users#show"
 
   namespace :admin do
     resources :watcher_referrals, only: [] do
