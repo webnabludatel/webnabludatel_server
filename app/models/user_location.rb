@@ -4,7 +4,7 @@ class UserLocation < ActiveRecord::Base
   belongs_to :user
   belongs_to :commission
 
-  has_many :photos, class_name: "UserLocationsPhoto", dependent: :destroy, order: :timestamp
+  has_many :photos, class_name: "UserLocationPhoto", dependent: :destroy, order: :timestamp
 
   STATUSES = %W(pending approved rejected suspicious waiting_for_data)
 
