@@ -9,7 +9,7 @@ class MediaItemAnalyzer < Analyzer
   end
 
   def process!
-    case @message.user_message.key
+    case @message.key
       when "official_observer"
         process_observer_referral_photo
       when "district_banner_photo"
