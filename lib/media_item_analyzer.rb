@@ -14,7 +14,6 @@ class MediaItemAnalyzer
         process_user_location_photo
       when "sos_report_photo"
         process_sos_photo
-      end
     end
   end
 
