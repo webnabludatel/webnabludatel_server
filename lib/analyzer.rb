@@ -22,7 +22,7 @@ class Analyzer
     end
 
     def get_messages_for_current(keys = [])
-      messages = keys.present ? @user.user_messages.where(key: keys).order(:timestamp) : @user.user_messages.order(:timestamp)
+      messages = keys.present? ? @user.user_messages.where(key: keys).order(:timestamp) : @user.user_messages.order(:timestamp)
 
       message_batches, tmp_batch, current_batch = [], {}, {}
       messages.each do |message|
