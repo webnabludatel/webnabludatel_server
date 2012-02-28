@@ -2,7 +2,7 @@
 
 class SosMessagePhoto < ActiveRecord::Base
   belongs_to :sos_message
-  belongs_to :user_media
+  belongs_to :media_item
 
   mount_uploader :image, SosMessageImageUploader
 end
