@@ -1,15 +1,15 @@
 %table
-  %th
-    %td User Id
-    %td Key
-    %td Value
-    %td Is Violation
-
-- @watcher_reports.each do |watcher_report|
   %tr
-    %td= watcher_report.user_id
-    %td= watcher_report.key
-    %td= watcher_report.value
-    %td{ :style => "color: #{watcher_report.is_violation? ? "red" : "blue" }" }= watcher_report.is_violation?.inspect
+    %th User Id
+    %th Key
+    %th Value
+    %th Is Violation
+
+  - @watcher_reports.each do |watcher_report|
+    %tr
+      %td= watcher_report.user_id
+      %td= watcher_report.key
+      %td= watcher_report.value
+      %td{ :style => "color: #{watcher_report.is_violation? ? "red" : "blue" }" }= watcher_report.is_violation?.inspect
 
 = paginate @watcher_reports
