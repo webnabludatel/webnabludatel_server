@@ -16,6 +16,8 @@ Watcher::Application.routes.draw do
   resources :users, :only => [:show]
   match "/user/:id" => "users#show"
 
+  resources :watcher_reports, :only => [:index]
+
   namespace :admin do
     resources :watcher_referrals, only: [] do
       collection do
