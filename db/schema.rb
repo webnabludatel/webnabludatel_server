@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227041025) do
+ActiveRecord::Schema.define(:version => 20120228050044) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -145,14 +145,16 @@ ActiveRecord::Schema.define(:version => 20120227041025) do
     t.text     "body"
     t.integer  "user_id"
     t.datetime "timestamp"
-    t.decimal  "latitude",        :precision => 11, :scale => 8
-    t.decimal  "longitude",       :precision => 11, :scale => 8
+    t.decimal  "latitude",         :precision => 11, :scale => 8
+    t.decimal  "longitude",        :precision => 11, :scale => 8
     t.integer  "user_message_id"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.integer  "user_location_id"
   end
 
   add_index "sos_messages", ["user_id"], :name => "index_sos_messages_on_user_id"
+  add_index "sos_messages", ["user_location_id"], :name => "index_sos_messages_on_user_location_id"
 
   create_table "splash_subscribers", :force => true do |t|
     t.string   "email"
