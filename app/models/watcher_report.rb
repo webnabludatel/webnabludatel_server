@@ -25,7 +25,7 @@ class WatcherReport < ActiveRecord::Base
   validates :value, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES }
 
-  before_validation :set_status, :set_watcher_attribute, :set_is_violation
+  before_validation :set_status, :set_check_list_item, :set_is_violation
 
   def status
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
