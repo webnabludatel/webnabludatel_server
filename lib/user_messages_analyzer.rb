@@ -69,16 +69,11 @@ class UserMessagesAnalyzer
 
         media_items.each do |media_item|
           photo = location.photos.build
-          Rails.logger.info "!! #{photo.inspect}"
           photo.media_item = media_item
-          Rails.logger.info "!! #{photo.inspect}"
-          photo.image.remote_image_url = media_item.url
-          Rails.logger.info "!! #{photo.inspect}"
+          photo.remote_image_url = media_item.url
           photo.timestamp = media_item.timestamp
-          Rails.logger.info "!! #{photo.inspect}"
 
           photo.save!
-          Rails.logger.info "!! #{photo.inspect}"
         end
       end
 
