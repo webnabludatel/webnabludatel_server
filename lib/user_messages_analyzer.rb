@@ -76,7 +76,7 @@ class UserMessagesAnalyzer < Analyzer
     end
 
     def process_checklist_item(check_list_item)
-      watcher_report = parsed_location.watcher_reports.find_by_name @message.key
+      watcher_report = parsed_location.watcher_reports.find_by_key @message.key
       watcher_report = parsed_location.watcher_reports.new key: @message.key unless watcher_report
       watcher_report.user = @user
       watcher_report.value = @message.value
