@@ -6,6 +6,8 @@ class Analyzer
 
   SOS_KEYS = %W(sos_report_text sos_report_video sos_report_photo)
 
+  PROFILE_KEYS = %W(email first_name middle_name last_name phone)
+
   def initialize(message)
     @message = message
     @user = message.user

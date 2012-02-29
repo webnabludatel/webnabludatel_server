@@ -3,13 +3,16 @@
 class UserMessagesAnalyzer < Analyzer
 
   def process!
-    if COMMISSION_KEYS.include? @message.key
-      process_commission
-    elsif SOS_KEYS.include? @message.key
-      process_sos
-    else
-      check_list_item = CheckListItem.find_by_name @message.key
-      process_checklist_item(check_list_item) if check_list_item && check_list_item.lo_value.present?
+    case @message.key
+      when *COMMISSION_KEYS
+        process_commission
+      when *SOS_KEYS
+        process_sos
+      when *PROFILE_KEYS
+        process_profile
+      else
+        check_list_item = CheckListItem.find_by_name @message.key
+        process_checklist_item(check_list_item) if check_list_item && check_list_item.lo_value.present?
     end
   end
 
@@ -98,7 +101,13 @@ class UserMessagesAnalyzer < Analyzer
       end
     end
 
-    private
+    def process_profile
+      user = @message.user
+      user[@message.key] = @message.value
+      user.save!
+    end
+
+  private
       def get_location_messages_for_current
         if @message.polling_place_internal_id.present?
           # NEW API

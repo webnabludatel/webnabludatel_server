@@ -3,10 +3,10 @@
 class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable, :confirmable, :lockable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+         :recoverable, :rememberable, :trackable, :omniauthable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :name, :first_name, :last_name, :location, :phone, :urls, :birth_date
+                  :name, :first_name, :middle_name, :last_name, :location, :phone, :urls, :birth_date
 
   serialize :urls
 
@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
     EOF
   end
 
+  validates :email, :name, :first_name, :middle_name, :last_name, :location, :phone, length: { maximum: 255 }
   validates :watcher_status, inclusion: { in: WATCHER_STATUSES }
 
   after_initialize  :set_default_watcher_status
@@ -74,9 +75,32 @@ class User < ActiveRecord::Base
     )
   end
 
+
+  # Reimplement Devise::Models::Validatable here since we need to tweak uniqueness validation conditions
+  validates_presence_of   :email, :if => :email_required?
+  validates_uniqueness_of :email, :allow_blank => true, :if => :email_uniqueness_required?
+  validates_format_of     :email, :with  => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
+
+  validates_presence_of     :password, :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required?
+  validates_length_of       :password, :within => Devise.password_length, :allow_blank => true
+
   def password_required?
-    (authentications.empty? || !password.blank?) && super
+    (authentications.empty? || !password.blank?) && (!persisted? || !password.nil? || !password_confirmation.nil?)
   end
+
+  def email_required?
+    true
+  end
+
+  # Skip email uniqueness validation for users registered through mobile applications since they might want
+  # to connect their devices to existing accounts. We skip it for postponed email changes only.
+  #
+  # Refer to Devise::Models::Confirmable for more info.
+  def email_uniqueness_required?
+    email_changed? && (@bypass_postpone || !Authentication.reserved_device_email?(email_was))
+  end
+  # End of Devise::Models::Validatable
 
   protected
 
