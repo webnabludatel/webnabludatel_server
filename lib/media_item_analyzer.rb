@@ -26,8 +26,12 @@ class MediaItemAnalyzer < Analyzer
           process_check_list_photo
         elsif check_list_item.kind.video?
           process_check_list_video
+        else
+          return
         end
     end
+
+    @media_item.update_column :is_processed, true
   end
 
   protected

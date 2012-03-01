@@ -14,8 +14,14 @@ class UserMessagesAnalyzer < Analyzer
         process_protocol_photo_messages
       else
         check_list_item = CheckListItem.find_by_name @message.key
-        process_checklist_item(check_list_item) if check_list_item
+        if check_list_item
+          process_checklist_item(check_list_item)
+        else
+          return
+        end
     end
+
+    @message.update_column :is_processed, true
   end
 
   protected

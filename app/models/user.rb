@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   has_many :authentications, dependent: :destroy
   has_many :device_messages, dependent: :destroy
-  has_many :user_messages, dependent: :destroy
+  has_many :user_messages, dependent: :destroy, order: :timestamp
   has_one :referral, class_name: "WatcherReferral", dependent: :destroy
   has_many :media_items
   has_many :locations, class_name: "UserLocation", dependent: :destroy, order: :created_at
@@ -40,7 +40,6 @@ class User < ActiveRecord::Base
   validates :watcher_status, inclusion: { in: WATCHER_STATUSES }
 
   after_initialize  :set_default_watcher_status
-  # TODO: Maybe we need to move it to an observer
   after_save        :update_watcher_reports
 
   def watcher_status

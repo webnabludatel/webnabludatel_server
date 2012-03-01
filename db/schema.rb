@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120301010845) do
+ActiveRecord::Schema.define(:version => 20120301114129) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -109,10 +109,11 @@ ActiveRecord::Schema.define(:version => 20120301010845) do
     t.string   "url"
     t.string   "media_type"
     t.datetime "timestamp"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-    t.boolean  "deleted",         :default => true, :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.boolean  "deleted",         :default => true,  :null => false
     t.integer  "user_id"
+    t.boolean  "is_processed",    :default => false
   end
 
   add_index "media_items", ["user_id"], :name => "index_media_items_on_user_id"
@@ -209,14 +210,15 @@ ActiveRecord::Schema.define(:version => 20120301010845) do
     t.decimal  "latitude",                  :precision => 11, :scale => 8
     t.decimal  "longitude",                 :precision => 11, :scale => 8
     t.datetime "timestamp"
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
+    t.datetime "created_at",                                                                  :null => false
+    t.datetime "updated_at",                                                                  :null => false
     t.string   "polling_place_region"
     t.string   "polling_place_id"
     t.string   "internal_id"
     t.string   "polling_place_internal_id"
     t.integer  "user_location_id"
     t.integer  "watcher_report_id"
+    t.boolean  "is_processed",                                             :default => false
   end
 
   create_table "users", :force => true do |t|
