@@ -1,5 +1,16 @@
 # encoding: utf-8
 
+#define INPUT_TEXT          0
+#define INPUT_NUMBER        1
+#define INPUT_DROPDOWN      2
+#define INPUT_SWITCH        3
+#define INPUT_PHOTO         4
+#define INPUT_VIDEO         5
+#define INPUT_COMMENT       6
+#define INPUT_CONSTANT      7
+#define INPUT_EMAIL         8
+#define INPUT_PHONE         9
+
 namespace :plist do
 
   task load: :environment do
@@ -50,6 +61,7 @@ namespace :plist do
       node = check_list ? CheckListItem.find_or_initialize_by_name(key) : WatcherAttribute.find_or_initialize_by_name(key)
       node.order = value["order"] || index
       node.title = value["title"]
+      node.control_type = value["control"]
       node.save!
 
       parse_node(node, value["screens"] || value["items"])
@@ -72,6 +84,7 @@ namespace :plist do
         leaf = node.children.find_or_initialize_by_name item["name"]
         leaf.title = item["title"]
         leaf.order = index
+        leaf.control_type = item["control"]
 
         if item.has_key? "switch_options"
           leaf.attributes = {
