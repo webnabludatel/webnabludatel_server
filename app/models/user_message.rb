@@ -1,7 +1,7 @@
 class UserMessage < ActiveRecord::Base
   belongs_to :user
   has_many :device_messages
-  has_many :media_items
+  has_many :media_items, dependent: :destroy
 
   belongs_to :user_location
   belongs_to :watcher_report
