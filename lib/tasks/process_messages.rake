@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-namespace :reprocess do
+namespace :process do
 
   task user_messages: :environment do
     User.all.each do |user|
