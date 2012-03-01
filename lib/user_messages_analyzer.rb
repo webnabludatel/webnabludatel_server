@@ -29,12 +29,14 @@ class UserMessagesAnalyzer < Analyzer
     def process_commission
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
       current_batch = get_location_messages_for_current
+      Rails.logger.info ">BATCH: #{current_batch.keys.inspect}"
 
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
 
       # 3.1 Finding a commission, if there is no such commission creating not-system pending commission.
       region = Region.find_by_external_id! current_batch["district_region"].value
+      Rails.logger.info ">REGION: #{region.inspect}"
       commission = region.commissions.where(kind: current_batch["district_type"].value, number: current_batch["district_number"].value).first
 
       location = @message.user_location
@@ -46,6 +48,7 @@ class UserMessagesAnalyzer < Analyzer
         commission.is_system = false
         commission.save!
       end
+      Rails.logger.info ">Commission: #{commission.inspect}"
 
       # 3.2 Updating +user_location+ +commission+
       if location && location.commission != commission
@@ -54,6 +57,7 @@ class UserMessagesAnalyzer < Analyzer
       end
 
       location = @user.locations.new unless location
+      Rails.logger.info ">LOCATION: #{location.inspect}"
 
       message_for_coordinates = current_batch["district_banner_photo"] || current_batch.first.second
       location.latitude = message_for_coordinates.latitude
@@ -64,7 +68,8 @@ class UserMessagesAnalyzer < Analyzer
       location.secretary = current_batch["district_secretary"].value if current_batch["district_secretary"]
 
       location.save!
-
+      Rails.logger.info ">LOCATION: #{location.inspect}"
+      
       photo_message = current_batch["district_banner_photo"]
       if photo_message && photo_message.media_items.present?
         processed_items = location.photos.where(media_item_id: photo_message.media_items.map(&:id))
