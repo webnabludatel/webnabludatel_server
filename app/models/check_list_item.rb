@@ -19,6 +19,6 @@ class CheckListItem < ActiveRecord::Base
   CONTROL_TYPES = %w(text number dropdown switch photo video comment constant email phone)
 
   def kind
-    ActiveSupport::StringInquirer.new CONTROL_TYPES[control_type]
+    ActiveSupport::StringInquirer.new(control_type ? CONTROL_TYPES[control_type] : "")
   end
 end
