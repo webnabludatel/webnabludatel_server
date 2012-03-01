@@ -10,9 +10,11 @@ class UserMessagesAnalyzer < Analyzer
         process_sos
       when *PROFILE_KEYS
         process_profile
+      when *RESULT_PHOTO_KEYS
+        process_protocol_photo_messages
       else
         check_list_item = CheckListItem.find_by_name @message.key
-        process_checklist_item(check_list_item) if check_list_item && check_list_item.lo_value.present?
+        process_checklist_item(check_list_item) if check_list_item
     end
   end
 
@@ -105,6 +107,10 @@ class UserMessagesAnalyzer < Analyzer
       user = @message.user
       user[@message.key] = @message.value
       user.save!
+    end
+
+    def process_protocol_photo_messages
+      @message.update_column :user_location_id, parsed_location.id
     end
 
   private

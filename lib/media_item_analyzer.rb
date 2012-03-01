@@ -16,6 +16,17 @@ class MediaItemAnalyzer < Analyzer
         process_user_location_photo
       when "sos_report_photo"
         process_sos_photo
+      when "protocol_photo"
+        process_protocol_photo
+      when "protocol_photo_copy"
+        process_protocol_photo_copy
+      else
+        check_list_item = CheckListItem.find_by_name @message.key
+        if check_list_item.kind.photo?
+          process_check_list_photo
+        elsif check_list_item.kind.video?
+          process_check_list_video
+        end
     end
   end
 
@@ -58,6 +69,44 @@ class MediaItemAnalyzer < Analyzer
 
       photo = sos_message.photos.build
       photo.media_item = @media_item
+      photo.remote_image_url = @media_item.url
+      photo.timestamp = @media_item.timestamp
+
+      photo.save!
+    end
+
+    def process_check_list_photo
+      watcher_report = @message.watcher_report
+      photo = watcher_report.photos.build
+      photo.remote_image_url = @media_item.url
+      photo.media_item = @media_item
+      photo.timestamp = @media_item.timestamp
+
+      photo.save!
+    end
+
+    def process_check_list_video
+      watcher_report = @message.watcher_report
+      video = watcher_report.videos.build
+      video.remote_image_url = @media_item.url
+      video.media_item = @media_item
+      video.timestamp = @media_item.timestamp
+
+      video.save!
+    end
+
+    def process_protocol_photo
+      location = @message.user_location
+      photo = location.protocol_photos.build
+      photo.remote_image_url = @media_item.url
+      photo.timestamp = @media_item.timestamp
+
+      photo.save!
+    end
+
+    def process_protocol_photo_copy
+      location = @message.user_location
+      photo = location.protocol_photo_copies.build
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
 

@@ -4,6 +4,7 @@ class UserMessage < ActiveRecord::Base
   has_many :media_items
 
   belongs_to :user_location
+  belongs_to :watcher_report
 
   after_save :process
 

@@ -8,6 +8,8 @@ class WatcherReport < ActiveRecord::Base
   belongs_to :check_list_item
 
   has_many :user_messages, dependent: :nullify
+  has_many :photos, class_name: "WatcherReportPhoto", dependent: :destroy, order: :timestamp
+  has_many :videos, class_name: "WatcherReportVideo", dependent: :destroy, order: :timestamp
 
   STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none)
 

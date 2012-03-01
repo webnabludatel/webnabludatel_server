@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120301004353) do
+ActiveRecord::Schema.define(:version => 20120301010845) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -284,6 +284,28 @@ ActiveRecord::Schema.define(:version => 20120301004353) do
 
   add_index "watcher_referrals", ["status"], :name => "index_watcher_referals_on_status"
   add_index "watcher_referrals", ["user_id"], :name => "index_watcher_referals_on_user_id"
+
+  create_table "watcher_report_photos", :force => true do |t|
+    t.integer  "watcher_report_id"
+    t.integer  "media_item_id"
+    t.string   "image"
+    t.datetime "timestamp"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "watcher_report_photos", ["watcher_report_id"], :name => "index_watcher_report_photos_on_watcher_report_id"
+
+  create_table "watcher_report_videos", :force => true do |t|
+    t.integer  "watcher_report_id"
+    t.integer  "media_item_id"
+    t.string   "url"
+    t.datetime "timestamp"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "watcher_report_videos", ["watcher_report_id"], :name => "index_watcher_report_videos_on_watcher_report_id"
 
   create_table "watcher_reports", :force => true do |t|
     t.string   "key"
