@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_many :user_messages, dependent: :destroy, order: :timestamp
   has_one :referral, class_name: "WatcherReferral", dependent: :destroy
   has_many :media_items
-  has_many :locations, class_name: "UserLocation", dependent: :destroy, order: :timestamp
+  has_many :locations, class_name: "UserLocation", dependent: :destroy, order: :created_at
   has_many :commissions, through: :locations
   has_many :device_messages, dependent: :destroy
   has_many :watcher_reports, dependent: :destroy
