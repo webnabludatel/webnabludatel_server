@@ -93,7 +93,7 @@ class MediaItemAnalyzer < Analyzer
       video.url = @media_item.url
       video.timestamp = @media_item.timestamp
 
-      photo.save!
+      video.save!
     end
 
     def process_check_list_photo
