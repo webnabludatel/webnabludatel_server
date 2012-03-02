@@ -16,7 +16,7 @@ Watcher::Application.routes.draw do
   post "/subscribe" => "splash_subscribers#create"
 
   resources :users, :only => [:show] do
-    memeber do
+    member do
       get :show_future
     end
   end
