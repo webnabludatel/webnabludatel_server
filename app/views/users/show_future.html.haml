@@ -27,11 +27,11 @@
         = watcher_report.value
 
         - if watcher_report.has_photos?
-          :
+          \:
           - watcher_report.photos.each_with_index do |photo, index|
             = link_to index, photo.image.url
         - elsif watcher_report.has_videos?
-          :
+          \:
           - watcher_report.videos.each_with_index do |video, index|
             = link_to index, video.url
 
