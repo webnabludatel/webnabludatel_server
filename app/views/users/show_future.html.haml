@@ -1,5 +1,19 @@
 %table
   %tr
+    %th Location Id
+    %th Location External Id
+    %th Commission Number
+    %th Commission Id
+
+  - @user.locations.includes(:commission).each do |location|
+    %tr
+      %td= location.id
+      %td= location.external_id
+      %td= location.commission.number
+      %td= location.commission.id
+
+%table
+  %tr
     %th Key
     %th Value
     %th Is Violation
@@ -15,19 +29,3 @@
       %th= watcher_report.status
 
 = paginate @watcher_reports
-
-
-- content_for :sidebar do
-  %table
-    %tr
-      %th Location Id
-      %th Location External Id
-      %th Commission Number
-      %th Commission Id
-
-    - @user.locations.includes(:commission).each do |location|
-      %tr
-        %td= location.id
-        %td= location.external_id
-        %td= location.commission.number
-        %td= location.commission.id
