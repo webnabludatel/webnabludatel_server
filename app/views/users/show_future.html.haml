@@ -1,0 +1,17 @@
+%table
+  %tr
+    %th Key
+    %th Value
+    %th Is Violation
+    %th Location
+    %th Status
+
+  - @watcher_reports.each do |watcher_report|
+    %tr
+      %td= watcher_report.key
+      %td= watcher_report.value
+      %td{ :style => "color: #{watcher_report.is_violation? ? "red" : "blue" }" }= watcher_report.is_violation?.inspect
+      %th= watcher_report.commission.number
+      %th= watcher_report.status
+
+= paginate @watcher_reports

@@ -15,7 +15,11 @@ Watcher::Application.routes.draw do
 
   post "/subscribe" => "splash_subscribers#create"
 
-  resources :users, :only => [:show]
+  resources :users, :only => [:show] do
+    memeber do
+      get :show_future
+    end
+  end
   match "/user/:id" => "users#show"
 
   resources :watcher_reports, :only => [:index]
