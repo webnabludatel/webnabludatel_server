@@ -22,11 +22,12 @@ class MediaItemAnalyzer < Analyzer
         process_protocol_photo_copy
       else
         check_list_item = CheckListItem.find_by_name @message.key
-        if check_list_item.kind.photo?
+        if check_list_item && check_list_item.kind.photo?
           process_check_list_photo
-        elsif check_list_item.kind.video?
+        elsif check_list_item  && check_list_item.kind.video?
           process_check_list_video
         else
+          Rails.logger.info "UNKNOWN MESSAGE KEY: #{@message.inspect}"
           return
         end
     end

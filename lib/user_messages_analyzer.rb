@@ -17,6 +17,7 @@ class UserMessagesAnalyzer < Analyzer
         if check_list_item
           process_checklist_item(check_list_item)
         else
+          Rails.logger.info "UNKNOWN MESSAGE KEY: #{@message.inspect}"
           return
         end
     end
