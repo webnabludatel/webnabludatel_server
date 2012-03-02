@@ -11,11 +11,11 @@ class CreateProtocolPhotos < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :protocol_photos, :user_location
+    add_index :protocol_photos, :user_location_id
   end
 
   def down
-    remove_index :protocol_photos, :user_location
+    remove_index :protocol_photos, :user_location_id
     drop_table :protocol_photos
   end
 end
