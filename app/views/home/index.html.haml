@@ -13,11 +13,11 @@
   %li.b-marklist__item Со встроенным справочниками наблюдателя ЦИК и организации «Голос».
 .b-know
   - if defined?(@subscriber) && @subscriber.persisted?
-    %b Спасибо! Уже скоро мы сообщим вам о готовности нашего приложения.
+    %b Спасибо! Мы будем держать вас в курсе.
   - else
     %form.b-know__form{:action => subscribe_path, :method => "POST"}
       %fieldset.b-know__set
-        %legend.b-know__name Узнайте о выходе приложения для Android первыми
+        %legend.b-know__name Подпишитесь на обновления
         - if defined?(@subscriber) && !@subscriber.valid?
           %ul
             - @subscriber.errors.full_messages.each do |message|
