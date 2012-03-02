@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120301114129) do
+ActiveRecord::Schema.define(:version => 20120302034250) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -125,6 +125,28 @@ ActiveRecord::Schema.define(:version => 20120301114129) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "protocol_photo_copies", :force => true do |t|
+    t.integer  "user_location_id"
+    t.integer  "media_item_id"
+    t.string   "image"
+    t.datetime "timestamp"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "protocol_photo_copies", ["user_location_id"], :name => "index_protocol_photo_copies_on_user_location_id"
+
+  create_table "protocol_photos", :force => true do |t|
+    t.integer  "user_location_id"
+    t.integer  "media_item_id"
+    t.string   "image"
+    t.datetime "timestamp"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "protocol_photos", ["user_location_id"], :name => "index_protocol_photos_on_user_location_id"
 
   create_table "referral_photos", :force => true do |t|
     t.integer  "watcher_referral_id"
@@ -318,12 +340,14 @@ ActiveRecord::Schema.define(:version => 20120301114129) do
     t.string   "image"
     t.string   "video_path"
     t.string   "status"
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
     t.integer  "check_list_item_id"
     t.integer  "user_location_id"
     t.decimal  "latitude",           :precision => 11, :scale => 8
     t.decimal  "longitude",          :precision => 11, :scale => 8
+    t.boolean  "has_photos",                                        :default => false
+    t.boolean  "has_videos",                                        :default => false
   end
 
   add_index "watcher_reports", ["check_list_item_id"], :name => "index_watcher_reports_on_watcher_checklist_item_id"

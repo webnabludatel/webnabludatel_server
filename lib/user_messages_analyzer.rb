@@ -101,6 +101,8 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report.latitude = @message.latitude
       watcher_report.longitude = @message.longitude
       watcher_report.check_list_item = check_list_item
+      watcher_report.has_photos = check_list_item.kind.photo?
+      watcher_report.has_videos = check_list_item.kind.video?
 
       watcher_report.save!
 
