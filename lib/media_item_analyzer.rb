@@ -93,7 +93,7 @@ class MediaItemAnalyzer < Analyzer
     def process_check_list_video
       watcher_report = @message.watcher_report
       video = watcher_report.videos.build
-      video.remote_image_url = @media_item.url
+      video.url = @media_item.url
       video.media_item = @media_item
       video.timestamp = @media_item.timestamp
 
