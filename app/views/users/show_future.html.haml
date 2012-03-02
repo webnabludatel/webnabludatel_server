@@ -25,7 +25,7 @@
       %th Commission Number
       %th Commission Id
 
-    - @user.locations.includes(:commission).order(:timestamp) do |location|
+    - @user.locations.includes(:commission).each do |location|
       %tr
         %td= location.id
         %td= location.external_id
