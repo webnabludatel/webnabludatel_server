@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def show_future
-    @watcher_reports = @user.watcher_reports.order("timestamp DESC").includes(:user_location).includes(:commission)
+    @watcher_reports = @user.watcher_reports.order("timestamp DESC").includes(:user_location).includes(:commission).page params[:page]
   end
 
   protected
