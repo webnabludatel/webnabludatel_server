@@ -23,7 +23,18 @@
   - @watcher_reports.each do |watcher_report|
     %tr
       %td= watcher_report.key
-      %td= watcher_report.value
+      %td
+        = watcher_report.value
+
+        - if watcher_report.has_photos?
+          :
+          - watcher_report.photos.each_with_index do |photo, index|
+            = link_to index, photo.image.url
+        - elsif watcher_report.has_videos?
+          :
+          - watcher_report.videos.each_with_index do |video, index|
+            = link_to index, video.url
+
       %td{ :style => "color: #{watcher_report.is_violation? ? "red" : "blue" }" }= watcher_report.is_violation?.inspect
       %th= watcher_report.commission.number
       %th= watcher_report.status
