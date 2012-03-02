@@ -16,6 +16,8 @@ class MediaItemAnalyzer < Analyzer
         process_user_location_photo
       when "sos_report_photo"
         process_sos_photo
+      when "sos_report_video"
+        process_sos_video
       when "protocol_photo"
         process_protocol_photo
       when "protocol_photo_copy"
@@ -76,6 +78,20 @@ class MediaItemAnalyzer < Analyzer
       photo.media_item = @media_item
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
+
+      photo.save!
+    end
+
+    def process_sos_video
+      user_sos_messages = get_messages_for_current(SOS_KEYS)
+      sos_message = @user.sos_messages.where(user_message_id: user_sos_messages["sos_report_text"].id).first
+
+      return if sos_message.videos.where(media_item_id: @media_item.id).exists?
+
+      video = sos_message.videos.build
+      video.media_item = @media_item
+      video.url = @media_item.url
+      video.timestamp = @media_item.timestamp
 
       photo.save!
     end

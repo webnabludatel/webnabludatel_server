@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302034250) do
+ActiveRecord::Schema.define(:version => 20120302043911) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -177,6 +177,17 @@ ActiveRecord::Schema.define(:version => 20120302034250) do
   end
 
   add_index "sos_message_photos", ["sos_message_id"], :name => "index_sos_message_photos_on_sos_message_id"
+
+  create_table "sos_message_videos", :force => true do |t|
+    t.integer  "sos_message_id"
+    t.string   "url"
+    t.datetime "timestamp"
+    t.integer  "media_item_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "sos_message_videos", ["sos_message_id"], :name => "index_sos_message_videos_on_sos_message_id"
 
   create_table "sos_messages", :force => true do |t|
     t.text     "body"
