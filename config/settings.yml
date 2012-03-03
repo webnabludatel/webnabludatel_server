@@ -27,3 +27,6 @@ airbrake:
 
 beta:
   password: 'override me'
+
+partners: {}
+  # partner1: password1, etc.

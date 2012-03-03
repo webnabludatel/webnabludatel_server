@@ -55,4 +55,10 @@ Watcher::Application.routes.draw do
       end
     end
   end
+
+  namespace :partners_api do
+    namespace :v1 do
+      resources :profiles, only: [:show, :index]
+    end
+  end
 end
