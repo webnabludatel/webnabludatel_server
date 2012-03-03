@@ -6,9 +6,9 @@ class UserMessagesAnalyzer < Analyzer
     user = user_location.user
 
     messages = if location.external_id.present?
-      user.user_messsages.delayed.where(polling_place_internal_id: location.external_id)
+      user.user_messsages.delayed.where(polling_place_internal_id: user_location.external_id)
     else
-      user.user_messsages.delayed.where(polling_place_region: location.commission.region.external_id).where(polling_place_id: location.number)
+      user.user_messsages.delayed.where(polling_place_region: user_location.commission.region.external_id).where(polling_place_id: user_location.number)
     end
 
     messages.each do |message|
