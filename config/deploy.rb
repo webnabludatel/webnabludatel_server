@@ -1,9 +1,20 @@
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Для работы rvm
 require 'rvm/capistrano'
 require 'bundler/capistrano'
-require 'airbrake/capistrano'
 
-server '176.34.112.34', :app, :web, :db, :primary => true
+task :production do
+  require 'airbrake/capistrano'
+  server '176.34.112.34', :app, :web, :db, :primary => true
+  set :branch, 'production'
+end
+
+task :staging do
+  server 'ec2-176-34-68-134.eu-west-1.compute.amazonaws.com', :app, :web, :db, :primary => true
+  set :rails_env, 'staging'
+  # default - master. оверрайдить так:
+  # cap staging deploy -s branch=production
+  #set :branch, 'staging'
+end
 
 set :application, 'webnabludatel.ru'
 
@@ -11,7 +22,6 @@ set :deploy_to, "/server/www/#{application}/main/deploy"
 
 set :scm, :git
 set :repository, 'git://github.com/webnabludatel/webnabludatel_server.git'
-set :branch, 'production'
 set :deploy_via, :remote_cache
 
 set :user, 'www-data'
