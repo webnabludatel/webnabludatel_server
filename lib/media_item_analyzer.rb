@@ -9,6 +9,8 @@ class MediaItemAnalyzer < Analyzer
   end
 
   def process!
+    return if @message.is_delayed?
+
     case @message.key
       when "official_observer"
         process_observer_referral_photo
