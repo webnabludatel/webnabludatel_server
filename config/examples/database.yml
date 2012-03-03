@@ -18,3 +18,7 @@ test:
 production:
   database: watcher
   <<: *base
+
+staging:
+  database: watcher
+  <<: *base
