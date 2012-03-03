@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
 
   rescue_from CanCan::AccessDenied do |exception|
-    render :text => "Access Denied!"
+    render text: "Access Denied!", status: 403
   end
 
   private
