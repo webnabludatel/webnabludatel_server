@@ -2,7 +2,7 @@
 
 class UserMessagesAnalyzer < Analyzer
 
-  def self.reprocess_delayed(user_location)
+  def self.reprocess_delayedшв(user_location)
     user = user_location.user
     user_message = user_location.user_message
 
@@ -141,7 +141,7 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report.save!
 
       @message.update_column :watcher_report_id, watcher_report.id
-      @message.update_column :id_delayed, false
+      @message.update_column :is_delayed, false
     end
 
     def process_sos
@@ -150,7 +150,7 @@ class UserMessagesAnalyzer < Analyzer
           @message.polling_place_internal_id &&
           parsed_location.nil?
 
-        @message.update_column :id_delayed, true
+        @message.update_column :is_delayed, true
 
         return
       end
@@ -162,7 +162,7 @@ class UserMessagesAnalyzer < Analyzer
         sos_message.save!
       end
 
-      @message.update_column :id_delayed, false
+      @message.update_column :is_delayed, false
     end
 
     def process_profile
@@ -174,7 +174,7 @@ class UserMessagesAnalyzer < Analyzer
     def process_protocol_photo_messages
       if parsed_location
         @message.update_column :user_location_id, parsed_location.id
-        @message.update_column :id_delayed, false
+        @message.update_column :is_delayed, false
       else
         @message.update_column :is_delayed, true
       end
