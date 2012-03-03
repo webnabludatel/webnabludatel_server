@@ -24,6 +24,10 @@ Watcher::Application.routes.draw do
 
   resources :watcher_reports, :only => [:index]
 
+  namespace :partner do
+    resources :sos_messages, :only => [:index, :edit, :update]
+  end
+
   namespace :admin do
     resources :watcher_referrals, only: [] do
       collection do
