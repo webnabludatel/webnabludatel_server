@@ -10,13 +10,17 @@ class Api::V1::MediaItemsController < Api::V1::BaseController
   #   "timestamp": время съемки медиа-файла
   # }
   def create
-    @user_message = current_user.user_messages.find(params[:message_id])
-    @message = @user_message.device_messages.build(kind: 'media_item', device_id: params['device_id'], payload: params['payload'])
+    @user_message = current_user.user_messages.find_by_id(params[:message_id])
+    if @user_message
+      @message = @user_message.device_messages.build(kind: 'media_item', device_id: params['device_id'], payload: params['payload'])
 
-    if @message.save
-      render_result media_item_id: @message.media_item.id
+      if @message.save
+        render_result media_item_id: @message.media_item.id
+      else
+        render_error @message.errors.full_messages
+      end
     else
-      render_error @message.errors.full_messages
+      render_error "Message not found with id: #{params[:message_id]}"
     end
   end
 

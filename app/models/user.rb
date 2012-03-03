@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
 
   scope :admins, where(role: "admin")
   scope :moderators, where(role: "moderators")
+  scope :partners, where(role: "partner")
   scope :watchers, where(is_watcher: true)
 
   WATCHER_STATUSES.each do |status|

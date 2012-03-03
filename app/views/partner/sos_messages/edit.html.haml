@@ -1,0 +1,7 @@
+= form_for(@sos_message, :url => partner_sos_message_path(@sos_message)) do |f|
+  %p
+    = f.label :status
+  %p
+    = f.select :status, SosMessage::STATUS
+  %p
+    = f.submit 'Save'
