@@ -50,6 +50,10 @@ namespace :plist do
     parse(response.body, for: :check_list)
   end
 
+  task load_check_list_from_file: :environment do
+    parse(ENV["filename"] || ENV["FILENAME"], for: :check_list)
+  end
+
   def parse(filename_or_xml, options = {})
     result = Plist::parse_xml(filename_or_xml)
 
