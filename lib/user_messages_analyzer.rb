@@ -20,7 +20,7 @@ class UserMessagesAnalyzer < Analyzer
           Airbrake.notify(
               error_class:    "API Error",
               error_message:  "Unknown message key: #{@message.key}",
-              parameters:     @message.inspect
+              parameters:     { payload: @message.inspect }
           )
           return
         end
