@@ -17,7 +17,11 @@ class UserMessagesAnalyzer < Analyzer
         if check_list_item
           process_checklist_item(check_list_item)
         else
-          Rails.logger.info "UNKNOWN MESSAGE KEY: #{@message.inspect}"
+          Airbrake.notify(
+              error_class:    "API Error",
+              error_message:  "Unknown message key: #{@message.key}",
+              parameters:     @message.inspect
+          )
           return
         end
     end
