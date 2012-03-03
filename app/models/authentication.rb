@@ -16,17 +16,21 @@ class Authentication < ActiveRecord::Base
   end
 
   def self.register_device!(device_id)
-    # устанавливаем е-мейл заглушку, так как на момент регистрации устройства у нас еще нет е-мейла пользователя
-    # мобильное приложение обязано следующим шагом получить у пользователя е-мейл и зарегистрировать его на сайте
-    user = User.new(email: generate_device_email_for(device_id))
-    auth = user.authentications.build(
-        provider: DEVICE_PROVIDER,
-        uid: device_id,
-        secret: SecureRandom.hex(16)
-    )
+    auth = for_device(device_id)
 
-    unless user.save
-      auth.errors.add(:user, user.errors.full_messages.first)
+    unless auth.present?
+      # устанавливаем е-мейл заглушку, так как на момент регистрации устройства у нас еще нет е-мейла пользователя
+      # мобильное приложение обязано следующим шагом получить у пользователя е-мейл и зарегистрировать его на сайте
+      user = User.new(email: generate_device_email_for(device_id))
+      auth = user.authentications.build(
+          provider: DEVICE_PROVIDER,
+          uid: device_id,
+          secret: SecureRandom.hex(16)
+      )
+
+      unless user.save
+        auth.errors.add(:user, user.errors.full_messages.first)
+      end
     end
 
     auth
