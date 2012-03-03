@@ -160,7 +160,10 @@ class UserMessagesAnalyzer < Analyzer
     def process_profile
       user = @message.user
       user[@message.key] = @message.value
-      user.save!
+      unless user.save
+        @message.processing_errors.push(*user.errors.full_messages)
+        @message.save
+      end
     end
 
     def process_protocol_photo_messages
