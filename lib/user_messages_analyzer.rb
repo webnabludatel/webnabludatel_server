@@ -2,7 +2,7 @@
 
 class UserMessagesAnalyzer < Analyzer
 
-  def self.reprocess_delayed_messages(user_location)
+  def self.reprocess_delayed(user_location)
     user = user_location.user
     user_message = user_location.user_message
 
