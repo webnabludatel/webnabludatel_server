@@ -49,6 +49,7 @@ group :development do
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'awesome_print'
   gem 'capistrano'
+  gem 'capistrano-deploy', :require => false
   gem 'capistrano-ext'
   gem 'erb2haml'
   gem 'guard'
