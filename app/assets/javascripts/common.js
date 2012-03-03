@@ -5,10 +5,6 @@ jQuery(function ($) {
 	}());
 	
 	$(function(){
-		$('#loadContent').load('/_book/golos_index.html');
-	}());
-	
-	$(function(){
 		$('.i-wrapper').css('min-height', $('html').height());
 	}());
 

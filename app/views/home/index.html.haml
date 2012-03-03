@@ -11,20 +11,6 @@
   %li.b-marklist__item Поможет составить и подать жалобу по замеченным нарушениям.
   %li.b-marklist__item.b-marklist__item_double Поддерживает загрузку фото и видео доказательств в любой удобный момент.
   %li.b-marklist__item Со встроенным справочниками наблюдателя ЦИК и организации «Голос».
-.b-know
-  - if defined?(@subscriber) && @subscriber.persisted?
-    %b Спасибо! Мы будем держать вас в курсе.
-  - else
-    %form.b-know__form{:action => subscribe_path, :method => "POST"}
-      %fieldset.b-know__set
-        %legend.b-know__name Подпишитесь на обновления
-        - if defined?(@subscriber) && !@subscriber.valid?
-          %ul
-            - @subscriber.errors.full_messages.each do |message|
-              %li= message
-
-        %input.b-know__input{:placeholder => "@адрес", :type => "text", :name => "email", :value => (defined?(@subscriber) ? @subscriber.email : "")}/
-        %button.b-know__button Подписаться
 .b-download
   Скачайте
   %a.b-download__apple{:href => "http://itunes.apple.com/ru/app/nabludatel/id505350851?ls=1&mt=8"} в Аппсторе
@@ -32,6 +18,10 @@
   %a.b-download__android{:href => "https://market.android.com/details?id=org.dvaletin.apps.nabludatel"}
     %span.b-download__android-name> Android
     \-маркете
+  %br/
+  %a{:href => "http://files.webnabludatel.org/webnabludatel.apk"}
+    Скачайте приложение для Android с нашего сервера
+
 
 - content_for :sidebar do
   .b-gallery
@@ -48,6 +38,8 @@
   $(document).ready(function(){
     $("#mycarousel").jcarousel({
         wrap: 'circular',
-        auto: 3
+        auto: 3,
+        rtl: true,
+        scroll: 1
     });
   });
