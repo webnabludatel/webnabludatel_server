@@ -5,7 +5,7 @@ class UserMessagesAnalyzer < Analyzer
   def self.reprocess_delayed(user_location)
     user = user_location.user
 
-    messages = if location.external_id.present?
+    messages = if user_location.external_id.present?
       user.user_messsages.delayed.where(polling_place_internal_id: user_location.external_id)
     else
       user.user_messsages.delayed.where(polling_place_region: user_location.commission.region.external_id).where(polling_place_id: user_location.number)
