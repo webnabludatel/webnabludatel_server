@@ -1,4 +1,6 @@
 class UserMessage < ActiveRecord::Base
+  serialize :processing_errors
+
   belongs_to :user
   has_many :device_messages
   has_many :media_items, dependent: :destroy
@@ -10,9 +12,15 @@ class UserMessage < ActiveRecord::Base
 
   scope :delayed, where(is_delayed: false)
 
+  def processing_errors
+    read_attribute(:processing_errors) || write_attribute(:processing_errors, [])
+  end
+
   private
+
+    # analyze message only if 'key' or 'value' attribute has been changed
     def process
-      Delayed::Job.enqueue AnalyzeUserMessageJob.new(self.id)
+      Delayed::Job.enqueue AnalyzeUserMessageJob.new(self.id) if (%W(key value) & changed).present?
     end
 
 end
