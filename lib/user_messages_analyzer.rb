@@ -2,6 +2,31 @@
 
 class UserMessagesAnalyzer < Analyzer
 
+  def self.reprocess_delayed_messages(user_location)
+    user = user_location.user
+    user_message = user_location.user_message
+
+    if user_message.polling_place_internal_id.present?
+      messages = user.user_messsages.delayed.where(polling_place_internal_id: user_message.polling_place_internal_id)
+    elsif user_message.polling_place_region.present? && user_message.polling_place_id
+      messages = user.user_messsages.delayed.where(polling_place_region: user_message.polling_place_region).where(polling_place_id: user_message.polling_place_id)
+    else
+      Airbrake.notify(
+                    error_class:    "API Error",
+                    error_message:  "Corrupted polling place",
+                    parameters:     { payload: @message.inspect }
+                )
+      return
+    end
+
+    messages.each do |message|
+      UserMessagesAnalyzer.new(message).process!
+      message.media_items.each do |media|
+        MediaItemAnalyzer.new(media).process!
+      end
+    end
+  end
+
   def process!
     case @message.key
       when *COMMISSION_KEYS
@@ -97,6 +122,11 @@ class UserMessagesAnalyzer < Analyzer
     end
 
     def process_checklist_item(check_list_item)
+      unless parsed_location
+        @message.update_column :is_delayed, true
+        return
+      end
+
       watcher_report = parsed_location.watcher_reports.find_by_key @message.key
       watcher_report = parsed_location.watcher_reports.new key: @message.key unless watcher_report
       watcher_report.user = @user
@@ -111,15 +141,28 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report.save!
 
       @message.update_column :watcher_report_id, watcher_report.id
+      @message.update_column :id_delayed, false
     end
 
     def process_sos
+      if @message.polling_place_region.present? ||
+          @message.polling_place_id.present? ||
+          @message.polling_place_internal_id &&
+          parsed_location.nil?
+
+        @message.update_column :id_delayed, true
+
+        return
+      end
+
       if @message.key == "sos_report_text"
         sos_message = @user.sos_messages.new body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message
         sos_message.location = parsed_location
         sos_message.timestamp = @message.timestamp
         sos_message.save!
       end
+
+      @message.update_column :id_delayed, false
     end
 
     def process_profile
@@ -129,7 +172,12 @@ class UserMessagesAnalyzer < Analyzer
     end
 
     def process_protocol_photo_messages
-      @message.update_column :user_location_id, parsed_location.id
+      if parsed_location
+        @message.update_column :user_location_id, parsed_location.id
+        @message.update_column :id_delayed, false
+      else
+        @message.update_column :is_delayed, true
+      end
     end
 
   private

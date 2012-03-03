@@ -8,6 +8,8 @@ class UserMessage < ActiveRecord::Base
 
   after_save :process
 
+  scope :delayed, where(is_delayed: false)
+
   private
     def process
       Delayed::Job.enqueue AnalyzeUserMessageJob.new(self.id)

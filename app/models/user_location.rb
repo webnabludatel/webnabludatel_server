@@ -26,6 +26,7 @@ class UserLocation < ActiveRecord::Base
 
   after_initialize :set_default_status
   after_save :update_watcher_reports
+  after_create :reprocess_delayed_messages
 
   attr_accessible :latitude, :longitude
 
@@ -48,5 +49,9 @@ class UserLocation < ActiveRecord::Base
       elsif self.status == "suspicious"
         self.watcher_reports.update_all(status: "location_suspicious")
       end
+    end
+
+    def reprocess_delayed_messages
+      Delayed::Job.enqueue UserMessagesReprocessJob.new(self.id)
     end
 end
