@@ -1,9 +1,7 @@
 class UserMessagesReprocessJob < Struct.new(:id)
   def perform
     @user_location = UserLocation.find id
-    analyzer = UserMessagesAnalyzer.reprocess_delayed @user_location
-
-    analyzer.process!
+    UserMessagesAnalyzer.reprocess_delayed @user_location
   end
 
   def error(job, exception)
