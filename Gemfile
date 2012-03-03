@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.1'
 gem 'pg'
+gem 'newrelic_rpm'
 
 gem 'active_link_to'
 gem 'airbrake'

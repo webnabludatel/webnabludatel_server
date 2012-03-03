@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
   #
   # Refer to Devise::Models::Confirmable for more info.
   def email_uniqueness_required?
-    email_changed? && (@bypass_postpone || !Authentication.reserved_device_email?(email_was))
+    email_changed? && (@bypass_postpone || new_record? || !Authentication.reserved_device_email?(email_was))
   end
   # End of Devise::Models::Validatable
 
