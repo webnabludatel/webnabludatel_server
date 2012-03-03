@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
   end
 
 
+  rescue_from CanCan::AccessDenied do |exception|
+    render text: "Access Denied!", status: 403
+  end
+
   private
 
   def is_mobile_device?

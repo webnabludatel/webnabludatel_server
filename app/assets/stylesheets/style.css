@@ -253,6 +253,7 @@ label {
 
 .b-fotorama {
 	margin: 0 auto 30px auto;
+	width: 700px;
 }
 
 .b-listab {
@@ -278,15 +279,27 @@ label {
 .b-listab__item a {
 	color: #0F0F0F;
 }
+
+.b-geography {
+	width: 100%;
+}
 .b-towns {
+	margin: 0 0 0 -10px;
 	font-weight: bold;
 }
 .b-towns__town {
-	width: 180px;
-	height: 150px;
 	float: left;
+	margin: 0 0 0 10px;
+	width: 226px;
+	height: 210px;
 	list-style: none;
-	padding: 0 35px 20px 0;
+}
+.b-towns__total {
+	font-size: 114%;
+}
+.b-towns__watchers {
+	font-size: 75%;
+	color: #3F3F3F;
 }
 
 /**
@@ -415,6 +428,7 @@ label {
 	border-radius: 4px;
 	background: #000 url(ios.png) no-repeat 10px 50%;
 	color: #FFF;
+	font-weight: normal;
 	text-decoration: none;
 }
 .b-download__android {
@@ -449,12 +463,10 @@ label {
 	box-shadow: 10px 0 10px -10px rgba(0,0,0,.5),  -10px 0 10px -10px rgba(0,0,0,.5);
 }
 
-.b-total__table {
-	width: 100%;
-}
 .b-total__digit {
+	float: right;
 	width: 300px;
-	vertical-align: middle;
+	padding: 50px 0 0 0;
 }
 .b-total__big {
 	display: block;
@@ -611,6 +623,9 @@ label {
 	margin-bottom: 0;
 	padding: 20px 0 0 0;
 }
+.b-news_press {
+	margin: 0 0 0 -20px;
+}
 .b-news__title {
 	margin: 0 0 10px 20px;
 	font-weight: bold;
@@ -619,6 +634,13 @@ label {
 	float: left;
 	margin: 0 20px 0 20px;
 	width: 195px;
+}
+.b-news_press .b-news__item {
+	float: none;
+	display: inline-block;
+	margin: 0 20px 40px 20px;
+	width: 195px;
+	vertical-align: top;
 }
 .b-news__logo {
 	position: relative;
@@ -638,16 +660,47 @@ label {
 	width: 120px;
 	top: -14px;
 }
+.b-news__img_ft {
+	top: -13px;
+}
+.b-news__img_rain {
+	top: -12px;
+}
 .b-news__text {
 	font-size: 70%;
+}
+
+
+.b-pdf__link {
+	float: right;
+	margin: 0 0 10px 20px;
+	padding: 5px;
+	width: 195px;
+	border: 1px solid #888D93;
+	color: #0077CB;
+	text-decoration: none !important;
+	text-align: center;
+}
+.b-pdf__link:hover {
+	border: 1px solid #0077CB;
+	background: #FFF;
+}
+.b-pdf__dwld {
+	font-size: 90%;
+	font-weight: bold;
+}
+.b-pdf__size {
+	color: #333C47;
+	font-size: 75%;
+	font-weight: normal;
 }
 
 /**
 * @section footer
 */
 .i-footer {
-	/*position: absolute;*/
-	clear: both;
+	position: absolute;
+	bottom: 0;
 	padding: 20px 0;
 	width: 100%;
 	text-align: center;
@@ -666,17 +719,17 @@ label {
 	}
 	.i-wrapper {
 		width: auto;
-		padding: 0 10px;
+		padding: 0 35px;
 	}
 	.i-content {
 		float: none;
 		margin: 0 auto;
 		padding: 0 0 20px 0;
 		width: auto;
-		max-width: 480px;
 	}
 	.i-sidebar {
 		float: none;
+		margin: 0;
 		width: auto;
 	}
 	.b-gallery {
@@ -695,13 +748,51 @@ label {
 		width: 45%;
 	}
 	.b-towns__town {
-		padding: 0 30px 20px 0;
+		width: 32%;
 	}
 	.b-personal__status {
 		font-size: 100%;
 		padding-top: 0.2em;
 	}
-	.b-violations__sidebar, .b-violations {width: 100%;}
+	.b-violations__sidebar, .b-violations {
+		width: 100%;
+	}
+	.i-footer {
+		position: relative;
+		left: 10%;
+		padding-top: 0;
+		width: 80%;
+	}
+}
+@media screen and (max-width: 740px) { 
+	.b-total__digit {
+		float: none;
+		margin: 0 0 20px 0;
+		padding: 10px 0 0 0;
+		width: auto;
+		text-align: center;
+	}
+	.b-total__diag {
+		text-align: center;
+	}
+	.b-fotorama {
+		display: none;
+	}
+	.b-listab {
+		float: none;
+		margin: 20px auto;
+		width: auto;
+	}
+	.b-listab__title {
+		text-align: center;
+	}
+	.b-listab__table {
+		margin: 0 auto;
+		width: auto;
+	}
+	.b-towns__town {
+		width: 48%;
+	}
 }
 @media screen and (min-width: 240px) and (max-width: 480px) { 
 	.i-header {
@@ -741,6 +832,7 @@ label {
 	}
 	.i-footer {
 		position: relative;
+		left: 0;
 		bottom: auto;
 		width: auto;
 	}
@@ -754,7 +846,18 @@ label {
 		font-size: 100%;
 		padding-top: 0.2em;
 	}
-	.b-violations__sidebar, .b-violations {width: 100%;}
+	.b-violations__sidebar, .b-violations {
+		width: 100%;
+	}
+	.b-towns__town {
+		float: none;
+		width: auto;
+	}
+	.b-total__diag {
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+	}
 }
 @media screen and (max-width: 319px) { 
 	.i-sidebar {
