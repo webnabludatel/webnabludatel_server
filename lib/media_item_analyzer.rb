@@ -31,7 +31,11 @@ class MediaItemAnalyzer < Analyzer
         elsif check_list_item  && check_list_item.kind.video?
           process_check_list_video
         else
-          Rails.logger.info "UNKNOWN MESSAGE KEY: #{@message.inspect}"
+          Airbrake.notify(
+              error_class:    "API Error",
+              error_message:  "Unknown message key: #{@message.key}",
+              parameters:     { payload: @message.inspect }
+          )
           return
         end
     end
