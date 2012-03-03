@@ -130,10 +130,14 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report.has_photos = check_list_item.kind.photo?
       watcher_report.has_videos = check_list_item.kind.video?
 
-      watcher_report.save!
+      if watcher_report.save
+        @message.watcher_report_id = watcher_report.id
+      else
+        @message.processing_errors.push(*watcher_report.errors.full_messages)
+      end
 
-      @message.update_column :watcher_report_id, watcher_report.id
-      @message.update_column :is_delayed, false
+      @message.is_delayed = false
+      @message.save
     end
 
     def process_sos
