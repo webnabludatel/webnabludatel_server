@@ -2,21 +2,13 @@
 
 class UserMessagesAnalyzer < Analyzer
 
-  def self.reprocess_delayedшв(user_location)
+  def self.reprocess_delayed(user_location)
     user = user_location.user
-    user_message = user_location.user_message
 
-    if user_message.polling_place_internal_id.present?
-      messages = user.user_messsages.delayed.where(polling_place_internal_id: user_message.polling_place_internal_id)
-    elsif user_message.polling_place_region.present? && user_message.polling_place_id
-      messages = user.user_messsages.delayed.where(polling_place_region: user_message.polling_place_region).where(polling_place_id: user_message.polling_place_id)
+    messages = if location.external_id.present?
+      user.user_messsages.delayed.where(polling_place_internal_id: location.external_id)
     else
-      Airbrake.notify(
-                    error_class:    "API Error",
-                    error_message:  "Corrupted polling place",
-                    parameters:     { payload: @message.inspect }
-                )
-      return
+      user.user_messsages.delayed.where(polling_place_region: location.commission.region.external_id).where(polling_place_id: location.number)
     end
 
     messages.each do |message|
