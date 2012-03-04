@@ -6,13 +6,16 @@
     %p Пользователь: #{photo.user.email} (#{photo.user.name} #{photo.user.last_name})
     %p Статус:
     %p{:id => dom_id(photo, :status)}= photo.status
+
     - if photo.image.url
-      %p= image_tag photo.image.url, :width => 800
+      = link_to photo.image.url, target: :blank do
+        = image_tag photo.image.url, width: 700
+
     %p Раздел: #{photo.watcher_report.section_title}
     %p Сообщения пользователя из этого раздела:
     %ul
       - photo.watcher_report.siblings.each do |w|
-        %li #{w.title} (#{w.key}) — #{w.is_violation ? 'НАРУШЕНИЕ' : 'нет нарушения'}
+        %li #{w.is_violation ? w.violation_text : w.title} (#{w.key}) — #{w.is_violation ? 'НАРУШЕНИЕ' : 'нет нарушения'}
     - if photo.status == 'pending'
       %div{:id => dom_id(photo, :controls)}
         = link_to 'Интересная', admin_watcher_report_photo_path(photo, :status => 'interesting'), :remote => true, :method => :put
