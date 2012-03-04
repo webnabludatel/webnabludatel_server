@@ -73,6 +73,8 @@ class UserLocation < ActiveRecord::Base
     end
 
     def reprocess_delayed_messages
+      puts "Reprocessing delayed messages for: #{self.inspect}"
+
       Delayed::Job.enqueue UserMessagesReprocessJob.new(self.id)
     end
 end

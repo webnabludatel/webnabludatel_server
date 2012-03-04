@@ -93,6 +93,10 @@ namespace :process do
     User.all.each do |user|
       user.user_messages.where(key: "district_number").each do |message|
         location_external_ids = user.locations.map(&:external_id)
+        puts "\n"
+        puts "\n"
+        puts "\n"
+        puts "------------------------------------------------------"
 
         if message.polling_place_internal_id.present?
           unless location_external_ids.include? message.polling_place_internal_id
