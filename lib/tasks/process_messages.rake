@@ -113,7 +113,7 @@ namespace :process do
   end
 
   task user_messages_without_location: :environment do
-    UserMessages.where("user_location_id is NULL").each do |message|
+    UserMessage.where("user_location_id is NULL").each do |message|
       puts "Message: #{message.id}"
 
       if message.polling_place_internal_id.present?
