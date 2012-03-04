@@ -1,5 +1,10 @@
+- display_name = [@user.first_name, @user.middle_name, @user.last_name].compact.join(" ")
+
+- set_meta_tags :open_graph => {:title => display_name, :type  => :website, :url   => request.fullpath}
+
 %h1.b-mainhead.b-mainhead_center
-  %strong.b-mainhead__name #{[@user.first_name, @user.middle_name, @user.last_name].compact.join(" ")}
+  %strong.b-mainhead__name #{display_name}
+  =# render :partial => "partials/share"
 
 - @user.commissions.each do |commission|
   .b-total
@@ -12,9 +17,9 @@
             - total_reports = commission.watcher_reports
             - reports_with_violations = commission.watcher_reports.where(:is_violation => true)
 
-            %strong.b-total__yes #{total_reports.count - reports_with_violations.count}
+            %strong.b-total__yes #{total_reports.size - reports_with_violations.size}
             правил соблюдено,
-            %strong.b-total__no #{reports_with_violations.count}
+            %strong.b-total__no #{reports_with_violations.size}
             нарушения замечено
         %td.b-personal
           -#%p.b-personal__status
@@ -26,7 +31,6 @@
             %br/
             %strong
               = commission.region.name
-    = render :partial => "partials/share"
   .b-separator
     %table.b-separator__table
       %tr.b-separator__string
@@ -38,14 +42,15 @@
     - reports_with_violations.each do |report|
       %article.b-fraud
         .b-fraud__time
-          = report.created_at.hour
+          = report.timestamp.hour
           %sup
-            = report.created_at.min
-        %h3.b-fraud__title #{report.check_list_item.title}
+            = report.timestamp.min
+        %h3.b-fraud__title #{report.check_list_item.violation_text}
         - if report.has_photos
           - report.photos.each do |photo|
             %figure.b-fraud__photo
-              = image_tag(photo.image)
+              %img{:src => "#{photo.image.url}"}
+
 
   - else
     %h3.b-fraud__title
@@ -53,5 +58,5 @@
 
   :javascript
     window.addEventListener('load', function () {
-      draw("#{total_reports.count - reports_with_violations.count}", "#{reports_with_violations.count}", "plotBig_#{commission.id}", 20);
+      draw("#{total_reports.size - reports_with_violations.size}", "#{reports_with_violations.size}", "plotBig_#{commission.id}", 20);
     }, false);
