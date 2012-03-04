@@ -10,66 +10,71 @@ jQuery(function ($) {
 
 });
 
-function draw(n, m, el, d) {
-	var d = d || 10;  /* factor */
-	var max_mn = 12;
-	var max = Math.max(n, m);
-	if (max > max_mn) {
-		if (n > m) {
-			m = parseInt(m * max_mn / n) || 1;
-			n = max_mn;
-		} else {
-			n = parseInt(n * max_mn / m) || 1;
-			m = max_mn;
-		}
-	}
-	var elem = document.getElementById(el);
-	if (!elem || !elem.getContext) return;
-	var context = elem.getContext('2d');
-	if (!context) return;
-	context.lineWidth = 1;
-	context.strokeStyle = '#fff';
-	n = Math.sqrt(n) * d;
-	m = Math.sqrt(m) * d;
-	if (m * n > 0) {
-		var x = (n + m) / 2,
-			dn = n * 11 / 20,
-			dm = m * 11 / 20,
-			hn = hm = 0;
+function draw(left_size, right_size, element, zoom_factor) {
 
-		if (n > m) hm = n - m;
-		if (m > n) hn = m - n;
+  /* prepare context */
+
+  var left_color = '#0077cb';
+  var right_color = '#df2a00';
+  var elem = document.getElementById(element);
+  if (!elem || !elem.getContext) return;
+
+  var context = elem.getContext('2d');
+  if (!context) return;
+  context.lineWidth = 1;
+  context.strokeStyle = '#fff';
+
+  var normalization_factor = 12 / Math.max(left_size, right_size);
+
+	if (normalization_factor < 1) {
+    right_size *= normalization_factor;
+    left_size *= normalization_factor
+	}
+
+  zoom_factor = zoom_factor || 10;
+  left_size = Math.sqrt(left_size) * zoom_factor;
+	right_size = Math.sqrt(right_size) * zoom_factor;
+
+  if (right_size * left_size > 0) {
+		var x = (left_size + right_size) / 2,
+			  dn = left_size * 11 / 20,
+			  dm = right_size * 11 / 20,
+			  hn = 0,
+        hm = 0;
+
+		if (left_size > right_size) hm = left_size - right_size;
+		if (right_size > left_size) hn = right_size - left_size;
 		
-		context.fillStyle   = '#0077cb';
+		context.fillStyle   = left_color;
 		context.beginPath();
-		context.moveTo(2.5 * n, n + hn);
-		context.bezierCurveTo(2.5 * n, n + hn, n + dn, hn, n, hn);
-		context.bezierCurveTo(n - dn, hn, 0, n - dn + hn, 0, n + hn);
-		context.bezierCurveTo(0, n + dn + hn, n - dn, 2 * n + hn, n, 2 * n + hn);
-		context.bezierCurveTo(n + dn, 2 * n + hn, 2.5 * n, n + hn, 2.5 * n, n + hn);
+		context.moveTo(2.5 * left_size, left_size + hn);
+		context.bezierCurveTo(2.5 * left_size, left_size + hn, left_size + dn, hn, left_size, hn);
+		context.bezierCurveTo(left_size - dn, hn, 0, left_size - dn + hn, 0, left_size + hn);
+		context.bezierCurveTo(0, left_size + dn + hn, left_size - dn, 2 * left_size + hn, left_size, 2 * left_size + hn);
+		context.bezierCurveTo(left_size + dn, 2 * left_size + hn, 2.5 * left_size, left_size + hn, 2.5 * left_size, left_size + hn);
 		context.stroke();
 		context.fill();
 		context.closePath();
 
-		context.fillStyle   = '#df2a00';
+		context.fillStyle   = right_color;
 		context.beginPath();
-		context.moveTo(2.5 * n, n + hn);
-		context.bezierCurveTo(2.5 * n, n + hn, 2 * n + m + x - dm, hm, 2 * n + m + x, hm);
-		context.bezierCurveTo(2 * n + m + x + dm, hm, 2 * n + 2 * m + x, m + hm - dm, 2 * n + 2 * m + x, m + hm);
-		context.bezierCurveTo(2 * n + 2 * m + x, m + hm + dm, 2 * n + m + x + dm, 2 * m + hm, 2 * n + m + x, 2 * m + hm);
-		context.bezierCurveTo(2 * n + m + x - dm, 2 * m + hm, 2.5 * n, n + hn, 2.5 * n, n + hn);
+		context.moveTo(2.5 * left_size, left_size + hn);
+		context.bezierCurveTo(2.5 * left_size, left_size + hn, 2 * left_size + right_size + x - dm, hm, 2 * left_size + right_size + x, hm);
+		context.bezierCurveTo(2 * left_size + right_size + x + dm, hm, 2 * left_size + 2 * right_size + x, right_size + hm - dm, 2 * left_size + 2 * right_size + x, right_size + hm);
+		context.bezierCurveTo(2 * left_size + 2 * right_size + x, right_size + hm + dm, 2 * left_size + right_size + x + dm, 2 * right_size + hm, 2 * left_size + right_size + x, 2 * right_size + hm);
+		context.bezierCurveTo(2 * left_size + right_size + x - dm, 2 * right_size + hm, 2.5 * left_size, left_size + hn, 2.5 * left_size, left_size + hn);
 		context.stroke();
 		context.fill();
 		context.closePath();
 	} else {
-		if (n == 0) {
-			context.fillStyle   = '#df2a00';
-			n = m;
+		if (left_size == 0) {
+			context.fillStyle   = right_color;
+			left_size = right_size;
 		} else {
-			context.fillStyle   = '#0077cb';
+			context.fillStyle   = left_color;
 		}
 		context.beginPath();
-		context.arc(n, n, n, 0, 360, false);
+		context.arc(left_size, left_size, left_size, 0, 360, false);
 		context.stroke();
 		context.fill();
 		context.closePath();
