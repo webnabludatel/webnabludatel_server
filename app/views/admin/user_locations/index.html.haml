@@ -16,9 +16,9 @@
         %p= image_tag photo.image
     - if user_location.status == 'pending'
       %div{:id => dom_id(user_location, :controls)}
-        = link_to 'Подтвердить', approve_admin_user_location_path(watcher_referral), :remote => true, :method => :post
-        = link_to 'Отклонить', reject_admin_user_location_path(watcher_referral), :remote => true, :method => :post
-        = link_to 'Есть проблема', problem_admin_user_location_path(watcher_referral), :remote => true, :method => :post
+        = link_to 'Подтвердить', approve_admin_user_location_path(user_location), :remote => true, :method => :post
+        = link_to 'Отклонить', reject_admin_user_location_path(user_location), :remote => true, :method => :post
+        = link_to 'Есть проблема', problem_admin_user_location_path(user_location), :remote => true, :method => :post
 
   -#
     .approve{:style => 'display:none'}
