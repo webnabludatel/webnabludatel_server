@@ -1,6 +1,6 @@
 - display_name = [@user.first_name, @user.middle_name, @user.last_name].compact.join(" ")
 
-- set_meta_tags :open_graph => {:title => display_name, :type  => :website, :url   => request.fullpath}
+- set_meta_tags :open_graph => {:title => display_name, :type  => :website, :url => "http://webnabludatel.org#{request.fullpath}"}
 
 %h1.b-mainhead.b-mainhead_center
   %strong.b-mainhead__name #{display_name}
