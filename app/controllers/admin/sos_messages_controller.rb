@@ -4,7 +4,7 @@ class Admin::SosMessagesController < Admin::BaseController
   has_scope :active, :type => :boolean
 
   def index
-    @sos_messages = SosMessage.order("timestamp DESC").page params[:page]
+    @sos_messages = SosMessage.order("id DESC").page params[:page]
   end
 
   def edit
