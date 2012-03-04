@@ -1,6 +1,7 @@
 class Admin::SosMessagesController < Admin::BaseController
 
   load_and_authorize_resource
+  has_scope :active, {:boolean => true}
 
   def index
     @sos_messages = SosMessage.order("timestamp DESC").page params[:page]

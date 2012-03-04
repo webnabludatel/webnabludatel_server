@@ -11,7 +11,8 @@
   %p Пользователь:
   %p
     - if sos_message.user
-      = "#{sos_message.user.email} (#{sos_message.user.name} #{sos_message.user.last_name})"
+      phone #{sos_message.user.phone}
+      name #{sos_message.user.first_name} #{sos_message.user.last_name}
   %p Статус:
   %p
     = sos_message.status.nil? ? "new" : "#{sos_message.status}"
@@ -20,5 +21,7 @@
   %p
     = link_to 'изменить статус', edit_admin_sos_message_path(sos_message)
 
+  %hr/
+  %br/
 
 = paginate @sos_messages
