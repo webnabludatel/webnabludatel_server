@@ -12,9 +12,10 @@
   %p Статус:
   %p= watcher_referral.status
   %p
-    - watcher_referral.photos.each do |photo|
-      %p
-        %img{:src => image_path(photo.image)}/
+    - watcher_referral.referral_photos.each do |photo|
+      - if photo.image.url
+        %p
+          = image_tag photo.image.url
   - if watcher_referral.status == 'pending'
     %p
       = link_to 'Подтвердить', '#', :class => 'watcher_referral_action', :remote => true, :data => {:action => 'approve'}
