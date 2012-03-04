@@ -101,7 +101,7 @@ namespace :process do
           end
         elsif message.polling_place_id.present? && message.polling_place_region.present?
           region = Region.find_by_external_id message.polling_place_region
-          unless user.locations.where(region_id: region.id, number: message.polling_place_id).exists?
+          unless user.commissions.where(region_id: region.id, number: message.polling_place_id).exists?
             puts "Processing: #{message.inspect}"
             UserMessagesAnalyzer.new(message).process!
           end
