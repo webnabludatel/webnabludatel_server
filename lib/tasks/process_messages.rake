@@ -90,29 +90,6 @@ namespace :process do
   end
 
   task locations: :environment do
-    #User.all.each do |user|
-    #  user.user_messages.where(key: "district_number").each do |message|
-    #    location_external_ids = user.locations.map(&:external_id)
-    #    puts "\n"
-    #    puts "\n"
-    #    puts "\n"
-    #    puts "------------------------------------------------------"
-    #
-    #    if message.polling_place_internal_id.present? && message.user_location.blank?
-    #      unless location_external_ids.include? message.polling_place_internal_id
-    #        puts "Processing: #{message.inspect}"
-    #        UserMessagesAnalyzer.new(message).process!
-    #      end
-    #    elsif message.polling_place_id.present? && message.polling_place_region.present? && message.user_location.blank?
-    #      region = Region.find_by_external_id message.polling_place_region
-    #      unless user.commissions.where(region_id: region.id, number: message.polling_place_id).exists?
-    #        puts "Processing: #{message.inspect}"
-    #        UserMessagesAnalyzer.new(message).process!
-    #      end
-    #    end
-    #  end
-    #end
-
     UserLocation.where("external_id is NULL").each do |location|
       puts "Fixing location: #{location.id}: #{location.user_messages.map(&:id).inspect}"
       messages = location.user_messages
@@ -133,8 +110,30 @@ namespace :process do
       location.save!
       puts "\n"
     end
+  end
 
+  task user_messages_without_location: :environment do
+    UserMessages.where("user_location_id is NULL").each do |message|
+      puts "Message: #{message.id}"
 
+      if message.polling_place_internal_id.present?
+        message.user_location = message.user.locations.where(external_id: message.polling_place_internal_id).first
+        message.save!
+
+        puts "Location: #{message.user_location.inspect}"
+      else
+        user = message.user
+        region = Region.find message.polling_place_region
+        commission = user.commissions.where(number: message.polling_place_id, region_id: region.id).first
+
+        message.user_location = user.locations.find_by_comission_id commission.id
+        message.save!
+
+        puts "Location: #{message.user_location.inspect}"
+      end
+
+      puts "\n"
+    end
   end
 
 end
