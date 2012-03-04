@@ -13,7 +13,8 @@
     %p{:id => dom_id(user_location, :status)}= user_location.status
     %p
       - user_location.photos.each do |photo|
-        %p= image_tag photo.image
+        - if photo.image.present?
+          %p= image_tag photo.image.url
     - if user_location.status == 'pending'
       %div{:id => dom_id(user_location, :controls)}
         = link_to 'Подтвердить', approve_admin_user_location_path(user_location), :remote => true, :method => :post
