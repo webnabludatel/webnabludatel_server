@@ -137,7 +137,7 @@ namespace :process do
           next
         end
 
-        message.user_location = user.locations.find_by_comission_id commission.id
+        message.user_location = user.locations.find_by_commission_id commission.id
         message.save!
 
         puts "Location: #{message.user_location.inspect}"
