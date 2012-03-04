@@ -31,7 +31,7 @@ namespace :process do
   end
 
   task observer_status: :environment do
-    UserMessage.where(is_processed: false, is_delayed: false).order(:timestamp) do |message|
+    UserMessage.where(is_processed: false, is_delayed: false).where(key: Analyzer::OBSERVER_STATUS_KEYS).order(:timestamp) do |message|
       analyzer = UserMessagesAnalyzer.new message
         begin
           analyzer.process!
