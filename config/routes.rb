@@ -25,15 +25,17 @@ Watcher::Application.routes.draw do
 
   resources :watcher_reports, :only => [:index]
 
-  namespace :partner do
-    resources :sos_messages, :only => [:index, :edit, :update]
-  end
-
   namespace :admin do
-    resources :watcher_referrals, only: [] do
-      collection do
-        get :moderate
+    resources :base, :only => :index
+    resources :sos_messages, :only => [:index, :edit, :update]
+    resources :watcher_referrals, :only => :index do
+      member do
+        post :approve
+        post :reject
+        post :problem
       end
+    end
+    resources :user_locations, :only => :index do
       member do
         post :approve
         post :reject

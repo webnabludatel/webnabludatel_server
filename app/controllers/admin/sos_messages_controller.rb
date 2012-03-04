@@ -1,4 +1,6 @@
-class Partner::SosMessagesController < Partner::BaseController
+class Admin::SosMessagesController < Admin::BaseController
+
+  load_and_authorize_resource
 
   def index
     @sos_messages = SosMessage.order("timestamp DESC").page params[:page]

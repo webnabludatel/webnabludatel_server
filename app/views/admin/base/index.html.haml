@@ -1,0 +1,7 @@
+%h1 Администрирование
+%p
+  = link_to 'SOS сообщения', admin_sos_messages_path if can? :show, SosMessage
+  %br
+  = link_to 'Фото направлений', admin_watcher_referrals_path if can? :show, WatcherReferral
+  %br
+  = link_to 'Участки', admin_user_locations_path if can? :show, UserLocation
