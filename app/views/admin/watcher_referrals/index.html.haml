@@ -12,7 +12,7 @@
   %p Статус:
   %p= watcher_referral.status
   %p
-    - watcher_referral.referral_photos.each do |photo|
+    - watcher_referral.photos.each do |photo|
       %p
         %img{:src => image_path(photo.image)}/
   - if watcher_referral.status == 'pending'
