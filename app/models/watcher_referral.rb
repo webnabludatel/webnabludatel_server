@@ -19,6 +19,7 @@ class WatcherReferral < ActiveRecord::Base
 
   #scope :not_done, where("status = 'approved' OR status = 'problem'")
   scope :recent, order(:created_at)
+  scope :pending, where(:status => "pending")
 
   after_initialize :set_default_status
   after_save :update_watcher_status

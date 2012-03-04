@@ -8,7 +8,7 @@ class Admin::WatcherReferralsController < Admin::BaseController
   end
 
   def index
-    @watcher_referrals = WatcherReferral.order("created_at DESC").page params[:page]
+    @watcher_referrals = WatcherReferral.order("created_at DESC").pending.page params[:page]
   end
 
   def approve
