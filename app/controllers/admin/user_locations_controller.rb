@@ -9,19 +9,19 @@ class Admin::UserLocationsController < Admin::BaseController
   def approve
     @user_location.approve! #params[:watcher_referral][:comment]
 
-    render :js => "$('##{dom_id(@user_location.id, :status)}').html('APPPROVED');$('##{dom_id(@user_location.id, :controls)}').remove()"
+    render :js => "$('##{dom_id(@user_location, :status)}').html('APPPROVED');$('##{dom_id(@user_location, :controls)}').remove()"
   end
 
   def reject
     @user_location.reject! #params[:watcher_referral][:comment]
 
-    render :js => "$('##{dom_id(@user_location.id, :status)}').html('REJECTED');$('##{dom_id(@user_location.id, :controls)}').remove()"
+    render :js => "$('##{dom_id(@user_location, :status)}').html('REJECTED');$('##{dom_id(@user_location, :controls)}').remove()"
   end
 
   def problem
     @user_location.problem! #params[:watcher_referral][:comment]
 
-    render :js => "$('##{dom_id(@user_location.id, :status)}').html('PROBLEM');$('##{dom_id(@user_location.id, :controls)}').remove()"
+    render :js => "$('##{dom_id(@user_location, :status)}').html('PROBLEM');$('##{dom_id(@user_location, :controls)}').remove()"
   end
 
 

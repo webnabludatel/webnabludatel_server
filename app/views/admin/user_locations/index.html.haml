@@ -16,7 +16,7 @@
       - user_location.photos(true).order("id desc").each do |photo|
         - if !media_items.include?(photo.media_item_id) && photo.image.url
           - media_items << photo.media_item_id
-          = image_tag photo.image.url, :width => 300
+          = image_tag photo.image.url, :width => 600
     - if user_location.status == 'pending'
       %div{:id => dom_id(user_location, :controls)}
         = link_to 'Подтвердить', approve_admin_user_location_path(user_location), :remote => true, :method => :post
