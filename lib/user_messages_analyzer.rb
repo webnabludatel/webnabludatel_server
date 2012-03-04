@@ -31,6 +31,8 @@ class UserMessagesAnalyzer < Analyzer
         process_protocol_photo_messages
       when *OBSERVER_STATUS_KEYS
         process_observer_status
+      when *OFFICIAL_OBSERVER_KEYS
+        process_official_observer
       else
         check_list_item = CheckListItem.find_by_name @message.key
         if check_list_item
@@ -187,6 +189,10 @@ class UserMessagesAnalyzer < Analyzer
       user = @message.user
       user.set_watcher_kind @message.value
       user.save!
+    end
+
+    def process_official_observer
+      # Doing nothing.
     end
 
   private

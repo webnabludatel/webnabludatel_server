@@ -54,4 +54,25 @@ namespace :process do
     end
   end
 
+  taks process_official_observer: :environment do
+    UserMessage.where(is_delayed: false, is_processed: false).where(key: :official_observer).order(:timestamp) do |message|
+      analyzer = UserMessagesAnalyzer.new message
+        begin
+          analyzer.process!
+        rescue => e
+          puts "Message: #{message.inspect}"
+          puts "e: #{e}"
+        end
+      message.media_items.each do |item|
+        media_analyzer = MediaItemAnalyzer.new item
+          begin
+            media_analyzer.process!
+          rescue => e
+            puts "MediaItem: #{item.inspect}"
+            puts "e: #{e}"
+          end
+      end
+    end
+  end
+
 end
