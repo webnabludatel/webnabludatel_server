@@ -11,6 +11,8 @@ class SosMessage < ActiveRecord::Base
 
   STATUS = %w(new in_progress done rejected)
 
+  scope :active, where(:status => ["new", "in_progress"])
+
   before_create :set_status
 
   def set_status
