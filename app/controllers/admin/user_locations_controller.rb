@@ -3,26 +3,27 @@ class Admin::UserLocationsController < Admin::BaseController
   before_filter :find_user_locations, :only => [:approve, :reject, :problem]
 
   def index
-    @user_locations = UserLocation.order("created_at DESC").page params[:page]
+    @user_locations = UserLocation.pending.joins(:photos).uniq.order("created_at").page(params[:page])
   end
 
   def approve
-    @user_location.approve! params[:user_location][:comment]
+    @user_location.approve! #params[:watcher_referral][:comment]
 
-    redirect_to admin_user_locations_path
+    render :js => "$('##{dom_id(@user_location.id, :status)}').html('APPPROVED');$('##{dom_id(@user_location.id, :controls)}').remove()"
   end
 
   def reject
-    @user_location.reject! params[:user_location][:comment]
+    @user_location.reject! #params[:watcher_referral][:comment]
 
-    redirect_to admin_user_locations_path
+    render :js => "$('##{dom_id(@user_location.id, :status)}').html('REJECTED');$('##{dom_id(@user_location.id, :controls)}').remove()"
   end
 
   def problem
-    @user_location.problem! params[:user_location][:comment]
+    @user_location.problem! #params[:watcher_referral][:comment]
 
-    redirect_to  admin_user_locations_path
+    render :js => "$('##{dom_id(@user_location.id, :status)}').html('PROBLEM');$('##{dom_id(@user_location.id, :controls)}').remove()"
   end
+
 
   protected
   def find_user_locations

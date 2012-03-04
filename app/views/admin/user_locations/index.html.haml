@@ -1,23 +1,26 @@
 %h1 Участки
 
 - @user_locations.each do |user_location|
-  %p= "##{user_location.id}"
-  %p Пользователь:
-  %p= "#{user_location.user.email} (#{user_location.user.name} #{user_location.user.last_name})"
-  %p Коммисия:
-  %p= user_location.commission.number
-  %p Комментарий:
-  %p= user_location.comment
-  %p Статус:
-  %p= user_location.status
-  %p
-    - user_location.photos.each do |photo|
-      %p= image_tag photo.image
-  - if user_location.status == 'pending'
+  %div{:id => dom_id(user_location)}
+    %p= "##{user_location.id}"
+    %p Пользователь:
+    %p= "#{user_location.user.email} (#{user_location.user.name} #{user_location.user.last_name})"
+    %p Коммисия:
+    %p= user_location.commission.number (регион: user_location.commission.region.name)
+    %p Комментарий:
+    %p= user_location.comment
+    %p Статус:
+    %p{:id => dom_id(user_location, :status)}= user_location.status
     %p
-      = link_to 'Подтвердить', '#', :class => 'user_location_action', :remote => true, :data => {:action => 'approve'}
-      = link_to 'Отклонить', '#', :class => 'user_location_action', :remote => true, :data => {:action => 'reject'}
-      = link_to 'Есть проблема', '#', :class => 'user_location_action', :remote => true, :data => {:action => 'problem'}
+      - user_location.photos.each do |photo|
+        %p= image_tag photo.image
+    - if user_location.status == 'pending'
+      %div{:id => dom_id(user_location, :controls)}
+        = link_to 'Подтвердить', approve_admin_user_location_path(watcher_referral), :remote => true, :method => :post
+        = link_to 'Отклонить', reject_admin_user_location_path(watcher_referral), :remote => true, :method => :post
+        = link_to 'Есть проблема', problem_admin_user_location_path(watcher_referral), :remote => true, :method => :post
+
+  -#
     .approve{:style => 'display:none'}
       = form_for user_location, :url => approve_admin_user_location_path(user_location), :method => :post do |f|
         %p= f.label 'Комментарий'
@@ -34,3 +37,4 @@
         %p= f.text_field :comment
         %p= f.submit 'Есть проблема'
 
+= paginate @user_locations
