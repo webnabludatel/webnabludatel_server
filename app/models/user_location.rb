@@ -8,6 +8,8 @@ class UserLocation < ActiveRecord::Base
   has_many :sos_messages, dependent: :nullify
   has_many :watcher_reports, dependent: :destroy, order: :timestamp
 
+  has_many :user_messages
+
   has_many :protocol_photos, dependent: :destroy, order: :timestamp
   has_many :protocol_photo_copies, dependent: :destroy, order: :timestamp
 
