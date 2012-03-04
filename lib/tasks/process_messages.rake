@@ -31,7 +31,19 @@ namespace :process do
   end
 
   task observer_status: :environment do
-    UserMessage.where(is_processed: false, is_delayed: false).where(key: Analyzer::OBSERVER_STATUS_KEYS).order(:timestamp) do |message|
+    UserMessage.where(is_delayed: false).where(key: Analyzer::OBSERVER_STATUS_KEYS).order(:timestamp) do |message|
+      analyzer = UserMessagesAnalyzer.new message
+        begin
+          analyzer.process!
+        rescue => e
+          puts "Message: #{message.inspect}"
+          puts "e: #{e}"
+        end
+    end
+  end
+
+  task voters_lists_are_ok: :environment do
+    UserMessage.where(is_delayed: false).where(key: :voters_lists_are_ok).order(:timestamp) do |message|
       analyzer = UserMessagesAnalyzer.new message
         begin
           analyzer.process!
