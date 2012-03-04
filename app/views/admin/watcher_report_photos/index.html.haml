@@ -17,7 +17,7 @@
       %div{:id => dom_id(photo, :controls)}
         = link_to 'Интересная', admin_watcher_report_photo_path(photo, :status => 'interesting'), :remote => true, :method => :put
         = link_to 'Обычная', admin_watcher_report_photo_path(photo, :status => 'standard'), :remote => true, :method => :put
-        = link_to 'Брак', admin_watcher_report_photo_path(photo, :status => 'defective'), :remote => true, :method => :put
+        = link_to 'Проблема', admin_watcher_report_photo_path(photo, :status => 'defective'), :remote => true, :method => :put
         = link_to 'Мусор', admin_watcher_report_photo_path(photo, :status => 'trash'), :remote => true, :method => :put
 
 = paginate @watcher_report_photos

@@ -4,7 +4,7 @@ class Admin::WatcherReportPhotosController < Admin::BaseController
   load_and_authorize_resource
 
   def index
-    @watcher_report_photos = WatcherReportPhoto.includes(:watcher_report => :user).order("id").page(params[:page])
+    @watcher_report_photos = WatcherReportPhoto.pending.includes(:watcher_report => :user).order("id").page(params[:page])
   end
 
   def update
