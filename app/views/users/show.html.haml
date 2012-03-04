@@ -44,8 +44,8 @@
         %h3.b-fraud__title #{report.check_list_item.title}
         - if report.has_photos
           - report.photos.each do |photo|
-        %figure.b-fraud__photo
-          = image_tag(photo.image)
+            %figure.b-fraud__photo
+              = image_tag(photo.image)
 
   - else
     %h3.b-fraud__title
@@ -53,6 +53,5 @@
 
   :javascript
     window.addEventListener('load', function () {
-      draw(#{total_reports.count - reports_with_violations.count}, #{reports_with_violations.count}, "plotBig_#{commission.id}", 20);
+      draw("#{total_reports.count - reports_with_violations.count}", "#{reports_with_violations.count}", "plotBig_#{commission.id}", 20);
     }, false);
-	
