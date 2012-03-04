@@ -114,10 +114,17 @@ class UserMessagesAnalyzer < Analyzer
         return
       end
 
+      # Fixing old api bug
+      message_value = if @message.key == "koib_nonelectricity_problem" && @message.old_api?
+        @message.value == "false" ? "true" : "false"
+      else
+        @message.value
+      end
+
       watcher_report = parsed_location.watcher_reports.find_by_key @message.key
       watcher_report = parsed_location.watcher_reports.new key: @message.key unless watcher_report
       watcher_report.user = @user
-      watcher_report.value = @message.value
+      watcher_report.value = message_value
       watcher_report.timestamp = @message.timestamp
       watcher_report.latitude = @message.latitude
       watcher_report.longitude = @message.longitude
