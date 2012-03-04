@@ -38,7 +38,7 @@
   - if location.violations.present?
     - location.violations.select {|r| r.smart_title.present? || r.photos.present?}.each do |report|
       %article.b-fraud
-        .b-fraud__time= l report.timestamp, format: "%H<sup>%M</sup>"
+        .b-fraud__time= l(report.timestamp, format: "%H<sup>%M</sup>").html_safe
         %h3.b-fraud__title #{report.smart_title}
         - report.photos.each do |photo|
           %figure.b-fraud__photo
