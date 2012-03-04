@@ -55,17 +55,17 @@ class UserMessagesAnalyzer < Analyzer
     def process_commission
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
       current_batch = get_location_messages_for_current
-      Rails.logger.info "> CURRENT_BATCH: #{current_batch.inspect}"
+      puts "> CURRENT_BATCH: #{current_batch.inspect}"
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
 
       # 3.1 Finding a commission, if there is no such commission creating not-system pending commission.
       region = Region.find_by_external_id! current_batch["district_region"].value
-      Rails.logger.info "> REGION: #{region.inspect}"
+      puts "> REGION: #{region.inspect}"
       commission = region.commissions.where(kind: current_batch["district_type"].value, number: current_batch["district_number"].value).first
-      Rails.logger.info "> CURRENT_BATCH: #{current_batch.inspect}"
+      puts "> CURRENT_BATCH: #{current_batch.inspect}"
       location = @message.user_location
-      Rails.logger.info "> LOCATION: #{location.inspect}"
+      puts "> LOCATION: #{location.inspect}"
 
       if commission && !location
         location = @user.locations.where(commission_id: commission.id).first
@@ -75,7 +75,7 @@ class UserMessagesAnalyzer < Analyzer
         commission.save!
       end
 
-      Rails.logger.info "> COMMISSION: #{commission.inspect}"
+      puts "> COMMISSION: #{commission.inspect}"
 
       # 3.2 Updating +user_location+ +commission+
       if location && location.commission != commission
@@ -85,7 +85,7 @@ class UserMessagesAnalyzer < Analyzer
 
       location = @user.locations.new unless location
 
-      Rails.logger.info "> LOCATION: #{location.inspect}"
+      puts "> LOCATION: #{location.inspect}"
 
       message_for_coordinates = current_batch["district_banner_photo"] || current_batch.first.second
       location.latitude = message_for_coordinates.latitude
@@ -97,14 +97,14 @@ class UserMessagesAnalyzer < Analyzer
 
       location.save!
 
-      Rails.logger.info "> LOCATION: #{location.inspect}"
+      puts "> LOCATION: #{location.inspect}"
 
       photo_message = current_batch["district_banner_photo"]
       if photo_message && photo_message.media_items.present?
         processed_items = location.photos.where(media_item_id: photo_message.media_items.map(&:id))
         media_items = photo_message.media_items.reject{|media_item| processed_items.include? media_item.id }
 
-        Rails.logger.info "> MEDIA_ITEMS: #{media_items.inspect}"
+        puts "> MEDIA_ITEMS: #{media_items.inspect}"
 
         media_items.each do |media_item|
           photo = location.photos.build
