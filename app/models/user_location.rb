@@ -11,7 +11,7 @@ class UserLocation < ActiveRecord::Base
   has_many :protocol_photos, dependent: :destroy, order: :timestamp
   has_many :protocol_photo_copies, dependent: :destroy, order: :timestamp
 
-  STATUSES = %W(pending approved rejected suspicious waiting_for_data)
+  STATUSES = %W(pending approved rejected problem suspicious waiting_for_data)
 
   validates :status, inclusion: { in: STATUSES }
   validates :user, presence: true
