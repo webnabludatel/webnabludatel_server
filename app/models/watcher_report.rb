@@ -40,6 +40,25 @@ class WatcherReport < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
+  def title
+    check_list_item.title rescue 'неизвестно'
+  end
+
+  def smart_title
+    is_violation ? check_list_item.violation_text : check_list_item.title rescue 'неизвестно'
+  end
+
+  def section_title
+    check_list_item.parent.title rescue 'неизвестно'
+  end
+
+  def siblings
+    keys = check_list_item.siblings.map(&:name)
+    user_location.watcher_reports.where(:key => keys)
+  rescue
+    []
+  end
+
   protected
 
     def set_status

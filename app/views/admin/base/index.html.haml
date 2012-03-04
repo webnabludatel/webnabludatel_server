@@ -5,3 +5,5 @@
   = link_to 'Фото направлений', admin_watcher_referrals_path if can? :show, WatcherReferral
   %br
   = link_to 'Участки', admin_user_locations_path if can? :show, UserLocation
+  %br
+  = link_to 'Фото нарушений', admin_watcher_report_photos_path if can? :show, WatcherReportPhoto

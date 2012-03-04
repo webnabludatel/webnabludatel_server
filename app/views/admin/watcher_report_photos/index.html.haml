@@ -1,0 +1,26 @@
+%h1 Фотографии нарушений
+
+- @watcher_report_photos.each do |photo|
+  %div{:id => dom_id(photo)}
+    %p= "##{photo.id}"
+    %p Пользователь: #{photo.user.email} (#{photo.user.name} #{photo.user.last_name})
+    %p Статус:
+    %p{:id => dom_id(photo, :status)}= photo.status
+
+    - if photo.image.url
+      = link_to photo.image.url, target: :blank do
+        = image_tag photo.image.url, width: 700
+
+    %p Раздел: #{photo.watcher_report.section_title}
+    %p Сообщения пользователя из этого раздела:
+    %ul
+      - photo.watcher_report.siblings.each do |w|
+        %li #{w.smart_title} (#{w.key}) — #{w.is_violation ? 'НАРУШЕНИЕ' : 'нет нарушения'}
+    - if photo.status == 'pending'
+      %div{:id => dom_id(photo, :controls)}
+        = link_to 'Интересная', admin_watcher_report_photo_path(photo, :status => 'interesting'), :remote => true, :method => :put
+        = link_to 'Обычная', admin_watcher_report_photo_path(photo, :status => 'standard'), :remote => true, :method => :put
+        = link_to 'Проблема', admin_watcher_report_photo_path(photo, :status => 'defective'), :remote => true, :method => :put
+        = link_to 'Мусор', admin_watcher_report_photo_path(photo, :status => 'trash'), :remote => true, :method => :put
+
+= paginate @watcher_report_photos

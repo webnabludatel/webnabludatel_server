@@ -23,21 +23,4 @@
         = link_to 'Отклонить', reject_admin_user_location_path(user_location), :remote => true, :method => :post
         = link_to 'Есть проблема', problem_admin_user_location_path(user_location), :remote => true, :method => :post
 
-  -#
-    .approve{:style => 'display:none'}
-      = form_for user_location, :url => approve_admin_user_location_path(user_location), :method => :post do |f|
-        %p= f.label 'Комментарий'
-        %p= f.text_field :comment
-        %p= f.submit 'Подтвердить'
-    .reject{:style => 'display:none'}
-      = form_for user_location, :url => reject_admin_user_location_path(user_location), :method => :post do |f|
-        %p= f.label 'Комментарий'
-        %p= f.text_field :comment
-        %p= f.submit 'Отклонить'
-    .problem{:style => 'display:none'}
-      = form_for user_location, :url => problem_admin_user_location_path(user_location), :method => :post do |f|
-        %p= f.label 'Комментарий'
-        %p= f.text_field :comment
-        %p= f.submit 'Есть проблема'
-
 = paginate @user_locations
