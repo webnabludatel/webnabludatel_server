@@ -126,6 +126,11 @@ namespace :process do
         region = Region.find message.polling_place_region
         commission = user.commissions.where(number: message.polling_place_id, region_id: region.id).first
 
+        unless commission
+          puts "No commission for: #{message.polling_place_id} - #{region.id}"
+          next
+        end
+
         message.user_location = user.locations.find_by_comission_id commission.id
         message.save!
 
