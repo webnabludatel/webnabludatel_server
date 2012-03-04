@@ -83,7 +83,7 @@ class UserMessagesAnalyzer < Analyzer
         location.status = "pending"
       end
 
-      pust "CREATING NEW LOCATION"
+      puts "CREATING NEW LOCATION" unless location
       location = @user.locations.new unless location
 
       puts "> LOCATION: #{location.inspect}"
