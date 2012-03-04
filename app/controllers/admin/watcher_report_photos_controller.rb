@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Admin::WatcherReportPhotosController < Admin::BaseController
   load_and_authorize_resource
 
