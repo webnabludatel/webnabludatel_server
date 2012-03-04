@@ -1,6 +1,7 @@
 %h1 SOS сообщения
 - @sos_messages.each do |sos_message|
   %p= "##{sos_message.user_id}"
+  %p= sos_messages.created_at
   %p Cообщение:
   %p= sos_message.body
   - if sos_message.location
@@ -13,6 +14,7 @@
     - if sos_message.user
       phone #{sos_message.user.phone}
       name #{sos_message.user.first_name} #{sos_message.user.last_name}
+      email #{sos_message.user.unconfirmed_email}
   %p Статус:
   %p
     = sos_message.status.nil? ? "new" : "#{sos_message.status}"
