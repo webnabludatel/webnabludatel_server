@@ -126,6 +126,12 @@ class UserMessagesAnalyzer < Analyzer
       end
 
       watcher_report = parsed_location.watcher_reports.find_by_key @message.key
+
+      if watcher_report && watcher_report.timestamp > @message.timestamp
+        Rails.logger.info "OLD MESSAGE: Message: #{@message.id}"
+        return
+      end
+
       watcher_report = parsed_location.watcher_reports.new key: @message.key unless watcher_report
       watcher_report.user = @user
       watcher_report.value = message_value
