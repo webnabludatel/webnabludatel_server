@@ -1,0 +1,30 @@
+:css
+  td {padding: 10px}
+
+%h1 User Messages
+
+= form_for @search, :url => admin_user_messages_path, :html => {:method => :get} do |f|
+  = f.label :user_id_eq, "User Id: "
+  = f.text_field :user_id_eq
+  = f.label :with_processing_errors, "Only errors:"
+  = f.check_box :with_processing_errors
+  = f.submit "Search"
+  = link_to "Clear", admin_user_messages_path
+
+%p Найдено: #{@user_messages.total_count}
+
+= paginate @user_messages
+
+%table
+  - @user_messages.each do |m|
+    %tr
+      %td= m.id
+      %td= m.user_id
+      %td= m.key
+      %td= m.value
+      %td= m.latitude
+      %td= m.longitude
+      %td= l m.timestamp, format: :short
+      %td= m.processing_errors.join(", ")
+
+= paginate @user_messages
