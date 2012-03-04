@@ -70,6 +70,18 @@ class User < ActiveRecord::Base
     name.presence || email.presence || authentications.first.to_s
   end
 
+  def full_watcher_kind
+    if WATCHER_KINDS.index(watcher_kind) != 0
+      if watcher_status.approved?
+        "#{watcher_kind} (подтверждено)"
+      else
+        "#{watcher_kind} (ожидает подтверждения)"
+      end
+    else
+      watcher_kind
+    end
+  end
+
   def apply_omniauth(omniauth)
     extract_omniauth_data(omniauth)
     authentications.build(

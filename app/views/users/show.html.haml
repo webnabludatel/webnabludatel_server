@@ -22,15 +22,15 @@
             %strong.b-total__no #{reports_with_violations.size}
             нарушения замечено
         %td.b-personal
-          -#%p.b-personal__status
+          %p.b-personal__status
             Статус
             %br/
-            %strong Наблюдатель УИК
+            %strong= @user.full_watcher_kind
           %p.b-personal__status
-            География
+            Комиссия
             %br/
             %strong
-              = commission.region.name
+              = commission.full_title
   .b-separator
     %table.b-separator__table
       %tr.b-separator__string
