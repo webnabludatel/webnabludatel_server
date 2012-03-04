@@ -29,6 +29,8 @@ class UserMessagesAnalyzer < Analyzer
         process_profile
       when *RESULT_PHOTO_KEYS
         process_protocol_photo_messages
+      when *OBSERVER_STATUS_KEYS
+        process_observer_status
       else
         check_list_item = CheckListItem.find_by_name @message.key
         if check_list_item
@@ -179,6 +181,12 @@ class UserMessagesAnalyzer < Analyzer
       else
         @message.update_column :is_delayed, true
       end
+    end
+
+    def process_observer_status
+      user = @message.user
+      user.set_watcher_kind @message.value
+      user.save!
     end
 
   private

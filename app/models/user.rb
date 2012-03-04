@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :sos_messages, dependent: :destroy
 
   WATCHER_STATUSES = %W(pending approved rejected problem blocked none)
+  WATCHER_KINDS = ["Участник голосования", "Наблюдатель", "Член УИК с ПСГ", "Член УИК с ПРГ", "Член ТИК с ПСГ", "Член ТИК с ПРГ", "Представитель прессы"]
 
   scope :admins, where(role: "admin")
   scope :moderators, where(role: "moderators")
@@ -45,6 +46,10 @@ class User < ActiveRecord::Base
 
   def watcher_status
     ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
+  end
+
+  def set_watcher_kind(kind_index)
+    self.watcher_kind = WATCHER_KINDS[kind_index.to_i]
   end
 
   # TODO: Maybe we need to cache it in DB. Change order.

@@ -8,6 +8,8 @@ class Analyzer
 
   PROFILE_KEYS = %W(email first_name middle_name last_name phone)
 
+  OBSERVER_STATUS_KEYS = %W(observer_status)
+
   RESULT_PHOTO_KEYS = %W(protocol_photo protocol_copy_photo)
 
   def initialize(message)
