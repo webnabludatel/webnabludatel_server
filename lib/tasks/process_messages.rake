@@ -114,12 +114,12 @@ namespace :process do
     #end
 
     UserLocation.where("external_id is NULL").each do |location|
-      puts "Fixing location: #{location.id}"
+      puts "Fixing location: #{location.id}: #{location.user_messages.map(&:id).inspect}"
       messages = location.user_messages
 
       polling_place_internal_id = nil
       messages.each do |message|
-        raise "Fuck: #{location.id}" if polling_place_internal_id && polling_place_internal != message.polling_place_internal_id
+        raise "Fuck: #{location.id}" if polling_place_internal_id && polling_place_internal_id != message.polling_place_internal_id
 
         polling_place_internal_id = message.polling_place_internal_id
       end
