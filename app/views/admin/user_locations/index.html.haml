@@ -1,0 +1,36 @@
+%h1 Участки
+
+- @user_locations.each do |user_location|
+  %p= "##{user_location.id}"
+  %p Пользователь:
+  %p= "#{user_location.user.email} (#{user_location.user.name} #{user_location.user.last_name})"
+  %p Коммисия:
+  %p= user_location.commission.number
+  %p Комментарий:
+  %p= user_location.comment
+  %p Статус:
+  %p= user_location.status
+  %p
+    - user_location.photos.each do |photo|
+      %p= image_tag photo.image
+  - if user_location.status == 'pending'
+    %p
+      = link_to 'Подтвердить', '#', :class => 'user_location_action', :remote => true, :data => {:action => 'approve'}
+      = link_to 'Отклонить', '#', :class => 'user_location_action', :remote => true, :data => {:action => 'reject'}
+      = link_to 'Есть проблема', '#', :class => 'user_location_action', :remote => true, :data => {:action => 'problem'}
+    .approve{:style => 'display:none'}
+      = form_for user_location, :url => approve_admin_user_location_path(user_location), :method => :post do |f|
+        %p= f.label 'Комментарий'
+        %p= f.text_field :comment
+        %p= f.submit 'Подтвердить'
+    .reject{:style => 'display:none'}
+      = form_for user_location, :url => reject_admin_user_location_path(user_location), :method => :post do |f|
+        %p= f.label 'Комментарий'
+        %p= f.text_field :comment
+        %p= f.submit 'Отклонить'
+    .problem{:style => 'display:none'}
+      = form_for user_location, :url => problem_admin_user_location_path(user_location), :method => :post do |f|
+        %p= f.label 'Комментарий'
+        %p= f.text_field :comment
+        %p= f.submit 'Есть проблема'
+

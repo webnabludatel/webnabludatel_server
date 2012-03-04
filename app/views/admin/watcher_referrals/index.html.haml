@@ -1,0 +1,34 @@
+%h1 Фото направлений
+
+- @watcher_referrals.each do |watcher_referral|
+  %p= "##{watcher_referral.id}"
+  %p Пользователь:
+  %p= "#{watcher_referral.user.email} (#{watcher_referral.user.name} #{watcher_referral.user.last_name})"
+  %p Комментарий:
+  %p= watcher_referral.comment
+  %p Статус:
+  %p= watcher_referral.status
+  %p
+    - watcher_referral.referral_photos.each do |photo|
+      %p= image_tag photo.image
+  - if watcher_referral.status == 'pending'
+    %p
+      = link_to 'Подтвердить', '#', :class => 'watcher_referral_action', :remote => true, :data => {:action => 'approve'}
+      = link_to 'Отклонить', '#', :class => 'watcher_referral_action', :remote => true, :data => {:action => 'reject'}
+      = link_to 'Есть проблема', '#', :class => 'watcher_referral_action', :remote => true, :data => {:action => 'problem'}
+    .approve{:style => 'display:none'}
+      = form_for watcher_referral, :url => approve_admin_watcher_referral_path(watcher_referral), :method => :post do |f|
+        %p= f.label 'Комментарий'
+        %p= f.text_field :comment
+        %p= f.submit 'Подтвердить'
+    .reject{:style => 'display:none'}
+      = form_for watcher_referral, :url => reject_admin_watcher_referral_path(watcher_referral), :method => :post do |f|
+        %p= f.label 'Комментарий'
+        %p= f.text_field :comment
+        %p= f.submit 'Отклонить'
+    .problem{:style => 'display:none'}
+      = form_for watcher_referral, :url => problem_admin_watcher_referral_path(watcher_referral), :method => :post do |f|
+        %p= f.label 'Комментарий'
+        %p= f.text_field :comment
+        %p= f.submit 'Есть проблема'
+
