@@ -6,7 +6,7 @@
     %p Пользователь:
     %p= "#{user_location.user.email} (#{user_location.user.name} #{user_location.user.last_name})"
     %p Коммисия:
-    %p= user_location.commission.number (регион: user_location.commission.region.name)
+    %p #{user_location.commission.number} (регион: #{user_location.commission.region.name})
     %p Комментарий:
     %p= user_location.comment
     %p Статус:
