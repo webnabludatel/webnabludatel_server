@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120303152634) do
+ActiveRecord::Schema.define(:version => 20120303222801) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.integer  "user_id",    :null => false
     t.string   "provider",   :null => false
     t.string   "uid",        :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "token"
     t.string   "secret"
   end
@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.float    "longitude"
     t.string   "kind"
     t.text     "address"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.string   "status"
     t.integer  "region_id"
     t.boolean  "is_system",  :default => false
@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -92,17 +92,15 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
   create_table "device_messages", :force => true do |t|
     t.text     "payload"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "kind",            :default => "message", :null => false
     t.string   "device_id"
     t.integer  "media_item_id"
     t.integer  "user_message_id"
   end
 
-  add_index "device_messages", ["media_item_id"], :name => "index_device_messages_on_media_item_id"
   add_index "device_messages", ["user_id"], :name => "index_device_messages_on_user_id"
-  add_index "device_messages", ["user_message_id"], :name => "index_device_messages_on_user_message_id"
 
   create_table "media_items", :force => true do |t|
     t.integer  "user_message_id"
@@ -117,13 +115,12 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
   end
 
   add_index "media_items", ["user_id"], :name => "index_media_items_on_user_id"
-  add_index "media_items", ["user_message_id"], :name => "index_media_items_on_user_message_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "title"
     t.string   "kind"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "protocol_photo_copies", :force => true do |t|
@@ -193,12 +190,14 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.text     "body"
     t.integer  "user_id"
     t.datetime "timestamp"
-    t.decimal  "latitude",         :precision => 11, :scale => 8
-    t.decimal  "longitude",        :precision => 11, :scale => 8
+    t.decimal  "latitude",             :precision => 11, :scale => 8
+    t.decimal  "longitude",            :precision => 11, :scale => 8
     t.integer  "user_message_id"
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.integer  "user_location_id"
+    t.string   "status"
+    t.integer  "last_changed_user_id"
   end
 
   add_index "sos_messages", ["user_id"], :name => "index_sos_messages_on_user_id"
@@ -227,8 +226,8 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "external_id"
     t.string   "chairman"
     t.string   "secretary"
@@ -253,15 +252,16 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.integer  "watcher_report_id"
     t.boolean  "is_processed",                                             :default => false
     t.boolean  "is_delayed",                                               :default => false
+    t.text     "processing_errors"
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -269,15 +269,12 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.integer  "failed_attempts",                       :default => 0
+    t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "role"
-    t.string   "watcher_status"
-    t.integer  "organization_id"
-    t.boolean  "is_watcher"
     t.string   "name"
     t.string   "first_name"
     t.string   "last_name"
@@ -285,6 +282,9 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.string   "phone"
     t.text     "urls"
     t.date     "birth_date"
+    t.string   "watcher_status"
+    t.integer  "organization_id"
+    t.boolean  "is_watcher",             :default => false
     t.string   "unconfirmed_email"
     t.string   "middle_name"
   end
@@ -313,8 +313,8 @@ ActiveRecord::Schema.define(:version => 20120303152634) do
     t.integer  "user_id"
     t.string   "status"
     t.text     "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "image"
   end
 

@@ -34,6 +34,27 @@ class UserLocation < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
+  def approve!(comment = nil)
+    self.status = "approved"
+    self.comment = comment
+
+    save
+  end
+
+  def reject!(comment = nil)
+    self.status = "rejected"
+    self.comment = comment
+
+    save
+  end
+
+  def problem!(comment = nil)
+    self.status = "problem"
+    self.comment = comment
+
+    save
+  end
+
   private
     def set_default_status
       self.status = "pending" if self.status.blank?

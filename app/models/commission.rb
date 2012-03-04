@@ -4,7 +4,7 @@ class Commission < ActiveRecord::Base
   has_many :user_locations, dependent: :destroy
   has_many :users, through: :user_locations
   has_many :sos_messages, through: :user_locations
-  has_many :watcher_reports, dependent: :destroy
+  has_many :watcher_reports, through: :user_locations
 
   belongs_to :region
 

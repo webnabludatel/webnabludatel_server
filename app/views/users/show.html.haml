@@ -1,3 +1,58 @@
-%h1
-  До начала голосования приложение работает в тестовом режиме и отчеты о ходе выборов не формируются. Благодарим за использование нашего приложения. По всем вопросам пишите на:
-  %a{:href => "mailto:info@webnabludatel.org"} info@webnabludatel.org
+%h1.b-mainhead.b-mainhead_center
+  %strong.b-mainhead__name #{[@user.first_name, @user.middle_name, @user.last_name].compact.join(" ")}
+
+- @user.commissions.each do |commission|
+  .b-total
+    %table.b-total__table
+      %tr.b-total__string
+        %td.b-total__diag
+          %p
+            %canvas{:height => "160", :width => "360", :id => "plotBig_#{commission.id}"}
+          %p
+            - total_reports = commission.watcher_reports
+            - reports_with_violations = commission.watcher_reports.where(:is_violation => true)
+
+            %strong.b-total__yes #{total_reports.count - reports_with_violations.count}
+            правил соблюдено,
+            %strong.b-total__no #{reports_with_violations.count}
+            нарушения замечено
+        %td.b-personal
+          -#%p.b-personal__status
+            Статус
+            %br/
+            %strong Наблюдатель УИК
+          %p.b-personal__status
+            География
+            %br/
+            %strong
+              = commission.region.name
+    = render :partial => "partials/share"
+  .b-separator
+    %table.b-separator__table
+      %tr.b-separator__string
+        %td.b-separator__side  
+        %td.b-separator__name Нарушения
+        %td.b-separator__side  
+
+  - if reports_with_violations
+    - reports_with_violations.each do |report|
+      %article.b-fraud
+        .b-fraud__time
+          = report.created_at.hour
+          %sup
+            = report.created_at.min
+        %h3.b-fraud__title #{report.check_list_item.title}
+        - if report.has_photos
+          - report.photos.each do |photo|
+        %figure.b-fraud__photo
+          = image_tag(photo.image)
+
+  - else
+    %h3.b-fraud__title
+      Нарушений нет
+
+  :javascript
+    window.addEventListener('load', function () {
+      draw(#{total_reports.count - reports_with_violations.count}, #{reports_with_violations.count}, "plotBig_#{commission.id}", 20);
+    }, false);
+	
