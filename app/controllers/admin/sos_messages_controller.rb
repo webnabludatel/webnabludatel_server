@@ -16,7 +16,7 @@ class Admin::SosMessagesController < Admin::BaseController
     @sos_message.status = params[:sos_message][:status]
     @sos_message.last_changed_user = current_user
     @sos_message.save
-    redirect_to admin_sos_messages_path
+    redirect_to admin_sos_messages_path(:active => true)
   end
 
 end
