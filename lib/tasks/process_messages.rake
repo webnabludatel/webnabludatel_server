@@ -123,7 +123,7 @@ namespace :process do
         puts "Location: #{message.user_location.inspect}"
       else
         user = message.user
-        region = Region.find message.polling_place_region
+        region = Region.find_by_external_id message.polling_place_region
 
         unless region
           puts "No region: #{message.polling_place_region}"
