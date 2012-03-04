@@ -12,21 +12,26 @@ class Admin::WatcherReferralsController < Admin::BaseController
   end
 
   def approve
-    @referral.approve! params[:watcher_referral][:comment]
+    @referral.approve! #params[:watcher_referral][:comment]
 
-    redirect_to admin_watcher_referrals_path
+    render :js => "$('#watcher_referral_#{@referral.id}_status').html('approve');$('#watcher_referral_#{@referral.id}_actions').remove()"
+    #redirect_to admin_watcher_referrals_path
   end
 
   def reject
-    @referral.reject! params[:watcher_referral][:comment]
+    @referral.reject! #params[:watcher_referral][:comment]
 
-    redirect_to admin_watcher_referrals_path
+    render :js => "$('#watcher_referral_#{@referral.id}_status').html('reject');$('#watcher_referral_#{@referral.id}_actions').remove()"
+
+    #redirect_to admin_watcher_referrals_path
   end
   
   def problem
-    @referral.problem! params[:watcher_referral][:comment]
+    @referral.problem! #params[:watcher_referral][:comment]
 
-    redirect_to  admin_watcher_referrals_path
+    render :js => "$('#watcher_referral_#{@referral.id}_status').html('problem');$('#watcher_referral_#{@referral.id}_actions').remove()"
+
+    #redirect_to  admin_watcher_referrals_path
   end
 
   protected
