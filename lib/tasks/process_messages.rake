@@ -89,8 +89,25 @@ namespace :process do
     end
   end
 
-  #task locations: :environment do
-  #
-  #end
+  task locations: :environment do
+    User.all.each do |user|
+      user.user_messages.where(key: "district_number").each do |message|
+        location_external_ids = user.locations.map(&:external_id)
+
+        if message.polling_place_internal_id.present?
+          unless location_external_ids.include? message.polling_place_internal_id
+            puts "Processing: #{message.inspect}"
+            UserMessagesAnalyzer.new(message).process!
+          end
+        elsif message.polling_place_id.present? && message.polling_place_region.present?
+          region = Region.find_by_external_id message.polling_place_region
+          unless user.locations.where(region_id: region.id, number: message.polling_place_id).exists?
+            puts "Processing: #{message.inspect}"
+            UserMessagesAnalyzer.new(message).process!
+          end
+        end
+      end
+    end
+  end
 
 end
