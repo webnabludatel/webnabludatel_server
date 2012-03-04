@@ -75,4 +75,22 @@ namespace :process do
     end
   end
 
+  task failed: :environment do
+    check_list_keys = CheckListItem.all.map(&:name)
+
+    UserMessage.where(is_delayed: false, is_processed: false).where("value is NOT NULL").where(key: check_list_keys).order(:timestamp).each do |message|
+      next if message.user.watcher_reports.where(key: message.key).where("timestamp > ?", message.timestamp).exists?
+
+      UserMessagesAnalyzer.new(message).process!
+      message.media_items.each do |item|
+        next if item.deleted?
+        MediaItemAnalyzer.new(item).process!
+      end
+    end
+  end
+
+  #task locations: :environment do
+  #
+  #end
+
 end
