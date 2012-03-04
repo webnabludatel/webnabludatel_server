@@ -31,7 +31,7 @@ namespace :process do
   end
 
   task observer_status: :environment do
-    UserMessage.where(is_delayed: false).where(key: Analyzer::OBSERVER_STATUS_KEYS).order(:timestamp) do |message|
+    UserMessage.where(is_delayed: false).where(key: Analyzer::OBSERVER_STATUS_KEYS).order(:timestamp).each do |message|
       analyzer = UserMessagesAnalyzer.new message
         begin
           analyzer.process!
@@ -43,7 +43,7 @@ namespace :process do
   end
 
   task voters_lists_are_ok: :environment do
-    UserMessage.where(is_delayed: false).where(key: :voters_lists_are_ok).order(:timestamp) do |message|
+    UserMessage.where(is_delayed: false).where(key: :voters_lists_are_ok).order(:timestamp).each do |message|
       analyzer = UserMessagesAnalyzer.new message
         begin
           analyzer.process!
@@ -55,7 +55,7 @@ namespace :process do
   end
 
   task process_official_observer: :environment do
-    UserMessage.where(is_delayed: false, is_processed: false).where(key: :official_observer).order(:timestamp) do |message|
+    UserMessage.where(is_delayed: false, is_processed: false).where(key: :official_observer).order(:timestamp).each do |message|
       analyzer = UserMessagesAnalyzer.new message
         begin
           analyzer.process!
