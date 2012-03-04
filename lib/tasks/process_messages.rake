@@ -124,6 +124,12 @@ namespace :process do
       else
         user = message.user
         region = Region.find message.polling_place_region
+
+        unless region
+          puts "No region: #{message.polling_place_region}"
+          next
+        end
+
         commission = user.commissions.where(number: message.polling_place_id, region_id: region.id).first
 
         unless commission
