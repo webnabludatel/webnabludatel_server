@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :beta_authenticate
+  #before_filter :beta_authenticate
 
   before_filter :set_locale
   #before_filter :set_mobile_preferences
