@@ -9,7 +9,7 @@ class MediaItemAnalyzer < Analyzer
   end
 
   def process!
-    return if @message.is_delayed?
+    return if @message.is_delayed? || @media_item.is_processed?
 
     Rails.logger.info ">> #{@message.key} <<"
 
@@ -49,7 +49,10 @@ class MediaItemAnalyzer < Analyzer
         end
     end
 
+    Rails.logger.info ">> setting is processed <<"
     @media_item.update_column :is_processed, true
+    @media_item.reload
+    Rails.logger.info ">> #{@media_item.inspect} <<"
   end
 
   protected
@@ -139,6 +142,7 @@ class MediaItemAnalyzer < Analyzer
       Rails.logger.info "-- location: #{photo.inspect} --"
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
+      photo.media_item = @media_item
 
       photo.save!
       Rails.logger.info "-- location: #{photo.inspect} --"
