@@ -1,4 +1,8 @@
 ru:
+  commission:
+    kind:
+      uik: 'УИК'
+      tik: 'ТИК'
   activerecord:
     attributes:
       user:

@@ -30,6 +30,14 @@ class Commission < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
+  def title
+    "#{I18n.t(kind, scope: 'commission.kind')} №#{number}"
+  end
+
+  def full_title
+    "#{title}, #{region.name}"
+  end
+
   protected
     def set_default_status
       self.status = "pending"
