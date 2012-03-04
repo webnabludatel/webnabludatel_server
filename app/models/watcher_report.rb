@@ -47,7 +47,7 @@ class WatcherReport < ActiveRecord::Base
     end
 
     def set_is_violation
-      self.is_violation = check_list_item && value && check_list_item.hi_value == value || MEDIA_VIOLATIONS.include?(check_list_item[name])
+      self.is_violation = check_list_item && value && check_list_item.hi_value == value || MEDIA_VIOLATIONS.include?(check_list_item.name)
       true
     end
 
