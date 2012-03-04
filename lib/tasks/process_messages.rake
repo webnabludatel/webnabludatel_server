@@ -98,12 +98,12 @@ namespace :process do
         puts "\n"
         puts "------------------------------------------------------"
 
-        if message.polling_place_internal_id.present?
+        if message.polling_place_internal_id.present? && message.user_location.blank?
           unless location_external_ids.include? message.polling_place_internal_id
             puts "Processing: #{message.inspect}"
             UserMessagesAnalyzer.new(message).process!
           end
-        elsif message.polling_place_id.present? && message.polling_place_region.present?
+        elsif message.polling_place_id.present? && message.polling_place_region.present? && message.user_location.blank?
           region = Region.find_by_external_id message.polling_place_region
           unless user.commissions.where(region_id: region.id, number: message.polling_place_id).exists?
             puts "Processing: #{message.inspect}"
