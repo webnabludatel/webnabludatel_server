@@ -90,28 +90,47 @@ namespace :process do
   end
 
   task locations: :environment do
-    User.all.each do |user|
-      user.user_messages.where(key: "district_number").each do |message|
-        location_external_ids = user.locations.map(&:external_id)
-        puts "\n"
-        puts "\n"
-        puts "\n"
-        puts "------------------------------------------------------"
+    #User.all.each do |user|
+    #  user.user_messages.where(key: "district_number").each do |message|
+    #    location_external_ids = user.locations.map(&:external_id)
+    #    puts "\n"
+    #    puts "\n"
+    #    puts "\n"
+    #    puts "------------------------------------------------------"
+    #
+    #    if message.polling_place_internal_id.present? && message.user_location.blank?
+    #      unless location_external_ids.include? message.polling_place_internal_id
+    #        puts "Processing: #{message.inspect}"
+    #        UserMessagesAnalyzer.new(message).process!
+    #      end
+    #    elsif message.polling_place_id.present? && message.polling_place_region.present? && message.user_location.blank?
+    #      region = Region.find_by_external_id message.polling_place_region
+    #      unless user.commissions.where(region_id: region.id, number: message.polling_place_id).exists?
+    #        puts "Processing: #{message.inspect}"
+    #        UserMessagesAnalyzer.new(message).process!
+    #      end
+    #    end
+    #  end
+    #end
 
-        if message.polling_place_internal_id.present? && message.user_location.blank?
-          unless location_external_ids.include? message.polling_place_internal_id
-            puts "Processing: #{message.inspect}"
-            UserMessagesAnalyzer.new(message).process!
-          end
-        elsif message.polling_place_id.present? && message.polling_place_region.present? && message.user_location.blank?
-          region = Region.find_by_external_id message.polling_place_region
-          unless user.commissions.where(region_id: region.id, number: message.polling_place_id).exists?
-            puts "Processing: #{message.inspect}"
-            UserMessagesAnalyzer.new(message).process!
-          end
-        end
+    UserLocation.where("external_id is NULL").each do |location|
+      puts "Fixing location: #{location.id}"
+      messages = location.user_messages
+
+      polling_place_internal_id = nil
+      messages.each do |message|
+        raise "Fuck: #{location.id}" if polling_place_internal_id && polling_place_internal != message.polling_place_internal_id
+
+        polling_place_internal_id = message.polling_place_internal_id
       end
+
+      puts "External: #{polling_place_internal_id}"
+      location.external_id = polling_place_internal_id
+      location.save!
+      puts "\n"
     end
+
+
   end
 
 end
