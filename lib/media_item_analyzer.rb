@@ -11,20 +11,29 @@ class MediaItemAnalyzer < Analyzer
   def process!
     return if @message.is_delayed?
 
+    Rails.logger.info ">> #{@message.key} <<"
+
     case @message.key
       when "official_observer"
+        Rails.logger.info ">> official_observer"
         process_observer_referral_photo
       when "district_banner_photo"
+        Rails.logger.info ">> district_banner_photo"
         process_user_location_photo
       when "sos_report_photo"
+        Rails.logger.info ">> sos_report_photo"
         process_sos_photo
       when "sos_report_video"
+        Rails.logger.info ">> sos_report_video"
         process_sos_video
       when "protocol_photo"
+        Rails.logger.info ">> protocol_photo"
         process_protocol_photo
       when "protocol_photo_copy"
+        Rails.logger.info ">> protocol_photo_copy"
         process_protocol_photo_copy
       else
+        Rails.logger.info ">> check list"
         check_list_item = CheckListItem.find_by_name @message.key
         if check_list_item && check_list_item.kind.photo?
           process_check_list_photo
@@ -123,12 +132,16 @@ class MediaItemAnalyzer < Analyzer
     end
 
     def process_protocol_photo
+      Rails.logger.info "-- processing protocol photo --"
       location = @message.user_location
+      Rails.logger.info "-- location: #{location.inspect} --"
       photo = location.protocol_photos.build
+      Rails.logger.info "-- location: #{photo.inspect} --"
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
 
       photo.save!
+      Rails.logger.info "-- location: #{photo.inspect} --"
     end
 
     def process_protocol_photo_copy
