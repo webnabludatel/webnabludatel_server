@@ -15,7 +15,8 @@
     - watcher_referral.referral_photos.each do |photo|
       - if photo.image.url
         %p
-          = image_tag photo.image.url
+          = link_to photo.image.url, :target => "__blank" do
+            = image_tag photo.image.url, :width => 300
   - if watcher_referral.status == 'pending'
     %p
       = link_to 'Подтвердить', '#', :class => 'watcher_referral_action', :remote => true, :data => {:action => 'approve'}
@@ -37,3 +38,4 @@
         %p= f.text_field :comment
         %p= f.submit 'Есть проблема'
 
+= paginate @watcher_referrals
