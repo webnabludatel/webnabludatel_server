@@ -5,13 +5,12 @@ class Ability
 
   def initialize(user)
 
-    if ['admin', 'moderators', 'partner'].include?(user.role)
+    if user.role == 'admin'
+      can :manage, :all
+    elsif user.role == 'moderators'
+      can :manage, [SosMessage, UserLocation, WatcherReferral, WatcherReportPhoto]
+    elsif user.role == 'partner'
       can :manage, SosMessage
-    end
-
-    if ['admin', 'moderators'].include?(user.role)
-      can :manage, UserLocation
-      can :manage, WatcherReferral
     end
 
     # Define abilities for the passed in user here. For example:

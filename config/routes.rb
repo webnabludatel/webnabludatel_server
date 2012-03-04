@@ -43,6 +43,8 @@ Watcher::Application.routes.draw do
       end
     end
 
+    resources :watcher_report_photos, :only => [:index, :update]
+
     resources :user_messages
   end
 
