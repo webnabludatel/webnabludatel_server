@@ -40,6 +40,8 @@ Watcher::Application.routes.draw do
         post :problem
       end
     end
+
+    resources :user_messages
   end
 
   namespace :api do

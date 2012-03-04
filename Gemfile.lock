@@ -176,6 +176,11 @@ GEM
       treetop (~> 1.4.8)
     meta-tags (1.2.4)
       actionpack
+    meta_search (1.1.3)
+      actionpack (~> 3.1)
+      activerecord (~> 3.1)
+      activesupport (~> 3.1)
+      polyamorous (~> 0.5.0)
     mime-types (1.17.2)
     mini_magick (3.4)
       subexec (~> 0.2.1)
@@ -210,6 +215,8 @@ GEM
     pjax_rails (0.1.10)
       jquery-rails
     plist (3.1.0)
+    polyamorous (0.5.0)
+      activerecord (~> 3.0)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.1)
@@ -357,6 +364,7 @@ DEPENDENCIES
   koala
   letter_opener
   meta-tags
+  meta_search (>= 1.1.0.pre)
   mini_magick
   newrelic_rpm
   omniauth-facebook
