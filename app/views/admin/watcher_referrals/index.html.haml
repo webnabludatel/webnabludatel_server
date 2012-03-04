@@ -3,14 +3,18 @@
 - @watcher_referrals.each do |watcher_referral|
   %p= "##{watcher_referral.id}"
   %p Пользователь:
-  %p= "#{watcher_referral.user.email} (#{watcher_referral.user.name} #{watcher_referral.user.last_name})"
+  - if watcher_referral.user
+    %p= "#{watcher_referral.user.email} (#{watcher_referral.user.first_name} #{watcher_referral.user.last_name})"
+  -else
+    %p Не указан
   %p Комментарий:
   %p= watcher_referral.comment
   %p Статус:
   %p= watcher_referral.status
   %p
     - watcher_referral.referral_photos.each do |photo|
-      %p= image_tag photo.image
+      %p
+        %img{:src => image_path(photo.image)}/
   - if watcher_referral.status == 'pending'
     %p
       = link_to 'Подтвердить', '#', :class => 'watcher_referral_action', :remote => true, :data => {:action => 'approve'}
