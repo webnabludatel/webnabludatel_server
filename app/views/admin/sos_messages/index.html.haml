@@ -7,6 +7,8 @@
   - if sos_message.location
     %p Номер УИК:
     %p= sos_message.location.commission.number
+    %p Регион УИК:
+    %p= sos_message.location.commission.region.name
     %p Адрес УИК:
     %p= sos_message.location.commission.try(:address)
   %p Пользователь:
