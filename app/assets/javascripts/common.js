@@ -16,10 +16,10 @@ function draw(n, m, el, d) {
 	var max = Math.max(n, m);
 	if (max > max_mn) {
 		if (n > m) {
-			m = parseInt(m * max_mn / n);
+			m = parseInt(m * max_mn / n) || 1;
 			n = max_mn;
 		} else {
-			n = parseInt(n * max_mn / m);
+			n = parseInt(n * max_mn / m) || 1;
 			m = max_mn;
 		}
 	}
