@@ -45,7 +45,7 @@ class UserLocation < ActiveRecord::Base
   end
 
   def regulations_count
-    @violations_count ||= regulations.size
+    @regulations_count ||= regulations.size
   end
 
   def violations_count
