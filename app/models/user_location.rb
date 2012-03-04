@@ -36,6 +36,22 @@ class UserLocation < ActiveRecord::Base
     ActiveSupport::StringInquirer.new("#{read_attribute(:status)}")
   end
 
+  def regulations
+    @regulations ||= watcher_reports.regulations
+  end
+
+  def violations
+    @violations ||= watcher_reports.violations
+  end
+
+  def regulations_count
+    @violations_count ||= regulations.size
+  end
+
+  def violations_count
+    @violations_count ||= violations.size
+  end
+
   def approve!(comment = nil)
     self.status = "approved"
     self.comment = comment

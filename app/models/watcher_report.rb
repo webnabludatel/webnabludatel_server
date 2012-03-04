@@ -30,6 +30,9 @@ class WatcherReport < ActiveRecord::Base
   scope :approved, where("status = 'approved' OR status = 'manual_approved'")
   scope :rejected, where("status = 'rejected' OR status = 'manual_rejected'")
 
+  scope :regulations, where(is_violation: false)
+  scope :violations, where(is_violation: true)
+
   validates :key, presence: true
   validates :value, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES }

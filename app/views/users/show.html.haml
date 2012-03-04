@@ -6,21 +6,18 @@
   %strong.b-mainhead__name #{display_name}
   =# render :partial => "partials/share"
 
-- @user.commissions.each do |commission|
+- @user.locations.select {|l| l.watcher_reports.size > 0}.each do |location|
   .b-total
     %table.b-total__table
       %tr.b-total__string
         %td.b-total__diag
           %p
-            %canvas{:height => "160", :width => "360", :id => "plotBig_#{commission.id}"}
+            %canvas{:height => "160", :width => "360", :id => "plotBig_#{location.id}"}
           %p
-            - total_reports = commission.watcher_reports
-            - reports_with_violations = commission.watcher_reports.where(:is_violation => true)
-
-            %strong.b-total__yes #{total_reports.size - reports_with_violations.size}
-            правил соблюдено,
-            %strong.b-total__no #{reports_with_violations.size}
-            нарушения замечено
+            %strong.b-total__yes
+              #{itemize(location.regulations_count, "правило соблюдено", "правила соблюдено", "правил соблюдено")},
+            %strong.b-total__no
+              #{itemize(location.violations_count, "нарушение замечено", "нарушения замечено", "нарушений замечено")}
         %td.b-personal
           %p.b-personal__status
             Статус
@@ -30,7 +27,7 @@
             Комиссия
             %br/
             %strong
-              = commission.full_title
+              = location.commission.full_title
   .b-separator
     %table.b-separator__table
       %tr.b-separator__string
@@ -38,19 +35,14 @@
         %td.b-separator__name Нарушения
         %td.b-separator__side  
 
-  - if reports_with_violations
-    - reports_with_violations.each do |report|
+  - if location.violations.present?
+    - location.violations.select {|r| r.smart_title.present? || r.photos.present?}.each do |report|
       %article.b-fraud
-        .b-fraud__time
-          = report.timestamp.hour
-          %sup
-            = report.timestamp.min
-        %h3.b-fraud__title #{report.check_list_item.violation_text}
-        - if report.has_photos
-          - report.photos.each do |photo|
-            %figure.b-fraud__photo
-              %img{:src => "#{photo.image.url}"}
-
+        .b-fraud__time= l report.timestamp, format: "%H<sup>%M</sup>"
+        %h3.b-fraud__title #{report.smart_title}
+        - report.photos.each do |photo|
+          %figure.b-fraud__photo
+            %img{:src => "#{photo.image.url}"}
 
   - else
     %h3.b-fraud__title
@@ -58,5 +50,5 @@
 
   :javascript
     window.addEventListener('load', function () {
-      draw("#{total_reports.size - reports_with_violations.size}", "#{reports_with_violations.size}", "plotBig_#{commission.id}", 20);
+      draw("#{location.regulations_count}", "#{location.violations_count}", "plotBig_#{location.id}", 20);
     }, false);
