@@ -1,7 +1,7 @@
 %h1 SOS сообщения
 - @sos_messages.each do |sos_message|
   %p= "##{sos_message.user_id}"
-  %p= sos_messages.created_at
+  %p= sos_message.created_at
   %p Cообщение:
   %p= sos_message.body
   - if sos_message.location
