@@ -1,5 +1,5 @@
 class UserMessage < ActiveRecord::Base
-  serialize :processing_errors
+  serialize :processing_errors, Array
   search_methods :with_processing_errors
 
   belongs_to :user
