@@ -54,7 +54,7 @@ namespace :process do
     end
   end
 
-  taks process_official_observer: :environment do
+  task process_official_observer: :environment do
     UserMessage.where(is_delayed: false, is_processed: false).where(key: :official_observer).order(:timestamp) do |message|
       analyzer = UserMessagesAnalyzer.new message
         begin
