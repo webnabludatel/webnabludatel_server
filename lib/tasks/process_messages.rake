@@ -119,7 +119,11 @@ namespace :process do
 
       polling_place_internal_id = nil
       messages.each do |message|
-        raise "Fuck: #{location.id}" if polling_place_internal_id && polling_place_internal_id != message.polling_place_internal_id
+        if polling_place_internal_id && polling_place_internal_id != message.polling_place_internal_id
+          puts "Fuck: #{polling_place_internal_id} : #{message.polling_place_internal_id}"
+          polling_place_internal_id = nil
+          break
+        end
 
         polling_place_internal_id = message.polling_place_internal_id
       end
