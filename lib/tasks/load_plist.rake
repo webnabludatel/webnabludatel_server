@@ -89,6 +89,7 @@ namespace :plist do
         leaf.title = item["title"]
         leaf.order = index
         leaf.control_type = item["control"]
+        leaf.violation_text = item["violation_text"]
 
         if item.has_key? "switch_options"
           leaf.attributes = {
