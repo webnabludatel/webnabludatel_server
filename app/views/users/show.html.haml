@@ -41,8 +41,10 @@
         .b-fraud__time= l(report.timestamp, format: "%H<sup>%M</sup>").html_safe
         %h3.b-fraud__title #{report.smart_title}
         - report.photos.each do |photo|
-          %figure.b-fraud__photo
-            %img{:src => "#{photo.image.url}"}
+          - if photo.image && photo.image.url
+            %figure.b-fraud__photo
+              = link_to photo.image.url, target: :blank do
+                = image_tag photo.image.url, width: 200
 
   - else
     %h3.b-fraud__title

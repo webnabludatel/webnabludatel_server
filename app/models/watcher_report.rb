@@ -48,7 +48,15 @@ class WatcherReport < ActiveRecord::Base
   end
 
   def smart_title
-    is_violation ? check_list_item.violation_text : check_list_item.title rescue 'неизвестно'
+    if has_photos
+      section_title
+    elsif is_violation
+      check_list_item.violation_text
+    else
+      check_list_item.title
+    end
+  rescue
+    'неизвестно'
   end
 
   def section_title
