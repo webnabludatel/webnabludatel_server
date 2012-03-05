@@ -147,4 +147,15 @@ namespace :process do
     end
   end
 
+  task media_items: :environment do
+    MediaItem.where(is_processed: false).each do |item|
+      puts "Processing media item for message: #{item.message.id}: #{item.message.key}"
+
+      analyzer = MediaItemAnalyzer.new item
+      analyzer.process!
+
+      puts "\n"
+    end
+  end
+
 end
