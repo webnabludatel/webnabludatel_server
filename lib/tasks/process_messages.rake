@@ -18,7 +18,7 @@ namespace :process do
 
   task media_items: :environment do
     User.all.each do |user|
-      user.media_items.where(is_processed: false, is_delayed: false).each do |item|
+      user.media_items.where(is_processed: false).each do |item|
         analyzer = MediaItemAnalyzer.new item
         begin
           analyzer.process!
@@ -142,17 +142,6 @@ namespace :process do
 
         puts "Location: #{message.user_location.inspect}"
       end
-
-      puts "\n"
-    end
-  end
-
-  task media_items: :environment do
-    MediaItem.where(is_processed: false).each do |item|
-      puts "Processing media item for message: #{item.message.id}: #{item.message.key}"
-
-      analyzer = MediaItemAnalyzer.new item
-      analyzer.process!
 
       puts "\n"
     end
