@@ -172,6 +172,7 @@ namespace :process do
       names = []
       to_destroy = []
       commission.protocol_photos.each do |photo|
+        next unless photo.image.url.present?
         name = photo.image.url.split("/").last
         if names.include? name
           puts "\t#{name} = destroy"
