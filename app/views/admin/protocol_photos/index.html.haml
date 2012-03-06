@@ -14,8 +14,8 @@
 
     - if photo.status == 'pending'
       %div{:id => dom_id(photo, :controls)}
-        = link_to 'Подтвердить', admin_watcher_report_photo_path(photo, :status => 'approved'), :remote => true, :method => :put
-        = link_to 'Отклонить', admin_watcher_report_photo_path(photo, :status => 'rejected'), :remote => true, :method => :put
-        = link_to 'Проблема', admin_watcher_report_photo_path(photo, :status => 'problem'), :remote => true, :method => :put
+        = link_to 'Подтвердить', admin_protocol_photo_path(photo, :status => 'approved'), :remote => true, :method => :put
+        = link_to 'Отклонить', admin_protocol_photo_path(photo, :status => 'rejected'), :remote => true, :method => :put
+        = link_to 'Проблема', admin_protocol_photo_path(photo, :status => 'problem'), :remote => true, :method => :put
 
 = paginate @protocol_photos
