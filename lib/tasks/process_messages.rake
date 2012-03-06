@@ -166,4 +166,24 @@ namespace :process do
     end
   end
 
+  task delete_duplications: :environment do
+    Commission.includes(:protocol_photos).each do |commission|
+      puts "Commission: #{commission.number}(#{commission.id})"
+      names = []
+      to_destroy = []
+      commission.protocol_photos.each do |photo|
+        name = photo.image.url.split("/").last
+        if names.include? name
+          to_destroy << photo
+        else
+          names << name
+        end
+      end
+
+      to_destroy.each do |photo|
+        photo.destory
+      end
+    end
+  end
+
 end
