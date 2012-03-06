@@ -145,7 +145,13 @@ class UserMessagesAnalyzer < Analyzer
 
       watcher_report = parsed_location.watcher_reports.new key: @message.key unless watcher_report
       watcher_report.user = @user
-      watcher_report.value = message_value
+      
+      if message_value == "0" || message_value == "undef"
+        watcher_report.value = nil
+      else  
+        watcher_report.value = message_value
+      end
+      
       watcher_report.timestamp = @message.timestamp
       watcher_report.latitude = @message.latitude
       watcher_report.longitude = @message.longitude
