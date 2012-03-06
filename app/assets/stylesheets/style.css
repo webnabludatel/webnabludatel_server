@@ -209,8 +209,34 @@ label {
 	font-size: 80%;
 }
 
+.b-location-reports {
+    margin-top: 40px;
+}
+
 .b-location-report {
     margin-bottom: 60px;
+}
+
+.b-location-report__message {
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.4em 0 0.4em 0;
+}
+
+.b-total__table {
+    width: 100%;
+}
+
+.b-total__diag {
+    width: 50%;
+}
+
+.b-total__status {
+    vertical-align: top;
+}
+.b-total__share .b-share {
+    margin: 0;
 }
 
 .b-total__verb {
@@ -492,6 +518,7 @@ label {
 	text-shadow: 0 1px 0 #FFF;
 	padding-top: 0.6em;
 }
+
 .b-frauds {
 	padding-bottom: 50px;
 }
@@ -535,7 +562,7 @@ label {
 .b-protocol__title {
     font-size: 120%;
     font-weight: bold;
-    padding: 0.4em 0 0.4em 80px;
+    padding: 0.4em 0 0.4em 0;
 }
 
 .b-violations__sidebar {
