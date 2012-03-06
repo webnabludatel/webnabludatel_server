@@ -148,17 +148,6 @@ namespace :process do
   end
 
   task protocols: :environment do
-    #User.all.each do |user|
-    #  user.user_messages.where(is_processed: false, is_delayed: false).each do |message|
-    #    analyzer = UserMessagesAnalyzer.new message
-    #    begin
-    #      analyzer.process!
-    #    rescue => e
-    #      puts "Message: #{message.inspect}"
-    #      puts "e: #{e}"
-    #    end
-    #  end
-    #end
     UserMessage.where(key: ["protocol_photo", "protocol_photo_copy"]).each do |message|
       message.media_items.each do |item|
         MediaItemAnalyzer.new(item).process!(force: true)
