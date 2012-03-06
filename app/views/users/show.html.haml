@@ -4,53 +4,97 @@
 
 %h1.b-mainhead.b-mainhead_center
   %strong.b-mainhead__name #{display_name}
-  =# render :partial => "partials/share"
 
-- @locations.each do |location|
-  .b-total
-    %table.b-total__table
-      %tr.b-total__string
-        %td.b-total__diag
-          %p
-            %canvas{:height => "160", :width => "360", :id => "plotBig_#{location.id}"}
-          %p
-            %strong.b-total__yes
-              #{itemize(location.regulations_count, "правило соблюдено", "правила соблюдено", "правил соблюдено")},
-            %strong.b-total__no
-              #{itemize(location.violations_count, "нарушение замечено", "нарушения замечено", "нарушений замечено")}
-        %td.b-personal
-          %p.b-personal__status
-            Статус
-            %br/
-            %strong= @user.full_watcher_kind
-          %p.b-personal__status
-            Комиссия
-            %br/
-            %strong
-              = location.commission.full_title
-  .b-separator
-    %table.b-separator__table
-      %tr.b-separator__string
-        %td.b-separator__side  
-        %td.b-separator__name Нарушения
-        %td.b-separator__side  
+- if @locations.present?
+  .b-location-reports
+    - @locations.each do |location|
+      .b-location-report
+        .b-total
+          %table.b-total__table
+            %tr.b-total__string
+              %td.b-total__diag
+                %p
+                  %canvas{:height => "160", :width => "360", :id => "plotBig_#{location.id}"}
+              %td.b-personal
+                %p.b-personal__status
+                  Статус
+                  %br/
+                  %strong= @user.full_watcher_kind
+                %p.b-personal__status
+                  Комиссия
+                  %br/
+                  %strong
+                    = location.commission.full_title
+            %tr.b-total__string
+              %td.b-total__status
+                %strong.b-total__yes
+                  #{itemize(location.regulations_count, "правило соблюдено", "правила соблюдено", "правил соблюдено")},
+                %strong.b-total__no
+                  #{itemize(location.violations_count, "нарушение замечено", "нарушения замечено", "нарушений замечено")}
+              %td.b-total__share= render :partial => "partials/share"
 
-  - if location.violations.present?
-    - location.violations.select {|r| r.smart_title.present? || r.photos.present?}.each do |report|
-      %article.b-fraud
-        .b-fraud__time= l(report.timestamp, format: "%H<sup>%M</sup>").html_safe
-        %h3.b-fraud__title #{report.smart_title}
-        %figure.b-fraud__photo
-          - report.photos.each do |photo|
-            - if photo.image && photo.image.url
-              = link_to photo.image.url, target: :blank do
-                = image_tag photo.image.url, width: 200
+        .b-separator
+          %table.b-separator__table
+            %tr.b-separator__string
+              %td.b-separator__side  
+              %td.b-separator__name Нарушения
+              %td.b-separator__side  
 
-  - else
-    %h3.b-fraud__title
-      Нарушений нет
+        - if location.violations.present?
+          - location.violations.select {|r| r.smart_title.present? || r.photos.present?}.each do |report|
+            %article.b-fraud
+              .b-fraud__time= l(report.timestamp, format: "%H<sup>%M</sup>").html_safe
+              %h3.b-fraud__title #{report.smart_title}
+              %figure.b-fraud__photo
+                - report.photos.each do |photo|
+                  - if photo.image && photo.image.url
+                    = link_to photo.image.url, target: :blank do
+                      = image_tag photo.image.url, width: 200
 
-  :javascript
-    window.addEventListener('load', function () {
-      draw("#{location.regulations_count}", "#{location.violations_count}", "plotBig_#{location.id}", 20);
-    }, false);
+        - else
+          %h3.b-fraud__title
+            Нарушений нет
+
+        .b-separator
+          %table.b-separator__table
+            %tr.b-separator__string
+              %td.b-separator__side  
+              %td.b-separator__name Итоговый&nbsp;протокол
+              %td.b-separator__side  
+
+        - if location.protocol_photos.present?
+          %article.b-protocol
+            %figure.b-protocol__photos
+              - location.protocol_photos.each do |photo|
+                - if photo.image && photo.image.url
+                  = link_to photo.image.url, target: :blank do
+                    = image_tag photo.image.url, width: 410, class: 'b-protocol__photo'
+        - else
+          %h3.b-protocol__title
+            Фотографии итогового протокола не загружены.
+
+        .b-separator
+          %table.b-separator__table
+            %tr.b-separator__string
+              %td.b-separator__side  
+              %td.b-separator__name Копия&nbsp;итогового&nbsp;протокола
+              %td.b-separator__side  
+
+        - if location.protocol_photo_copies.present?
+          %article.b-protocol
+            %figure.b-protocol__photos
+              - location.protocol_photo_copies.each do |photo|
+                - if photo.image && photo.image.url
+                  = link_to photo.image.url, target: :blank do
+                    = image_tag photo.image.url, width: 410, class: 'b-protocol__photo'
+        - else
+          %h3.b-protocol__title
+            Фотографии выданной наблюдателю копии итогового протокола не загружены.
+
+        :javascript
+          window.addEventListener('load', function () {
+            draw("#{location.regulations_count}", "#{location.violations_count}", "plotBig_#{location.id}", 20);
+          }, false);
+- else
+  .b-location-reports
+    .b-location-report__message Данные о нарушениях от пользователя не поступали
