@@ -11,7 +11,7 @@ config/database.yml
 db/*.sqlite3
 db/schema.*
 
-log/*.log
+log/*.log*
 tmp/**/*
 
 config/settings.local.yml
@@ -20,4 +20,4 @@ config/environments/*.local.yml
 
 public/sitemap*
 public/stylesheets/**/*
-public/uploads/**/*
+public/system/*

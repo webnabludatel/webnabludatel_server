@@ -208,6 +208,11 @@ label {
 	color: #969BA0;
 	font-size: 80%;
 }
+
+.b-location-report {
+    margin-bottom: 60px;
+}
+
 .b-total__verb {
 	text-align: center;
 }
@@ -514,6 +519,25 @@ label {
 .b-fraud__photo {
 	padding-left: 80px;
 }
+
+.b-protocol {
+
+}
+
+.b-protocol__photos {
+    position: relative;
+}
+
+.b-protocol__photo {
+    margin: 20px;
+}
+
+.b-protocol__title {
+    font-size: 120%;
+    font-weight: bold;
+    padding: 0.4em 0 0.4em 80px;
+}
+
 .b-violations__sidebar {
 	float: right;
 	width: 25%;
