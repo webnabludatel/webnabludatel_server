@@ -13,7 +13,7 @@ class WatcherReport < ActiveRecord::Base
   has_many :photos, class_name: "WatcherReportPhoto", dependent: :destroy, order: :timestamp
   has_many :videos, class_name: "WatcherReportVideo", dependent: :destroy, order: :timestamp
 
-  STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none)
+  STATUSES = %W(pending approved rejected blocked problem training manual_approved manual_rejected manual_suspicious location_unknown check_location location_not_approved no_location location_suspicious none broken_timestamp)
   MEDIA_VIOLATIONS = %W(voters_lists_violations_photo appearance_violation_photo observer_conditions_violations_photo
   pressure_violations_photo suspicious_voters_violations_photo suspicious_voters_violations_video bundle_of_ballots_photo
   bundle_of_ballots_video absentee_vote_violations_photo unused_ballots_violation_photo voters_protocol_recording_violations_photo

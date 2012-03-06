@@ -180,11 +180,6 @@ namespace :process do
 
   task ckeck_messages_location: :environment do
     check_list_names = CheckListItem.all.map(&:name)
-    #find_by_name @message.key
-    #        if check_list_item
-    #          process_checklist_item(check_list_item)
-    #        else
-
     not_check_list = []
     messages_with_media = []
     UserMessage.where("user_location_id is NULL").includes(:watcher_report).each do |message|
@@ -223,5 +218,8 @@ namespace :process do
     puts not_check_list.inspect
     puts messages_with_media.inspect
   end
-
+  
+  task broken_timestamp: :environment do
+    WatcherReport.where("timestamp > '2012-03-07 01:00:00'").update_all("status = 'broken_timestamp'")
+  end
 end
