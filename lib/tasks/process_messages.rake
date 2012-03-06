@@ -178,4 +178,45 @@ namespace :process do
     end
   end
 
+  task ckeck_messages_location: :environment do
+    check_list_names = CheckListItem.all.map(&:name)
+    #find_by_name @message.key
+    #        if check_list_item
+    #          process_checklist_item(check_list_item)
+    #        else
+
+    not_check_list = []
+    messages_with_media = []
+    UserMessage.where("user_location_id is NULL").includes(:watcher_report).each do |message|
+      puts "Message: #{message.id}"
+
+      if message.polling_place_internal_id.present?
+        location = message.user.locations.find_by_external_id message.polling_place_internal_id
+        unless location
+          puts "LOCATION NOT FOUND"
+          next
+        end
+      elsif
+        puts "!! OLD API !!!"
+        next
+      end
+
+      if check_list_names.include? message.key
+        if message.watcher_report.present?
+          message.update_column :user_location_id, location.id
+          messages_with_media << message.id if messages.media_items.exists?
+        else
+          puts "!! WATCHER REPORT WASN't CREATED !!'"
+        end
+      else
+        puts "!! NOT CHECKLIST !!"
+        not_check_list << message.key unless not_check_list.include? message.key
+      end
+
+    end
+    
+    puts not_check_list.inspect
+    puts messages_with_media.inspect
+  end
+
 end
