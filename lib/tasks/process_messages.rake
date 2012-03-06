@@ -204,7 +204,7 @@ namespace :process do
       if check_list_names.include? message.key
         if message.watcher_report.present?
           message.update_column :user_location_id, location.id
-          messages_with_media << message.id if messages.media_items.exists?
+          messages_with_media << message.id if message.media_items.exists?
         else
           puts "!! WATCHER REPORT WASN't CREATED !!'"
         end
