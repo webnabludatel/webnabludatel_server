@@ -1,0 +1,21 @@
+%h1 Фотографии протоколов
+
+- @protocol_photos.each do |photo|
+  %div{:id => dom_id(photo)}
+    %p= "##{photo.id}"
+    %p УИК: #{photo.commission.kind} #{photo.commission.number}
+    %p Пользователь: #{photo.user.email} (#{photo.user.name} #{photo.user.last_name})
+    %p Статус:
+    %p{:id => dom_id(photo, :status)}= photo.status
+
+    - if photo.image.url
+      = link_to photo.image.url, target: :blank do
+        = image_tag photo.image.url, width: 700
+
+    - if photo.status == 'pending'
+      %div{:id => dom_id(photo, :controls)}
+        = link_to 'Подтвердить', admin_watcher_report_photo_path(photo, :status => 'approved'), :remote => true, :method => :put
+        = link_to 'Отклонить', admin_watcher_report_photo_path(photo, :status => 'rejected'), :remote => true, :method => :put
+        = link_to 'Проблема', admin_watcher_report_photo_path(photo, :status => 'problem'), :remote => true, :method => :put
+
+= paginate @protocol_photos

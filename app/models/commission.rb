@@ -6,6 +6,8 @@ class Commission < ActiveRecord::Base
   has_many :sos_messages, through: :user_locations
   has_many :watcher_reports, through: :user_locations
 
+  has_many :protocol_photos, through: :user_locations
+  has_many :protocol_photo_copies, through: :user_locations
   belongs_to :region
 
   # TODO: add validations

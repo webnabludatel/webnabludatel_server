@@ -8,7 +8,7 @@ class Ability
     if user.role == 'admin'
       can :manage, :all
     elsif user.role == 'moderators'
-      can :manage, [SosMessage, UserLocation, WatcherReferral, WatcherReportPhoto]
+      can :manage, [SosMessage, UserLocation, WatcherReferral, WatcherReportPhoto, ProtocolPhoto]
     elsif user.role == 'partner'
       can :manage, SosMessage
     end
