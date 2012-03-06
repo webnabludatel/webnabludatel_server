@@ -3,7 +3,7 @@
 - @protocol_photos.each do |photo|
   %div{:id => dom_id(photo)}
     %p= "##{photo.id}"
-    %p УИК: #{photo.commission.kind} #{photo.commission.number}
+    %p УИК: #{photo.commission.kind} #{photo.commission.number} (#{photo.commission.region.name})
     %p Пользователь: #{photo.user.email} (#{photo.user.name} #{photo.user.last_name})
     %p Статус:
     %p{:id => dom_id(photo, :status)}= photo.status

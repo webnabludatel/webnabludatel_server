@@ -4,11 +4,11 @@ class Admin::ProtocolPhotosController < Admin::BaseController
   load_and_authorize_resource
 
   def index
-    @protocol_photos = ProtocolPhoto.pending.includes(user_location: :commission).includes(user_location: :user).order("id").page(params[:page])
+    @protocol_photos = ProtocolPhoto.pending.includes(user_location: :commission).includes(user_location: :user).includes(user_location: {commission: :region}).order("id").page(params[:page])
   end
   
   def approved
-    @protocol_photos = ProtocolPhoto.approved.includes(user_location: :commission).includes(user_location: :user).order("id").page(params[:page])
+    @protocol_photos = ProtocolPhoto.approved.includes(user_location: :commission).includes(user_location: :user).includes(user_location: {commission: :region}).order("id").page(params[:page])
     render action: :index
   end
 
