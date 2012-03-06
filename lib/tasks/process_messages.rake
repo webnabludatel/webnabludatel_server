@@ -222,4 +222,9 @@ namespace :process do
   task broken_timestamp: :environment do
     WatcherReport.where("timestamp > '2012-03-07 01:00:00'").update_all("status = 'broken_timestamp'")
   end
+  
+  task before_vote: :environment do
+    WatcherReport.where("timestamp > '2012-03-07 01:00:00'").update_all("status = 'training'")
+  end
+    
 end
