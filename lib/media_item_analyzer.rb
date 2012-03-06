@@ -8,8 +8,8 @@ class MediaItemAnalyzer < Analyzer
     @user = media_item.user
   end
 
-  def process!
-    return if @message.is_delayed? || @media_item.is_processed?
+  def process!(options = {})
+    return if @message.is_delayed? || @media_item.is_processed? && !options[:force]
 
     Rails.logger.info ">> #{@message.key} <<"
 

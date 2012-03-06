@@ -161,7 +161,7 @@ namespace :process do
     #end
     UserMessage.where(key: ["protocol_photo", "protocol_photo_copy"]).each do |message|
       message.media_items.each do |item|
-        MediaItemAnalyzer.new(item).process!
+        MediaItemAnalyzer.new(item).process!(force: true)
       end
     end
   end
