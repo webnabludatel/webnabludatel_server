@@ -233,9 +233,10 @@ namespace :process do
     end
   end
   
-  task :duplicate_locations: :environment do
+  task duplicate_locations: :environment do
+    
     User.includes(:locations).all.each do |user|
-      return if user.locations.size < 2
+      next if user.locations.size < 2
       
       h_location = user.locations.inject({}) do |result, element|
         (result[element.commission.number] ||= []) << element
@@ -252,7 +253,9 @@ namespace :process do
           end
         end
       end
+      
     end
-  end
     
+  end
+  
 end
