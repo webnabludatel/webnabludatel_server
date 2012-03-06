@@ -231,6 +231,28 @@ namespace :process do
     UserMessage.where("value = '0' OR value ='undef'").each do |message|
       UserMessagesAnalyzer.new(message).process!
     end
-  end  
+  end
+  
+  task :duplicate_locations: :environment do
+    User.includes(:locations).all.each do |user|
+      return if user.locations.size < 2
+      
+      h_location = user.locations.inject({}) do |result, element|
+        (result[element.commission.number] ||= []) << element
+        result
+      end
+      
+      h_location.values.each do |locations|
+        if locations.map(&:status).include? "approved"
+          locations.each do |location|
+            unless location.status.approved?
+              location.status = "approved"
+              location.save!
+            end
+          end
+        end
+      end
+    end
+  end
     
 end
