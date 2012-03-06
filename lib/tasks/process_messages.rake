@@ -159,7 +159,7 @@ namespace :process do
     #    end
     #  end
     #end
-    UserMessages.where(key: ["protocol_photo", "protocol_photo_copy"]).each do |message|
+    UserMessage.where(key: ["protocol_photo", "protocol_photo_copy"]).each do |message|
       message.media_items.each do |item|
         MediaItemAnalyzer.new(item).process!
       end
