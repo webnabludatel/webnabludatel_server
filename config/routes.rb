@@ -44,7 +44,11 @@ Watcher::Application.routes.draw do
     end
 
     resources :watcher_report_photos, :only => [:index, :update]
-    resources :protocol_photos, :only => [:index, :update]
+    resources :protocol_photos, :only => [:index, :update] do
+      collection do
+        get :approved
+      end
+    end
 
     resources :user_messages
   end
