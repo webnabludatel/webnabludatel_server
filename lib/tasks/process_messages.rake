@@ -174,14 +174,16 @@ namespace :process do
       commission.protocol_photos.each do |photo|
         name = photo.image.url.split("/").last
         if names.include? name
+          puts "\t#{name} = destroy"
           to_destroy << photo
         else
+          puts "\t#{name}"
           names << name
         end
       end
 
       to_destroy.each do |photo|
-        photo.destory
+        photo.destroy
       end
     end
   end
