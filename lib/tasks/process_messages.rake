@@ -228,8 +228,8 @@ namespace :process do
   end
   
   task undefined: :environment do
-    UserMessage.where("value = 0 OR value ='undef'").each do |message|
-      UserMessageAnalyzer.new(message).process!
+    UserMessage.where("value = '0' OR value ='undef'").each do |message|
+      UserMessagesAnalyzer.new(message).process!
     end
   end  
     

@@ -34,7 +34,7 @@ class WatcherReport < ActiveRecord::Base
   scope :violations, where(is_violation: true)
 
   validates :key, presence: true
-  validates :value, presence: true
+  # validates :value, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES }
 
   before_validation :set_status, :set_check_list_item, :set_is_violation

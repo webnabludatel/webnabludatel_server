@@ -139,7 +139,7 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report = parsed_location.watcher_reports.find_by_key @message.key
 
       if watcher_report && watcher_report.timestamp > @message.timestamp
-        Rails.logger.info "OLD MESSAGE: Message: #{@message.id}"
+        puts "OLD MESSAGE: Message: #{@message.id}"
         return
       end
 
@@ -147,6 +147,7 @@ class UserMessagesAnalyzer < Analyzer
       watcher_report.user = @user
       
       if message_value == "0" || message_value == "undef"
+        puts "setting undef"
         watcher_report.value = nil
       else  
         watcher_report.value = message_value
