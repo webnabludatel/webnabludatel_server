@@ -6,7 +6,7 @@
   %strong.b-mainhead__name #{display_name}
   =# render :partial => "partials/share"
 
-- @user.locations.select {|l| l.watcher_reports.size > 0}.each do |location|
+- @locations.each do |location|
   .b-total
     %table.b-total__table
       %tr.b-total__string

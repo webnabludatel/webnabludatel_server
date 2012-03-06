@@ -5,6 +5,11 @@ class Admin::UserLocationsController < Admin::BaseController
   def index
     @user_locations = UserLocation.pending.joins(:photos).uniq.order("created_at").page(params[:page])
   end
+  
+  def other
+    @user_locations = UserLocation.were("status != 'approved'").joins(:photos).uniq.order("created_at").page(params[:page])
+    render :action => :index
+  end
 
   def approve
     @user_location.approve! #params[:watcher_referral][:comment]

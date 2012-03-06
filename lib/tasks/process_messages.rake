@@ -224,7 +224,7 @@ namespace :process do
   end
   
   task before_vote: :environment do
-    WatcherReport.where("timestamp > '2012-03-07 01:00:00'").update_all("status = 'training'")
+    WatcherReport.where("timestamp < '2012-03-04 00:00:01'").update_all("status = 'training'")
   end
     
 end

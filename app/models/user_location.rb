@@ -37,11 +37,11 @@ class UserLocation < ActiveRecord::Base
   end
 
   def regulations
-    @regulations ||= watcher_reports.regulations
+    @regulations ||= watcher_reports.where("status != 'training'").where("status != 'broken_timestamp'").regulations
   end
 
   def violations
-    @violations ||= watcher_reports.violations
+    @violations ||= watcher_reports.where("status != 'training'").where("status != 'broken_timestamp'").violations
   end
 
   def regulations_count

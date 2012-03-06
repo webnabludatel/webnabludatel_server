@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_filter :find_user
 
   def show
+    @locations = @user.locations.select {|l| l.watcher_reports.where("status != 'training'").where("status != 'broken_timestamp'").size > 0}
   end
 
   def show_future
