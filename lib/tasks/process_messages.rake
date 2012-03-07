@@ -94,26 +94,14 @@ namespace :process do
       messages = location.user_messages
       place_internal_ids = messages.map(&:polling_place_internal_id)
       puts "Fixing location: #{location.id}: #{place_internal_ids.inspect}"
-
-
+    
+      # It is not so optimal, but we it looks simpler and will work faster (i think) because we use internal array methods
+      # And max size of array is 6.
       uniq_place_internal_ids = place_internal_ids.compact.uniq
       polling_place_internal_id = uniq_place_internal_ids.first
       puts "\rFixing location: #{location.id}: #{place_internal_ids.inspect}: #{uniq_place_internal_ids.inspect}: #{polling_place_internal_id.inspect}"
       next if polling_place_internal_id.nil? || uniq_place_internal_ids.length > 1
-      # It is not so optimal, but we it looks simpler and will work faster (i think) because we use internal array methods
-      # And max size of array is 6.
-      
-      # messages.each do |message|
-        # if polling_place_internal_id && message.polling_place_internal_id && polling_place_internal_id != message.polling_place_internal_id
-          # puts "Fuck: #{polling_place_internal_id} : #{message.polling_place_internal_id}"
-          # polling_place_internal_id = nil
-          # break
-        # end
-
-        polling_place_internal_id = message.polling_place_internal_id
-      end
-
-      puts "External: #{polling_place_internal_id}"
+    
       location.external_id = polling_place_internal_id
       location.save!
       puts "\n"
