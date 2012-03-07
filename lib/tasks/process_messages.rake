@@ -89,7 +89,7 @@ namespace :process do
     end
   end
 
-  task locations: :environment do
+  task set_location_external_id: :environment do
     UserLocation.where("external_id is NULL").each do |location|
       messages = location.user_messages.where(key: Analyzer::COMMISSION_KEYS)
       place_internal_ids = messages.map(&:polling_place_internal_id)
