@@ -109,7 +109,7 @@ namespace :process do
   end
   
   task delayed_messages: :environment do
-    UserMessage.where(is_delayed: true).key("key not IN (?)", (Analyzer::COMMISSION_KEYS - ["district_banner_photo"])).each do |message|
+    UserMessage.where(is_delayed: true).where("key not IN (?)", (Analyzer::COMMISSION_KEYS - ["district_banner_photo"])).each do |message|
       message_analyzer = UserMessageAnalyzer.new message
       
       puts "Message #{message.id}: #{mesasge_analyzer.send(:parsed_location).inspect}"
