@@ -110,14 +110,26 @@ namespace :process do
   
   task delayed_messages: :environment do
     UserMessage.where(is_delayed: true).where("key not IN (?)", (Analyzer::COMMISSION_KEYS - ["district_banner_photo"])).each do |message|
+      user = message.user
       message_analyzer = UserMessageAnalyzer.new message
       
-      puts "Message #{message.id}: #{mesasge_analyzer.send(:parsed_location).inspect}"
-      next unless message_analyzer.send(:parsed_location)
+      parsed_location = mesasge_analyzer.send(:parsed_location)
+      puts "Message #{message.id}: #{message.key}: #{parsed_location.inspect}"
+      next unless parsed_location
       
+      if message.timestamp > Time.now
+        pust "\t: Inf timestamp: #{message.timestamp}"
+        if user.user_messages.where(key: message.key).where("id != ?", message.id).where("timestamp < ?", Time.now).exists?
+          puts "\t: Have normal messages"
+          next
+        end
+      end
+      
+      puts "\tanalyzing message..."
       message_analyzer.process!
       
       message.media_items.each do |media_item|
+        puts "\tanalyzing media item: #{media_item.id}"
         MediaItemAnalyzer.new(media_item).process!
       end
     end
