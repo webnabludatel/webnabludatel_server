@@ -113,7 +113,7 @@ namespace :process do
       user = message.user
       message_analyzer = UserMessagesAnalyzer.new message
       
-      parsed_location = mesasge_analyzer.send(:parsed_location)
+      parsed_location = message_analyzer.send(:parsed_location)
       puts "Message #{message.id}: #{message.key}: #{parsed_location.inspect}"
       next unless parsed_location
       
