@@ -107,6 +107,21 @@ namespace :process do
       puts "\n"
     end
   end
+  
+  task delayed_messages: :environment do
+    UserMessage.where(is_delayed: true).key("key not IN (?)", (Analyzer::COMMISSION_KEYS - ["district_banner_photo"])).each do |message|
+      message_analyzer = UserMessageAnalyzer.new message
+      
+      puts "Message #{message.id}: #{mesasge_analyzer.send(:parsed_location).inspect}"
+      next unless message_analyzer.send(:parsed_location)
+      
+      message_analyzer.process!
+      
+      message.media_items.each do |media_item|
+        MediaItemAnalyzer.new(media_item).process!
+      end
+    end
+  end
 
   task user_messages_without_location: :environment do
     UserMessage.where("user_location_id is NULL").each do |message|

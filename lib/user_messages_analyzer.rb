@@ -20,6 +20,8 @@ class UserMessagesAnalyzer < Analyzer
   end
 
   def process!
+    return if @message.is_processed? && !@message.is_delayed? && !options[:force]
+    
     case @message.key
       when *COMMISSION_KEYS
         process_commission
