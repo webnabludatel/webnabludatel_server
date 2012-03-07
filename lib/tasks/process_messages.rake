@@ -114,7 +114,7 @@ namespace :process do
       message_analyzer = UserMessagesAnalyzer.new message
       
       parsed_location = message_analyzer.send(:parsed_location)
-      puts "Message #{message.id}: #{message.key}: #{parsed_location.inspect}"
+      puts "Message #{message.id}: #{message.key}: #{parsed_location ? parsed_location.inspect : "#{parsed_location.inspect} : #{message.value.inspect}"}"
       next unless parsed_location
       
       if message.timestamp > Time.now
