@@ -91,7 +91,7 @@ namespace :process do
 
   task locations: :environment do
     UserLocation.where("external_id is NULL").each do |location|
-      messages = location.user_messages
+      messages = location.user_messages.where(key: Analyzer::COMMISSION_KEYS)
       place_internal_ids = messages.map(&:polling_place_internal_id)
       puts "Fixing location: #{location.id}: #{place_internal_ids.inspect}"
     
