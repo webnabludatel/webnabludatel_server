@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
   after_initialize  :set_default_watcher_status
   after_save        :update_watcher_reports
 
+  def self.active_count
+    @active_count ||= DeviceMessage.count(:user_id, distinct: true)
+  end
+
   def watcher_status
     ActiveSupport::StringInquirer.new("#{read_attribute(:watcher_status)}")
   end
