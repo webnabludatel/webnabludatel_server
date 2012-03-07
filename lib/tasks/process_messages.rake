@@ -118,7 +118,7 @@ namespace :process do
       next unless parsed_location
       
       if message.timestamp > Time.now
-        pust "\t: Inf timestamp: #{message.timestamp}"
+        puts "\t: Inf timestamp: #{message.timestamp}"
         if user.user_messages.where(key: message.key).where("id != ?", message.id).where("timestamp < ?", Time.now).exists?
           puts "\t: Have normal messages"
           next
