@@ -310,11 +310,57 @@ namespace :process do
   end
 
   task protocol_copy_photo: :environment do
-    UserMessage.joins(:media_items).includes(:media_items).where(key: "protocol_copy_photo").where(is_processed: false).where("user_messages.user_location_id IS NOT NULL").order("user_messages.timestamp").each do |message|
+    UserMessage.includes(:media_items).where(key: "protocol_copy_photo").where("user_location_id IS NOT NULL").order(:timestamp).each do |message|
       UserMessagesAnalyzer.new(message).process!(force: true) if !message.is_processed? || message.is_delayed?
 
       message.media_items.where(is_processed: false).each do |item|
+        puts "re-processing media_item: #{item.id}"
         MediaItemAnalyzer.new(item).process!
+      end
+    end
+  end
+
+  task fix_timestamps: :environment do
+    UserMessage.where("timestamp > ?", Time.now + 100.years).order(:timestamp).each do |message|
+      message.update_column :timestamp, Time.at(message.timestamp.to_i / 1000)
+      analyzer = UserMessagesAnalyzer.new message
+
+      case message.key
+        when *COMMISSION_KEYS
+          analyzer.process!(force: true) if !message.is_processed? && message.is_delayed? || message.user_location.blank?
+          process_media_items(message) if message.key == "district_banner_photo"
+        when *SOS_KEYS
+          analyzer.process! force: true
+          process_media_item message
+        when *PROFILE_KEYS
+          analyzer.process! unless message.is_processed?
+        when *RESULT_PHOTO_KEYS
+          analyzer.process! if !message.is_processed? || message.is_delayed?
+          process_media_items message
+        when *OFFICIAL_OBSERVER_KEYS
+          analyzer.process! force: true
+          prcoess_mesia_items message
+        else
+          check_list_item = CheckListItem.find_by_name message.key
+          if check_list_item
+            analyzer.process! message
+            process_media_items message
+          elsif !OBSERVER_STATUS_KEYS.include? message.key
+            Airbrake.notify(
+                error_class:    "API Error",
+                error_message:  "Unknown message key: #{message.key}",
+                parameters:     { payload: message.inspect }
+            )
+          end
+      end
+    end
+  end
+
+  def process_media_items(message)
+    message.media_items.each do |item|
+      if item.timestamp > Time.now + 100.years || !item.is_processed?
+        item.update_column(:timestamp, Time.at(item.timestamp.to_i / 1000))
+        MediaItemAnalyzer.new(item).process!(force: true)
       end
     end
   end

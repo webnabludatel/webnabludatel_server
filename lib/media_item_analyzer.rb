@@ -11,29 +11,20 @@ class MediaItemAnalyzer < Analyzer
   def run_processors
     return if @message.is_delayed? || @media_item.is_processed? && !options[:force]
 
-    Rails.logger.info ">> #{@message.key} <<"
-
     case @message.key
       when "official_observer"
-        Rails.logger.info ">> official_observer"
         process_observer_referral_photo
       when "district_banner_photo"
-        Rails.logger.info ">> district_banner_photo"
         process_user_location_photo
       when "sos_report_photo"
-        Rails.logger.info ">> sos_report_photo"
         process_sos_photo
       when "sos_report_video"
-        Rails.logger.info ">> sos_report_video"
         process_sos_video
       when "protocol_photo"
-        Rails.logger.info ">> protocol_photo"
         process_protocol_photo
       when "protocol_copy_photo"
-        Rails.logger.info ">> protocol_copy_photo"
         process_protocol_copy_photo
       else
-        Rails.logger.info ">> check list"
         check_list_item = CheckListItem.find_by_name @message.key
         if check_list_item && check_list_item.kind.photo?
           process_check_list_photo
@@ -49,10 +40,7 @@ class MediaItemAnalyzer < Analyzer
         end
     end
 
-    Rails.logger.info ">> setting is processed <<"
     @media_item.update_column :is_processed, true
-    @media_item.reload
-    Rails.logger.info ">> #{@media_item.inspect} <<"
   end
 
   protected
@@ -76,10 +64,7 @@ class MediaItemAnalyzer < Analyzer
 
       return unless location
 
-      return if location.photos.where(media_item_id: @media_item.id).exists?
-
-      photo = location.photos.build
-      photo.media_item = @media_item
+      photo = location.photos.find_or_initialize_by_media_item_id @media_item.id
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
 
@@ -90,10 +75,7 @@ class MediaItemAnalyzer < Analyzer
       user_sos_messages = get_messages_for_current(SOS_KEYS)
       sos_message = @user.sos_messages.where(user_message_id: user_sos_messages["sos_report_text"].id).first
 
-      return if sos_message.photos.where(media_item_id: @media_item.id).exists?
-
-      photo = sos_message.photos.build
-      photo.media_item = @media_item
+      photo = sos_message.photos.find_or_initialize_by_media_item_id @media_item.id
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
 
@@ -104,10 +86,7 @@ class MediaItemAnalyzer < Analyzer
       user_sos_messages = get_messages_for_current(SOS_KEYS)
       sos_message = @user.sos_messages.where(user_message_id: user_sos_messages["sos_report_text"].id).first
 
-      return if sos_message.videos.where(media_item_id: @media_item.id).exists?
-
-      video = sos_message.videos.build
-      video.media_item = @media_item
+      video = sos_message.videos.find_or_initialize_by_media_item_id @media_item.id
       video.url = @media_item.url
       video.timestamp = @media_item.timestamp
 
@@ -116,9 +95,8 @@ class MediaItemAnalyzer < Analyzer
 
     def process_check_list_photo
       watcher_report = @message.watcher_report
-      photo = watcher_report.photos.build
+      photo = watcher_report.photos.find_or_initialize_by_media_item_id @media_item.id
       photo.remote_image_url = @media_item.url
-      photo.media_item = @media_item
       photo.timestamp = @media_item.timestamp
 
       photo.save!
@@ -126,9 +104,8 @@ class MediaItemAnalyzer < Analyzer
 
     def process_check_list_video
       watcher_report = @message.watcher_report
-      video = watcher_report.videos.build
+      video = watcher_report.videos.find_or_initialize_by_media_item_id @media_item.id
       video.url = @media_item.url
-      video.media_item = @media_item
       video.timestamp = @media_item.timestamp
 
       video.save!
@@ -136,17 +113,16 @@ class MediaItemAnalyzer < Analyzer
 
     def process_protocol_photo
       location = @message.user_location
-      photo = location.protocol_photos.build
+      photo = location.protocol_photos.find_or_initialize_by_media_item_id @media_item.id
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
-      photo.media_item = @media_item
 
       photo.save!
     end
 
     def process_protocol_copy_photo
       location = @message.user_location
-      photo = location.protocol_photo_copies.build
+      photo = location.protocol_photo_copies.find_or_initialize_by_media_item_id @media_item.id
       photo.remote_image_url = @media_item.url
       photo.timestamp = @media_item.timestamp
 

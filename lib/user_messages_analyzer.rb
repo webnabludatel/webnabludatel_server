@@ -128,7 +128,7 @@ class UserMessagesAnalyzer < Analyzer
 
       watcher_report = parsed_location.watcher_reports.find_by_key @message.key
 
-      if watcher_report && watcher_report.timestamp > @message.timestamp
+      if watcher_report && watcher_report.timestamp > @message.timestamp && watcher_report.timestamp < Time.now + 100.years
         puts "OLD MESSAGE: Message: #{@message.id}"
         return
       end
@@ -172,7 +172,8 @@ class UserMessagesAnalyzer < Analyzer
       end
 
       if @message.key == "sos_report_text"
-        sos_message = @user.sos_messages.new body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message
+        sos_message = User.sos_messages.find_by_user_message_id @message.id
+        sos_message = @user.sos_messages.new(body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message) unless sos_message
         sos_message.location = parsed_location
         sos_message.timestamp = @message.timestamp
         sos_message.save!
