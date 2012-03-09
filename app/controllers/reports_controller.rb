@@ -27,6 +27,6 @@ class ReportsController < ApplicationController
 
   def protocols
     location_ids = UserLocation.joins(:protocol_photos).order(:id).uniq.pluck("user_locations.id")
-    @locations = UserLocation.where(id: location_ids).order(:id).page(params[:page]).per(20)
+    @locations = UserLocation.where(id: location_ids).where("status != ?", "rejected").order(:id).page(params[:page]).per(20)
   end
 end
