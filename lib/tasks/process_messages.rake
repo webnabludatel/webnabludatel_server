@@ -345,7 +345,7 @@ namespace :process do
         else
           check_list_item = CheckListItem.find_by_name message.key
           if check_list_item
-            analyzer.process! message
+            analyzer.process! force: true
             process_media_items message
           elsif !Analyzer::OBSERVER_STATUS_KEYS.include? message.key
             Airbrake.notify(
