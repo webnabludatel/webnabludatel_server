@@ -322,22 +322,24 @@ namespace :process do
 
   task fix_timestamps: :environment do
     UserMessage.where("timestamp > ?", Time.now + 100.years).order(:timestamp).each do |message|
+      puts "Processing message: #{message.id} #{message.key}:#{message.value}"
+
       message.update_column :timestamp, Time.at(message.timestamp.to_i / 1000)
       analyzer = UserMessagesAnalyzer.new message
 
       case message.key
-        when *COMMISSION_KEYS
+        when *Analyzer::COMMISSION_KEYS
           analyzer.process!(force: true) if !message.is_processed? && message.is_delayed? || message.user_location.blank?
           process_media_items(message) if message.key == "district_banner_photo"
-        when *SOS_KEYS
+        when *Analyzer::SOS_KEYS
           analyzer.process! force: true
           process_media_item message
-        when *PROFILE_KEYS
+        when *Analyzer::PROFILE_KEYS
           analyzer.process! unless message.is_processed?
-        when *RESULT_PHOTO_KEYS
+        when *Analyzer::RESULT_PHOTO_KEYS
           analyzer.process! if !message.is_processed? || message.is_delayed?
           process_media_items message
-        when *OFFICIAL_OBSERVER_KEYS
+        when *Analyzer::OFFICIAL_OBSERVER_KEYS
           analyzer.process! force: true
           prcoess_mesia_items message
         else
@@ -345,7 +347,7 @@ namespace :process do
           if check_list_item
             analyzer.process! message
             process_media_items message
-          elsif !OBSERVER_STATUS_KEYS.include? message.key
+          elsif !Analyzer::OBSERVER_STATUS_KEYS.include? message.key
             Airbrake.notify(
                 error_class:    "API Error",
                 error_message:  "Unknown message key: #{message.key}",
