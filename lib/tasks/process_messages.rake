@@ -333,7 +333,7 @@ namespace :process do
           process_media_items(message) if message.key == "district_banner_photo"
         when *Analyzer::SOS_KEYS
           analyzer.process! force: true
-          process_media_item message
+          process_media_items message
         when *Analyzer::PROFILE_KEYS
           analyzer.process! unless message.is_processed?
         when *Analyzer::RESULT_PHOTO_KEYS
