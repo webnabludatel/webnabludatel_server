@@ -24,4 +24,9 @@ class ReportsController < ApplicationController
         order("wcnt desc").
         limit(10)
   end
+
+  def protocols
+    location_ids = UserLocation.joins(:protocol_photos).order(:id).uniq.pluck("user_locations.id")
+    @locations = UserLocation.where(id: location_ids).order(:id).page(params[:page]).per(20)
+  end
 end

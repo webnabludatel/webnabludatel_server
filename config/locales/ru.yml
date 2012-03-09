@@ -11,3 +11,9 @@ ru:
         password_confirmation: "Подтверждение пароля"
         remember_me: "Запомнить меня"
 
+  views:
+    pagination:
+      next: "Следующая"
+      previous: "Предыдущая"
+      last: "Последняя"
+      first: "Первая"
