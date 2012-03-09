@@ -362,7 +362,16 @@ namespace :process do
     message.media_items.each do |item|
       if item.timestamp > Time.now + 100.years || !item.is_processed?
         item.update_column(:timestamp, Time.at(item.timestamp.to_i / 1000))
-        MediaItemAnalyzer.new(item).process!(force: true)
+
+        begin
+          MediaItemAnalyzer.new(item).process!(force: true)
+        rescue => e
+          puts "Message: #{message.inspect}"
+          puts "e: #{e}"
+
+          raise e unless message.is_processed? && item.is_processed? && !item.is_delayed? && user.watcher_status.rejected?
+        end
+
       end
     end
   end
