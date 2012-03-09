@@ -296,13 +296,14 @@ namespace :process do
         prev_message = message
       end
 
-      puts "User (#{user.id}): #{messages.map(&:key).inspect} : #{new_location_messages.map(&:key).inspect}"
+      puts "User (#{user.id}):"
+      puts "\tmessages(key:value:polling_place_internal_id:user_location-id): #{messages.map{|m| "#{m.key} : #{m.value} : #{m.polling_place_internal_id} : #{m.user_location_id}" }.inspect}"
+      puts "\tnew_location_messages(key:value:polling_place_internal_id:user_location-id): #{new_location_messages.map{|m| "#{m.key} : #{m.value} : #{m.polling_place_internal_id} : #{m.user_location_id}" }.inspect}"
       new_location_messages.reject!{|message| message.user_location_id.present? }
-      puts "new_location_messages: #{new_location_messages.inspect}"
 
-      new_location_messages.each do |message|
-        UserMessagesAnalyzer.new(message).process!(force: true, force_old_api: true)
-      end
+      #new_location_messages.each do |message|
+      #  UserMessagesAnalyzer.new(message).process!(force: true, force_old_api: true)
+      #end
 
       puts "\n"
     end
