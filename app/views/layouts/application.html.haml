@@ -45,11 +45,9 @@
         %nav.b-nav
           %ul.b-nav__list
             %li.b-nav__item
-              %span.b-nav__link.b-nav__link_disable
-                Отчеты
-                %small.b-nav__info появятся 4 марта
-            %li.b-nav__item
               = active_link_to "Приложение", root_path, :class_active => 'b-nav__link b-nav__link_current', :class_inactive => 'b-nav__link'
+            %li.b-nav__item
+              = active_link_to "Отчеты", '/reports', :class_active => 'b-nav__link b-nav__link_current', :class_inactive => 'b-nav__link'
             %li.b-nav__item
               = active_link_to "О проекте", '/about', :class_active => 'b-nav__link b-nav__link_current', :class_inactive => 'b-nav__link'
             %li.b-nav__item
@@ -70,13 +68,17 @@
 
     / /Yandex.Metrika counter
     :javascript
-      var yaParams = {/*Здесь параметры визита*/};    %div{:style => "display:none;"}
+      var yaParams = {/*Здесь параметры визита*/};
+
+    %div{:style => "display:none;"}
       :javascript
-        (function(w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter12682987 = new Ya.Metrika({id:12682987, enableAll: true, trackHash:true, webvisor:true,params:window.yaParams||{ }}); } catch(e) { } }); })(window, "yandex_metrika_callbacks");    %script{:defer => "defer", :src => "//mc.yandex.ru/metrika/watch.js", :type => "text/javascript"}
+        (function(w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter12682987 = new Ya.Metrika({id:12682987, enableAll: true, trackHash:true, webvisor:true,params:window.yaParams||{ }}); } catch(e) { } }); })(window, "yandex_metrika_callbacks");
+      %script{:defer => "defer", :src => "//mc.yandex.ru/metrika/watch.js", :type => "text/javascript"}
     %noscript
       %div
         %img{:alt => "", :src => "//mc.yandex.ru/watch/12682987", :style => "position:absolute; left:-9999px;"}/
     / /Yandex.Metrika counter
+
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-29285829-1']);
