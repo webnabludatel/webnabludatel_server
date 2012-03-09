@@ -292,7 +292,7 @@ namespace :process do
                                             prev_message.key == message.key ||
                                             message.user_location_id.present? ||
                                             prev_message.user_location_id.present? ||
-                                            prev_message.polling_place_internal_id == umessage.polling_place_internal_id
+                                            prev_message.polling_place_internal_id == message.polling_place_internal_id
         prev_message = message
       end
 
