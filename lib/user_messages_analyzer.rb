@@ -172,7 +172,7 @@ class UserMessagesAnalyzer < Analyzer
       end
 
       if @message.key == "sos_report_text"
-        sos_message = User.sos_messages.find_by_user_message_id @message.id
+        sos_message = @user.sos_messages.find_by_user_message_id @message.id
         sos_message = @user.sos_messages.new(body: @message.value, latitude: @message.latitude, longitude: @message.longitude, user_message: @message) unless sos_message
         sos_message.location = parsed_location
         sos_message.timestamp = @message.timestamp
