@@ -280,5 +280,41 @@ namespace :process do
     end
     
   end
-  
+
+  task locations_with_duplicate_messages: :environment do
+    User.joins(:user_messages).includes(:user_messages).where("user_messages.key" => Analyzer::COMMISSION_KEYS).where("user_messages.user_location_id is NULL").uniq.each do |user|
+      messages = user.user_messages.where(key: Analyzer::COMMISSION_KEYS).order(:timestamp)
+
+      new_location_messages = []
+      prev_message = nil
+      messages.each do |message|
+        new_location_messages << message if prev_message.key == message.key ||
+                                            message.user_location_id.present? ||
+                                            (prev_message && prev_message.user_location_id.present?) ||
+                                            prev_message.polling_place_internal_id == user_messages.polling_place_internal_id
+        prev_message = message
+      end
+
+      puts "User (#{user.id}): #{messages.map(&:key).inspect} : #{new_location_messages.map(&:key).inspect}"
+      new_location_messages.reject!{|message| message.user_location_id.present? }
+      puts "new_location_messages: #{new_location_messages.inspect}"
+
+      new_location_messages.each do |message|
+        UserMessagesAnalyzer.new(message).process!(force: true, force_old_api: true)
+      end
+
+      puts "\n"
+    end
+  end
+
+  task protocol_copy_photo: :environment do
+    UserMessage.joins(:media_items).includes(:media_items).where(key: "protocol_copy_photo").where(is_processed: false).where("user_messages.user_location IS NOT NULL").order(:timestamp).each do |message|
+      UserMessagesAnalyzer.new(message).process!(force: true) if !message.is_processed? || message.is_delayed?
+
+      message.media_items.where(is_processed: false).each do |item|
+        MediaItemAnalyzer.new(item).process!
+      end
+    end
+  end
+
 end

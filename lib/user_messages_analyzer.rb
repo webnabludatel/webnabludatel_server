@@ -19,7 +19,7 @@ class UserMessagesAnalyzer < Analyzer
     end
   end
 
-  def process!
+  def run_processors
     return if @message.is_processed? && !@message.is_delayed? && !options[:force]
     
     case @message.key
@@ -223,7 +223,7 @@ class UserMessagesAnalyzer < Analyzer
 
   private
       def get_location_messages_for_current
-        if @message.polling_place_internal_id.present?
+        if @message.polling_place_internal_id.present? && !options[:force_old_api]
           # NEW API
           messages = @user.user_messages.where(polling_place_internal_id: @message.polling_place_internal_id).where(key: COMMISSION_KEYS).order(:timestamp)
 

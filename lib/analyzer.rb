@@ -13,9 +13,21 @@ class Analyzer
 
   RESULT_PHOTO_KEYS = %W(protocol_photo protocol_copy_photo)
 
+  attr_reader :options
+
   def initialize(message)
     @message = message
     @user = message.user
+    @options = {}
+  end
+
+  def process!(options = {})
+    @options = options
+    run_processors
+  end
+
+  def run_processors
+    raise NotImplemmentedError
   end
 
   protected
