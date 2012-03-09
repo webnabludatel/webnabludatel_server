@@ -75,7 +75,11 @@ class UserLocation < ActiveRecord::Base
 
   private
     def set_default_status
-      self.status = "pending" if self.status.blank?
+      if self.status.blank? && self.user && self.user.watcher_status.rejected?
+        self.status = "rejected"
+      elsif self.status.blank?
+        self.status = "pending"
+      end
     end
 
     def update_watcher_reports
