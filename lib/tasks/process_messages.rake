@@ -369,9 +369,12 @@ namespace :process do
           puts "Message: #{message.inspect}"
           puts "e: #{e}"
 
-          raise e unless message.is_processed? && item.is_processed? && !message.is_delayed? && message.user.watcher_status.rejected?
+          Airbrake.notify(
+                          error_class:    "Fix timestamp Error/API Error",
+                          error_message:  "#{e.message}",
+                          parameters:     { media_item: item.inspect }
+                      )
         end
-
       end
     end
   end
