@@ -341,7 +341,7 @@ namespace :process do
           process_media_items message
         when *Analyzer::OFFICIAL_OBSERVER_KEYS
           analyzer.process! force: true
-          prcoess_mesia_items message
+          process_media_items message
         else
           check_list_item = CheckListItem.find_by_name message.key
           if check_list_item
