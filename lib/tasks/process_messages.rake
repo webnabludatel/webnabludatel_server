@@ -289,7 +289,7 @@ namespace :process do
       prev_message = nil
       messages.each do |message|
         new_location_messages << message if prev_message.nil? ||
-                                            prev_message.key == message.key ||
+                                            !prev_message.key == message.key ||
                                             message.user_location_id.present? ||
                                             prev_message.user_location_id.present? ||
                                             prev_message.polling_place_internal_id == message.polling_place_internal_id
@@ -310,7 +310,7 @@ namespace :process do
   end
 
   task protocol_copy_photo: :environment do
-    UserMessage.joins(:media_items).includes(:media_items).where(key: "protocol_copy_photo").where(is_processed: false).where("user_messages.user_location IS NOT NULL").order(:timestamp).each do |message|
+    UserMessage.joins(:media_items).includes(:media_items).where(key: "protocol_copy_photo").where(is_processed: false).where("user_messages.user_location_id IS NOT NULL").order(:timestamp).each do |message|
       UserMessagesAnalyzer.new(message).process!(force: true) if !message.is_processed? || message.is_delayed?
 
       message.media_items.where(is_processed: false).each do |item|
