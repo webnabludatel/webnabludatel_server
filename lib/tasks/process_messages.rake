@@ -288,11 +288,11 @@ namespace :process do
       new_location_messages = []
       prev_message = nil
       messages.each do |message|
-        new_location_messages << message if prev_message.nil? || 
+        new_location_messages << message if prev_message.nil? ||
                                             prev_message.key == message.key ||
                                             message.user_location_id.present? ||
-                                            (prev_message && prev_message.user_location_id.present?) ||
-                                            prev_message.polling_place_internal_id == user_messages.polling_place_internal_id
+                                            prev_message.user_location_id.present? ||
+                                            prev_message.polling_place_internal_id == umessage.polling_place_internal_id
         prev_message = message
       end
 
