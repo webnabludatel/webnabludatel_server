@@ -384,7 +384,7 @@ namespace :process do
   end
 
   task fix_watcher_reports_with_broken_timestamp: :environment do
-    WatcherReport.where(status: "broken_timestamp").includes(:user_reports).each do |report|
+    WatcherReport.where(status: "broken_timestamp").includes(:user_messages).each do |report|
       puts "Processing report: #{report.id}"
 
       user_message = report.user_messages.last
