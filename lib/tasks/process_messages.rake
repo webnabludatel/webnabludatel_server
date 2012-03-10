@@ -366,7 +366,7 @@ namespace :process do
 
       user = orphan.user
 
-      user_messages = user.user_messages.where(key: orphan.key).includes(:watcher_reports).order("timestamp DESC")
+      user_messages = user.user_messages.where(key: orphan.key).includes(:watcher_report).order("timestamp DESC")
 
       puts "ERROR: NO USER MESSAGES WITH KEY: #{orphan.key}" and next if user_messages.blank?
 
