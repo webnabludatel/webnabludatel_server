@@ -9,7 +9,7 @@ class WatcherReport < ActiveRecord::Base
 
   has_one :commission, through: :user_location
 
-  has_many :user_messages, dependent: :nullify
+  has_many :user_messages, dependent: :nullify, order: :timestamp
   has_many :photos, class_name: "WatcherReportPhoto", dependent: :destroy, order: :timestamp
   has_many :videos, class_name: "WatcherReportVideo", dependent: :destroy, order: :timestamp
 

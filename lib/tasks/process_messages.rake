@@ -383,6 +383,18 @@ namespace :process do
     end
   end
 
+  task fix_watcher_reports_with_broken_timestamp: :environment do
+    WatcherReport.where(status: "broken_timestamp").includes(:user_reports).each do |report|
+      puts "Processing report: #{report.id}"
+
+      user_message = report.user_messages.last
+      UserMessagesAnalyzer.new(user_message).process!(force: true)
+      user_message.media_items.each do |item|
+        MediaItemAnalyzer.new(item).process!(force: true)
+      end
+    end
+  end
+
   def process_media_items(message)
     message.media_items.each do |item|
       if item.timestamp > Time.now + 100.years || !item.is_processed?
