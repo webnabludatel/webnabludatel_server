@@ -358,6 +358,31 @@ namespace :process do
     end
   end
 
+  task fix_orphan_reports: :environment do
+    WatcherReport.includes(:user_messages).each do |orphan|
+      next if orphan.user_messages.present?
+
+      puts "Processing orphan report: #{orphan.id}"
+
+      user = orphan.user
+
+      user_messages = user.user_messages.where(key: orphan.key).includes(:watcher_reports).order("timestamp DESC")
+
+      puts "ERROR: NO USER MESSAGES WITH KEY: #{orphan.key}" and next if user_messages.blank?
+
+      user_message = user_messages.first
+      watcher_report = user_message.watcher_report
+      puts "ERROR: NO REPORT FOR THE LAST MESSAGE: #{user_message.id}" and next unless watcher_report
+
+      puts "ERROR: DON'T KNOW WHAT TO DO: orphan value: #{orphan.value}; report: #{watcher_report.value}" and next if orphan.value != watcher_report.value
+      puts "ERROR: orphan photos doesn't match report photos" and next if orphan.photos != watcher_report.photos
+      puts "ERROR: orphan videos doesn't match reports videos" and next if orphan.videos != watcher_report.videos
+
+      puts "destroying orphan #{orphan.id}"
+      orphan.destroy
+    end
+  end
+
   def process_media_items(message)
     message.media_items.each do |item|
       if item.timestamp > Time.now + 100.years || !item.is_processed?
