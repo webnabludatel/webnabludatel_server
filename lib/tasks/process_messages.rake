@@ -399,7 +399,7 @@ namespace :process do
     User.joins(:user_messages).includes(:user_messages).where("user_messages.key" => Analyzer::COMMISSION_KEYS).where("user_messages.user_location_id is NULL").uniq.each do |user|
       processed = []
       current_hash = {}
-      user.user_messages.where(key: Analyzer::COMMISSION_KEYS).where("user.messages.user_location_id ").order(:timestamp).each do |message|
+      user.user_messages.where(key: Analyzer::COMMISSION_KEYS).where("user_location_id is NULL").order(:timestamp).each do |message|
         puts "Processing message: #{message.id}"
         if m = current_hash[message.key]
           if m[:message].key == message.key && m[:message].value == message.value
