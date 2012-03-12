@@ -395,6 +395,40 @@ namespace :process do
     end
   end
 
+  task fix_dubl_location_messages: :environment do
+    User.joins(:user_messages).includes(:user_messages).where("user_messages.key" => Analyzer::COMMISSION_KEYS).where("user_messages.user_location_id is NULL").uniq.each do |user|
+      processed = []
+      current_hash = {}
+      user.user_messages.where(key: Analyzer::COMMISSION_KEYS).where("user.messages.user_location_id ").order(:timestamp).each do |message|
+        puts "Processing message: #{message.id}"
+        if m = current_hash[message.key]
+          if m[:message].key == message.key && m[:message].value == message.value
+            puts "\tDubl"
+            current_hash[message.key][:dubsl] << message
+          else
+            puts "New Location"
+            processed << current_hash
+            current_hash = {}
+          end
+        else
+          puts "\nNew message"
+          current_hash[message.key] = { message: message, dubls: [] }
+        end
+      end
+      processed << current_hash
+
+      # Creating locations
+      processed.each do |m_hash|
+        messages = m_hash.map{|_, m| m[:message] }
+
+        UserMessagesAnalyzer.reprocess_messages messages
+
+        dubls = m_hash.map{|_, m| m[:dubls].id}
+        UserMessage.update_all(is_dubl: true, id: dubls)
+      end
+    end
+  end
+
   def process_media_items(message)
     message.media_items.each do |item|
       if item.timestamp > Time.now + 100.years || !item.is_processed?

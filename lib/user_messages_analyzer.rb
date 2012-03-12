@@ -2,6 +2,12 @@
 
 class UserMessagesAnalyzer < Analyzer
 
+  def self.reprocess_messages(messages)
+    retrun unless message.present?
+    analyzer = UserMessagesAnalyzer.new  messages.first
+    analyzer.process_commission(messages)
+  end
+
   def self.reprocess_delayed(user_location)
     user = user_location.user
 
@@ -54,9 +60,9 @@ class UserMessagesAnalyzer < Analyzer
 
   protected
     # For now we do believe that we have all commissions in the DB
-    def process_commission
+    def process_commission(messages = nil)
       # 1. Getting all messages for "user location" (in device app terms) associated with the current +@user_message+
-      current_batch = get_location_messages_for_current
+      current_batch = messages || get_location_messages_for_current
 
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0

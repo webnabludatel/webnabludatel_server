@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120306072445) do
+ActiveRecord::Schema.define(:version => 20120312191107) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id",                   :null => false
@@ -260,6 +260,7 @@ ActiveRecord::Schema.define(:version => 20120306072445) do
     t.boolean  "is_processed",                                             :default => false
     t.boolean  "is_delayed",                                               :default => false
     t.text     "processing_errors"
+    t.boolean  "is_dubl",                                                  :default => false
   end
 
   create_table "users", :force => true do |t|
