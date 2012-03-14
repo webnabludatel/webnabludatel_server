@@ -423,6 +423,8 @@ namespace :process do
       processed.each do |m_hash|
         messages = m_hash.map{|_, m| m[:message] }
         puts "Processing: #{messages.map{|m| [m.id, m.key]}.inspect}"
+        dubls = m_hash.map{|_, m| m[:dubls].map{|mm| mm.id} }.flatten
+        puts "Dubls: #{dubls.inspect}"
 
         UserMessagesAnalyzer.reprocess_messages messages
 
