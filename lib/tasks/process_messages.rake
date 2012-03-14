@@ -404,7 +404,7 @@ namespace :process do
         if m = current_hash[message.key]
           if m[:message].key == message.key && m[:message].value == message.value
             puts "\tDubl"
-            current_hash[message.key][:dubsl] << message
+            current_hash[message.key][:dubls] << message
           else
             puts "New Location"
             processed << current_hash
