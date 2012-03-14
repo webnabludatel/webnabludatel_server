@@ -397,26 +397,28 @@ namespace :process do
 
   task fix_dubl_location_messages: :environment do
     User.joins(:user_messages).includes(:user_messages).where("user_messages.key" => Analyzer::COMMISSION_KEYS).where("user_messages.user_location_id is NULL").uniq.each do |user|
+      puts "USER: #{user.id}"
       processed = []
       current_hash = {}
       user.user_messages.where(key: Analyzer::COMMISSION_KEYS).where("user_location_id is NULL").order(:timestamp).each do |message|
-        puts "Processing message: #{message.id}"
+        puts "\tProcessing message: #{message.id}"
         if m = current_hash[message.key]
           if m[:message].key == message.key && m[:message].value == message.value
-            puts "\tDubl"
+            puts "\t\tDubl"
             current_hash[message.key][:dubls] << message
           else
-            puts "New Location"
+            puts "\t\tNew Location"
             processed << current_hash
             current_hash = {}
           end
         else
-          puts "\nNew message"
+          puts "\t\tNew message"
           current_hash[message.key] = { message: message, dubls: [] }
         end
       end
       processed << current_hash
 
+      puts "Processed: #{processed.map{|m| [m.id, m.key] }.inspect}"
       # Creating locations
       processed.each do |m_hash|
         messages = m_hash.map{|_, m| m[:message] }
