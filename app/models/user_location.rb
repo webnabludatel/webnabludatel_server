@@ -26,6 +26,8 @@ class UserLocation < ActiveRecord::Base
     EOF
   end
 
+  reverse_geocoded_by :latitude, :longitude
+
   after_initialize :set_default_status
   after_save :update_watcher_reports
   after_create :reprocess_delayed_messages
