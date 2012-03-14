@@ -136,34 +136,33 @@ namespace :process do
   end
 
   task user_messages_without_location: :environment do
-    UserMessage.where("user_location_id is NULL").each do |message|
-      puts "Message: #{message.id}"
+    UserMessage.where("user_location_id is NULL").where("key NOT IN (?)", Analyzer::COMMISSION_KEYS).where("key NOT IN (?)", Analyzer::PROFILE_KEYS).where("key NOT IN (?)", Analyzer::OBSERVER_STATUS_KEYS).where("key NOT IN (?)", Analyzer::OFFICIAL_OBSERVER_KEYS).order(:timestamp).each do |message|
+      puts "Message: #{message.id}: #{message.key}: #{message.value}: is_processed #{messages.is_processed?.inspect}: is_delayed: #{message.is_delayed?.inspect}"
 
       if message.polling_place_internal_id.present?
         message.user_location = message.user.locations.where(external_id: message.polling_place_internal_id).first
-        message.save!
-
-        puts "Location: #{message.user_location.inspect}"
+        #message.save!
+        puts "\tLocation: #{message.user_location.inspect}"
       else
         user = message.user
         region = Region.find_by_external_id message.polling_place_region
 
         unless region
-          puts "No region: #{message.polling_place_region}"
+          puts "\tNo region: #{message.polling_place_region}"
           next
         end
 
         commission = user.commissions.where(number: message.polling_place_id, region_id: region.id).first
 
         unless commission
-          puts "No commission for: #{message.polling_place_id} - #{region.id}"
+          puts "\tNo commission for: #{message.polling_place_id} - #{region.id}"
           next
         end
 
         message.user_location = user.locations.find_by_commission_id commission.id
-        message.save!
+        #message.save!
 
-        puts "Location: #{message.user_location.inspect}"
+        puts "\tLocation: #{message.user_location.inspect}"
       end
 
       puts "\n"
