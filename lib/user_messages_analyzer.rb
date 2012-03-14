@@ -5,7 +5,7 @@ class UserMessagesAnalyzer < Analyzer
   def self.reprocess_messages(messages)
     retrun unless messages.present?
     analyzer = UserMessagesAnalyzer.new messages.first
-    analyzer.process_commission(messages)
+    analyzer.send :process_commission, messages
   end
 
   def self.reprocess_delayed(user_location)
@@ -69,7 +69,7 @@ class UserMessagesAnalyzer < Analyzer
         end
       else
         get_location_messages_for_current
-      end 
+      end
 
       # 2. Do we have enough messages to find a commission?
       return if (REQUIRED_COMMISSION_KEYS - current_batch.keys).length > 0
