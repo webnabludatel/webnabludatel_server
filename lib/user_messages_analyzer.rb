@@ -3,7 +3,7 @@
 class UserMessagesAnalyzer < Analyzer
 
   def self.reprocess_messages(messages)
-    retrun unless messages.present?
+    return unless messages.present?
     analyzer = UserMessagesAnalyzer.new messages.first
     analyzer.send :process_commission, messages
   end
