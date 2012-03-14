@@ -418,10 +418,11 @@ namespace :process do
       end
       processed << current_hash
 
-      puts "Processed: #{processed.map{|m| [m[:message].id, m[:message].key] }.inspect}"
+      #puts "Processed: #{processed.map{|m| [m[:message].id, m[:message].key] }.inspect}"
       # Creating locations
       processed.each do |m_hash|
         messages = m_hash.map{|_, m| m[:message] }
+        puts "Processing: #{messages.map{|m| [m.id, m.key]}.inspect}"
 
         UserMessagesAnalyzer.reprocess_messages messages
 
