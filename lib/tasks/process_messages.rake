@@ -136,38 +136,22 @@ namespace :process do
   end
 
   task user_messages_without_location: :environment do
-    UserMessage.where("user_location_id is NULL").where("key NOT IN (?)", Analyzer::COMMISSION_KEYS).where("key NOT IN (?)", Analyzer::PROFILE_KEYS).where("key NOT IN (?)", Analyzer::OBSERVER_STATUS_KEYS).where("key NOT IN (?)", Analyzer::OFFICIAL_OBSERVER_KEYS).order(:timestamp).each do |message|
+    UserMessage.includes(:user).where("user_location_id is NULL").where("key NOT IN (?)", Analyzer::COMMISSION_KEYS).where("key NOT IN (?)", Analyzer::PROFILE_KEYS).where("key NOT IN (?)", Analyzer::OBSERVER_STATUS_KEYS).where("key NOT IN (?)", Analyzer::OFFICIAL_OBSERVER_KEYS).order(:timestamp).each do |message|
       puts "Message: #{message.id}: #{message.key}: #{message.value}: is_processed #{message.is_processed?.inspect}: is_delayed: #{message.is_delayed?.inspect}"
 
-      if message.polling_place_internal_id.present?
-        message.user_location = message.user.locations.where(external_id: message.polling_place_internal_id).first
-        puts "\tLocation: #{message.user_location.inspect}"
+      location = get_user_location_by_message(message)
+      puts "\tLocation: #{location.inspect}"
+
+      if location
+        message.user_location = location
         message.save!
 
         UserMessagesAnalyzer.new(message).process!(force: true)
         process_media_items(message)
       else
-        user = message.user
-        region = Region.find_by_external_id message.polling_place_region
-
-        unless region
-          puts "\tNo region: #{message.polling_place_region}"
-          next
+        user.locations.each do |location|
+          puts "\t#{location.distance_to([message.latitude, message.longitude])}"
         end
-
-        commission = user.commissions.where(number: message.polling_place_id, region_id: region.id).first
-
-        unless commission
-          puts "\tNo commission for: #{message.polling_place_id} - #{region.id}"
-          next
-        end
-
-        message.user_location = user.locations.find_by_commission_id commission.id
-        puts "\tLocation: #{message.user_location.inspect}"
-        message.save!
-
-        UserMessagesAnalyzer.new(message).process!(force: true)
-        process_media_items(message)
       end
 
       puts "\n"
@@ -435,6 +419,23 @@ namespace :process do
         dubls = m_hash.map{|_, m| m[:dubls].map{|mm| mm.id} }.flatten
         UserMessage.update_all({ is_dubl: true }, { id: dubls })
       end
+    end
+  end
+
+  def get_user_location_by_message(message)
+    if message.polling_place_internal_id.present?
+      return message.user_location = message.user.locations.where(external_id: message.polling_place_internal_id).first
+    else
+      user = message.user
+      region = Region.find_by_external_id message.polling_place_region
+
+      return nil unless region
+
+      commission = user.commissions.where(number: message.polling_place_id, region_id: region.id).first
+
+      return nil unless commission
+
+      return user.locations.find_by_commission_id commission.id
     end
   end
 
