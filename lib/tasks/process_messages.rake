@@ -423,7 +423,7 @@ namespace :process do
 
         UserMessagesAnalyzer.reprocess_messages messages
 
-        dubls = m_hash.map{|_, m| m[:dubls].id}
+        dubls = m_hash.map{|_, m| m[:dubls].map{|mm| mm.id} }.flatten
         UserMessage.update_all(is_dubl: true, id: dubls)
       end
     end
