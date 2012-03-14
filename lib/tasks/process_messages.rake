@@ -150,7 +150,8 @@ namespace :process do
         process_media_items(message)
       else
         message.user.locations.each do |location|
-          puts "\t#{message.latitude} : #{message.longitude}"
+          puts "\t#{message.latitude.inspect} : #{message.longitude.inspect}"
+          next unless message.latitude && message.longitude
           puts "\t#{location.distance_to([message.latitude, message.longitude])}"
         end
       end
