@@ -149,7 +149,7 @@ namespace :process do
         UserMessagesAnalyzer.new(message).process!(force: true)
         process_media_items(message)
       else
-        user.locations.each do |location|
+        message.user.locations.each do |location|
           puts "\t#{location.distance_to([message.latitude, message.longitude])}"
         end
       end
