@@ -14,13 +14,15 @@ namespace :commissions do
 
       commissions = {}
       CSV.foreach(filename, quote_char: "'", col_sep: ",") do |row|
-        puts "#{row[1]} #{row[2]} #{row[3]} #{row[4]}"
+        #puts "#{row[1]} #{row[2]} #{row[3]} #{row[4]}"
         coordinates = row[2].split(" ").map{|x| x.to_f }
         region_name = row[1].split(/,\s*/)[1]
 
         if region_name == "Москва" || region_name == "Санкт-Петербург"
           region_name = "город #{region_name}"
         end
+
+        next unless region_name
 
         region_name = region_name.downcase
         number = row[4].match(/№(.+)$/)[1]
