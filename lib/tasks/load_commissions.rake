@@ -7,14 +7,14 @@ namespace :commissions do
     task from_yefimov: :environment do
       filename = ENV["filename"] || ENV["FILENAME"] || "parsed_uiks_1.txt"
 
-      regions = Region.all.inject({}){|element, result|
+      regions = Region.all.inject({}){|result, element|
         result[element.name.downcase] = element
         result
       }
 
       commissions = {}
       CSV.foreach(filename, quote_char: "'", col_sep: ",") do |row|
-        puts "#{row[2]} #{row[4]}"
+        puts "#{row[1]} #{row[2]} #{row[3]} #{row[4]}"
         coordinates = row[2].split(" ").map{|x| x.to_f }
         region_name = row[1].split(/,\s*/)[1]
 
