@@ -60,7 +60,7 @@ namespace :commissions do
       write_to = File.open("parsed_uiks_1.txt", "w")
       File.open(filename, 'r').each do |line|
 
-        write_to.puts line.gsub(/'\s*'\s*$/, "'").gsub(/'\s*'/, "','").gsub(/',\s*/, "','").gsub(/''/, "'")
+        write_to.puts line.gsub(/'\s*'\s*$/, "'").gsub(/'\s*'/, "','").gsub(/',\s*/, "','").gsub(/''/, "'").gsub(",',", ",")
       end
 
       write_to.close
