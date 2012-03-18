@@ -26,8 +26,9 @@ namespace :commissions do
         end
         distance = user_location.distance_to([user_location.commission.latitude, user_location.commission.longitude])
         if distance < 100
-          user_location.status = "approved"
-          user_location.save!
+          writable_user_location = UserLocation.find user_location.id
+          writable_user_location.status = "approved"
+          writable_user_location.save!
         else
           puts "UserLocation: <id: #{user_location.id}, user: #{user_location.user_id}, coordinates: #{[user_location.latitude, user_location.longitude]}> - Commission<id: #{user_location.commission.id}, coordinates: #{[user_location.commission.latitude, user_location.commission.longitude]}>: #{distance} "
         end
