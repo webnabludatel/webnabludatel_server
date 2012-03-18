@@ -34,7 +34,7 @@ namespace :commissions do
         commissions[region_name][number] = { coordinates: coordinates, address: row[3] }
       end
 
-      Commission.includes(:regions).all.each do |commission|
+      Commission.includes(:region).all.each do |commission|
         puts "Searching: #{commission.number} from #{commission.region.name}"
 
         found_region = commission[commission.region.name.downcase]
