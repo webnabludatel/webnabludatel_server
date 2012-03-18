@@ -28,7 +28,16 @@ namespace :commissions do
           end
           next
         end
-        distance = user_location.distance_to([user_location.commission.latitude, user_location.commission.longitude])
+
+        latitude = user_location.latitude
+        longitude = user_location.longitude
+
+        if (latitude == 0 || longitude == 0) && user_location.watcher_reports.present?
+          latitude = user_location.watcher_reports.first.latitude
+          longitude = user_location.watcher_reports.first.longitude
+        end
+
+        distance = user_location.commission.distance_to([latitude, longitude])
         if distance < 100
           writable_user_location = UserLocation.find user_location.id
           writable_user_location.status = "approved"
