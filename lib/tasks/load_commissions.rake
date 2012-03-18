@@ -2,6 +2,24 @@
 require 'csv'
 
 namespace :commissions do
+  namespace :process do
+
+    task fix_dublications: :environment do
+      Commission.includes(:user_locations).each do |commission|
+        commission.destroy unless commission.user_locations.present?
+      end
+
+      Commission.select("DISTINCT number, kind, region_id").each do |commission|
+        dubls = Commission.where(number: commission.number, kind: commission.kind, region_id: commission.region_id).where("id != ?", commission.id)
+        dubls.each do |dubl|
+          dubl.user_locations.update_all(commission_id: commission.id)
+          dubl.destroy
+        end
+      end
+    end
+
+  end
+
   namespace :load do
 
     task from_yefimov: :environment do
@@ -24,8 +42,9 @@ namespace :commissions do
 
         next unless region_name
 
-        region_name = region_name.mb_chars.downcase
-        region_id = regions[region_name].try(:id)
+        #region_name = region_name.mb_chars.downcase
+        #region_id = regions[region_name].try(:id)
+        region_id = Region.where("LOWER(name) = LOWER(?)", region_name)
 
         unless region_id
           puts "Region #{region_name} not found"
