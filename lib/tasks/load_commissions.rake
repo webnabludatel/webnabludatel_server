@@ -36,7 +36,7 @@ namespace :commissions do
         end
       end
 
-      puts commissions_without_coordinates
+      puts commissions_without_coordinates.inspect
     end
 
   end
