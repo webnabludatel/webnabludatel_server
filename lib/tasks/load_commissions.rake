@@ -19,7 +19,7 @@ namespace :commissions do
 
         next unless region_name
 
-        region_name = region_name.downcase
+        region_name = region_name.mb_chars.downcase
 
         number_match = row[4].match(/№(.+)$/)
         next unless number_match
@@ -34,7 +34,7 @@ namespace :commissions do
       Commission.includes(:region).all.each do |commission|
         puts "Searching: #{commission.number} from #{commission.region.name}"
 
-        found_region = commission[commission.region.name.downcase]
+        found_region = commission[commission.region.name.mb_chars.downcase]
         unless found_region
           puts "\tRegion #{commission.region.name} not found"
           next
