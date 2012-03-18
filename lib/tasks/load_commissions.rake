@@ -22,8 +22,10 @@ namespace :commissions do
       commissions_without_coordinates = []
       UserLocation.joins(:user).where("users.watcher_status = ?", "approved").where("user_locations.status != ?", "approved").where("user_locations.status != ?", "rejected").includes(:commission).each do |user_location|
         if user_location.commission.latitude.blank? || user_location.commission.longitude.blank?
-          puts "Skip commission: #{user_location.commission.id}"
-          commissions_without_coordinates << user_location.commission.id
+          if user_location.watcher_reports.present?
+            puts "Skip commission: #{user_location.commission.id}"
+            commissions_without_coordinates << user_location.commission.id
+          end
           next
         end
         distance = user_location.distance_to([user_location.commission.latitude, user_location.commission.longitude])
@@ -31,7 +33,7 @@ namespace :commissions do
           writable_user_location = UserLocation.find user_location.id
           writable_user_location.status = "approved"
           writable_user_location.save!
-        else
+        elsif user_location.watcher_reports.present?
           puts "UserLocation: <id: #{user_location.id}, user: #{user_location.user_id}, coordinates: #{[user_location.latitude, user_location.longitude]}> - Commission<id: #{user_location.commission.id}, coordinates: #{[user_location.commission.latitude, user_location.commission.longitude]}>: #{distance} "
         end
       end
