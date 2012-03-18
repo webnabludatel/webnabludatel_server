@@ -19,9 +19,11 @@ namespace :commissions do
     end
 
     task geo: :environment do
+      commissions_without_coordinates = []
       UserLocation.joins(:user).where("users.watcher_status = ?", "approved").where("user_locations.status != ?", "approved").where("user_locations.status != ?", "rejected").includes(:commission).each do |user_location|
         if user_location.commission.latitude.blank? || user_location.commission.longitude.blank?
           puts "Skip commission: #{user_location.commission.id}"
+          commissions_without_coordinates << user_location.commission.id
           next
         end
         distance = user_location.distance_to([user_location.commission.latitude, user_location.commission.longitude])
@@ -33,6 +35,8 @@ namespace :commissions do
           puts "UserLocation: <id: #{user_location.id}, user: #{user_location.user_id}, coordinates: #{[user_location.latitude, user_location.longitude]}> - Commission<id: #{user_location.commission.id}, coordinates: #{[user_location.commission.latitude, user_location.commission.longitude]}>: #{distance} "
         end
       end
+
+      puts commissions_without_coordinates
     end
 
   end
