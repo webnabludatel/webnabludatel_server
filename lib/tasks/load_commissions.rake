@@ -25,7 +25,10 @@ namespace :commissions do
         next unless region_name
 
         region_name = region_name.downcase
-        number = row[4].match(/№(.+)$/)[1]
+        puts row[4]
+        number_match = row[4].match(/№(.+)$/)
+        next unless number_match
+        number = number_match[1]
 
         commissions[region_name] ||= {}
         commissions[region_name][number] = { coordinates: coordinates, address: row[3] }
