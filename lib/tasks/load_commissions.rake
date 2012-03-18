@@ -18,6 +18,16 @@ namespace :commissions do
       end
     end
 
+    task geo: :environment do
+      User.approved.user_locations.where("status != ?", "approved").where("status != ?", "rejected").includes(:commission).each do |user_location|
+        if user_location.commission.latitude.blank? || user_location.commission.longitude.blank?
+          puts "Skip commission: #{user_location.commission.id}"
+          next
+        end
+        puts user_location.distance_to([user_location.commission.latitude, user_location.commission.longitude])
+      end
+    end
+
   end
 
   namespace :load do
