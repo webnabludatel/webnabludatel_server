@@ -7,6 +7,11 @@ namespace :commissions do
     task from_yefimov: :environment do
       filename = ENV["filename"] || ENV["FILENAME"] || "parsed_uiks_1.txt"
 
+      regions = Region.all.inject({}) do |result, element|
+        result[element.name.mb_chars.downcase] = element
+        result
+      end
+
       commissions = {}
       CSV.foreach(filename, quote_char: "'", col_sep: ",") do |row|
         #puts "#{row[1]} #{row[2]} #{row[3]} #{row[4]}"
@@ -20,13 +25,19 @@ namespace :commissions do
         next unless region_name
 
         region_name = region_name.mb_chars.downcase
+        region_id = regions[region_name].try(:id)
+
+        unless region_id
+          puts "Region #{region_name} not found"
+          next
+        end
 
         number_match = row[4].match(/№(.+)$/)
         next unless number_match
         number = number_match[1]
 
-        commissions[region_name] ||= {}
-        commissions[region_name][number] = { coordinates: coordinates, address: row[3] }
+        commissions[region_id] ||= {}
+        commissions[region_id][number] = { coordinates: coordinates, address: row[3] }
       end
 
       puts commissions.keys.inspect
@@ -34,7 +45,7 @@ namespace :commissions do
       Commission.includes(:region).all.each do |commission|
         puts "Searching: #{commission.number} from #{commission.region.name}"
 
-        found_region = commission[commission.region.name.mb_chars.downcase]
+        found_region = commission[commission.region_id]
         unless found_region
           puts "\tRegion #{commission.region.name} not found"
           next
