@@ -20,7 +20,7 @@ class WatcherReport < ActiveRecord::Base
   absentee_ballot_box_opening_violations_photo absentee_ballot_box_opening_video ballot_box_opening_violations_photo ballot_box_opening_video
   counting_ballots_violations_photo counting_ballots_violations_video koib_violations_photo protocol_violations_photo)
 
-  (STATUSES - %W"approved rejected manual_approved manual_rejected").map(:to_sym).each do |status|
+  (STATUSES - %W"approved rejected manual_approved manual_rejected").map(&:to_sym).each do |status|
     scope status, where(status: status)
   end
 
