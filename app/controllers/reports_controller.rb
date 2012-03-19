@@ -25,7 +25,7 @@ class ReportsController < ApplicationController
         limit(10)
 
     # использует фильтр по approved. is it ok?
-    @regional_reports = RegionalReport.all.sort_by(&:ratio).reverse.first(10)
+    @regional_reports = RegionalReport.all.sort_by{|r| r.violations || 0 }.reverse.first(12)
 
   end
 
