@@ -20,15 +20,12 @@ class WatcherReport < ActiveRecord::Base
   absentee_ballot_box_opening_violations_photo absentee_ballot_box_opening_video ballot_box_opening_violations_photo ballot_box_opening_video
   counting_ballots_violations_photo counting_ballots_violations_video koib_violations_photo protocol_violations_photo)
 
-  (STATUSES - %W"approved rejected manual_approved manual_rejected").each do |status|
-    class_eval <<-EOF
-    scope :#{status}, where(status: :#{status})
-
-    EOF
+  (STATUSES - %W"approved rejected manual_approved manual_rejected").map(:to_sym).each do |status|
+    scope status, where(status: status)
   end
 
-  scope :approved, where("status = 'approved' OR status = 'manual_approved'")
-  scope :rejected, where("status = 'rejected' OR status = 'manual_rejected'")
+  scope :approved, where(status: %W[approved manual_approved])
+  scope :rejected, where(status: %W[rejected manual_rejected])
 
   scope :regulations, where(is_violation: false)
   scope :violations, where(is_violation: true)
