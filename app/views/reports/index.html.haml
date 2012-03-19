@@ -37,6 +37,36 @@
       %tr.b-listab__string
         %td.b-listab__item.b-listab__item_num= c.watcher_reports.violations.size
         %td.b-listab__item.b-listab__item_txt= link_to c.full_title, '#'
+
+.b-separator
+  %table.b-separator__table
+    %tr.b-separator__string
+      %td.b-separator__side  
+      %td.b-separator__name География
+      %td.b-separator__side  
+.b-geography
+  %ul.b-towns.clearfix
+    - @regional_reports.each do |r|
+      %li.b-towns__town
+        %p.b-towns__name= r.region.name
+        %p
+          %canvas{:height => "110", :width => "226", :id => "plotRegion#{r.region.id}"}
+        %p
+          %strong.b-total__yes= r.regulations
+          правил соблюдено,
+          %strong.b-total__no= r.violations
+          нарушений замечено
+        -# FIXME как посчитать наблюдателей?
+        -# %p.b-towns__total
+          67277
+          %br/
+          %span.b-towns__watchers наблюдателей
+
+.b-separator
+  %table.b-separator__table
+    %tr.b-separator__string
+      %td.b-separator__side.b-separator__side_single  
+
 -#.b-separator
   %table.b-separator__table
     %tr.b-separator__string
@@ -99,12 +129,8 @@
   });
   window.addEventListener('load', function () {
     draw(#{@regulations_count}, #{@violations_count}, 'plotBig', 30);
-    /*draw(5, 12, 'plotMoscow');
-    draw(12, 8, 'plotSpb');
-    draw(5, 12, 'plotEkb');
-    draw(5, 3, 'plotUfa');
-    draw(1, 8, 'plotChel');
-    draw(2, 10, 'plotKaz');
-    draw(3, 0, 'plotChe');
-    draw(1, 6, 'plotOthers');*/
+
+    /*draw(5, 12, 'plotRegion23');*/
+    #{ @regional_reports.map {|r| "draw(#{r.regulations.to_i}, #{r.violations.to_i}, 'plotRegion#{r.region.id}')" }.join("\n") }
+    /*draw(1, 6, 'plotOthers');*/
   }, false);
