@@ -3,13 +3,13 @@
   %p
     %canvas{:height => "110", :width => "226", :id => "plotRegion#{regional_report.region.id}"}
   %p.b-towns__total
-    = regional_report.users
-    %span.b-towns__watchers= Russian.p(regional_report.users, 'наблюдатель', 'наблюдателя', 'наблюдателей')
+    = regional_report.users.to_i
+    %span.b-towns__watchers= Russian.p(regional_report.users.to_i, 'наблюдатель', 'наблюдателя', 'наблюдателей')
   %p
-    %strong.b-total__yes= regional_report.regulations
-    = Russian.p(regional_report.regulations, 'правило', 'правила', 'правил')
-    соблюдено,
-    %strong.b-total__no= regional_report.violations
-    = Russian.p(regional_report.violations, 'нарушение', 'нарушения', 'нарушений')
+    %strong.b-total__yes= regional_report.regulations.to_i
+    = Russian.p(regional_report.regulations.to_i, 'правило', 'правила', 'правил')
+    соблюдено,<br/>
+    %strong.b-total__no= regional_report.violations.to_i
+    = Russian.p(regional_report.violations.to_i, 'нарушение', 'нарушения', 'нарушений')
     замечено
   %p &nbsp;
