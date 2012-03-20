@@ -51,16 +51,15 @@
         %p.b-towns__name= r.region.name
         %p
           %canvas{:height => "110", :width => "226", :id => "plotRegion#{r.region.id}"}
+        %p.b-towns__total
+          = r.users
+          %span.b-towns__watchers наблюдателей
         %p
           %strong.b-total__yes= r.regulations
           правил соблюдено,
           %strong.b-total__no= r.violations
           нарушений замечено
-        -# FIXME как посчитать наблюдателей?
-        -# %p.b-towns__total
-          67277
           %br/
-          %span.b-towns__watchers наблюдателей
 
 .b-separator
   %table.b-separator__table
