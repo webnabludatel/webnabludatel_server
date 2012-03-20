@@ -25,8 +25,12 @@ class ReportsController < ApplicationController
         limit(10)
 
     # использует фильтр по approved. is it ok?
-    @regional_reports = RegionalReport.all.sort_by{|r| r.violations || 0 }.reverse.first(12)
+    @regional_reports = RegionalReport.all.sort_by{|r| r.violations || 0 }.reverse.first(8)
 
+  end
+
+  def regions
+    @regional_reports = RegionalReport.all.sort_by{|r| r.violations || 0 }.reverse
   end
 
   def protocols

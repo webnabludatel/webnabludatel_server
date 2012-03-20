@@ -1,0 +1,25 @@
+%h1.b-mainhead.b-mainhead_center
+  %strong.b-mainhead__name География
+
+.b-geography
+  %ul.b-towns.clearfix
+    - @regional_reports.each do |r|
+      %li.b-towns__town
+        %p.b-towns__name= r.region.name
+        %p
+          %canvas{:height => "110", :width => "226", :id => "plotRegion#{r.region.id}"}
+        %p
+          %strong.b-total__yes= r.regulations
+          правил соблюдено,
+          %strong.b-total__no= r.violations
+          нарушений замечено
+        -# FIXME как посчитать наблюдателей?
+        -# %p.b-towns__total
+          67277
+          %br/
+          %span.b-towns__watchers наблюдателей
+
+:javascript
+  window.addEventListener('load', function () {
+    #{ @regional_reports.map {|r| "draw(#{r.regulations.to_i}, #{r.violations.to_i}, 'plotRegion#{r.region.id}')" }.join("\n") }
+  }, false);

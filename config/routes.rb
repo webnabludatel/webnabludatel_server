@@ -22,6 +22,7 @@ Watcher::Application.routes.draw do
       get :protocols
     end
   end
+  get "/regions" => "reports#regions"
 
   resources :users, :only => [:show] do
     member do
