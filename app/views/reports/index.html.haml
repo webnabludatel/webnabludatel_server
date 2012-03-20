@@ -44,80 +44,13 @@
       %td.b-separator__side  
       %td.b-separator__name География
       %td.b-separator__side  
+
 .b-geography
   %ul.b-towns.clearfix
     - @regional_reports.each do |r|
-      %li.b-towns__town
-        %p.b-towns__name= r.region.name
-        %p
-          %canvas{:height => "110", :width => "226", :id => "plotRegion#{r.region.id}"}
-        %p.b-towns__total
-          = r.users
-          %span.b-towns__watchers наблюдателей
-        %p
-          %strong.b-total__yes= r.regulations
-          правил соблюдено,
-          %strong.b-total__no= r.violations
-          нарушений замечено
-          %br/
+      = render 'regional_report', regional_report: r
 
 .b-separator
-  %table.b-separator__table
-    %tr.b-separator__string
-      %td.b-separator__side.b-separator__side_single  
-
--#.b-separator
-  %table.b-separator__table
-    %tr.b-separator__string
-      %td.b-separator__side  
-      %td.b-separator__name География
-      %td.b-separator__side  
--#.b-geography
-  %ul.b-towns.clearfix
-    %li.b-towns__town
-      %p.b-towns__name Москва
-      %p
-        %canvas#plotMoscow{:height => "110", :width => "226"}
-      %p.b-towns__total
-        67278
-        %br/
-        %span.b-towns__watchers наблюдателей
-    %li.b-towns__town
-      %p.b-towns__name Санкт-Петербург
-      %p
-        %canvas#plotSpb{:height => "110", :width => "226"}
-      %p.b-towns__total 13674
-    %li.b-towns__town
-      %p.b-towns__name Екатеринбург
-      %p
-        %canvas#plotEkb{:height => "110", :width => "226"}
-      %p.b-towns__total 2326
-    %li.b-towns__town
-      %p.b-towns__name Уфа
-      %p
-        %canvas#plotUfa{:height => "110", :width => "226"}
-      %p.b-towns__total 2326
-    %li.b-towns__town
-      %p.b-towns__name Челябинск
-      %p
-        %canvas#plotChel{:height => "110", :width => "226"}
-      %p.b-towns__total 2323
-    %li.b-towns__town
-      %p.b-towns__name Казань
-      %p
-        %canvas#plotKaz{:height => "110", :width => "226"}
-      %p 2324
-    %li.b-towns__town
-      %p.b-towns__name Чечня
-      %p
-        %canvas#plotChe{:height => "110", :width => "226"}
-      %p.b-towns__total 23
-    %li.b-towns__town
-      %p.b-towns__name Другие города
-      %p
-        %canvas#plotOthers{:height => "110", :width => "226"}
-      %p.b-towns__total 2326
--#.b-separator
   %table.b-separator__table
     %tr.b-separator__string
       %td.b-separator__side.b-separator__side_single  
@@ -129,7 +62,5 @@
   window.addEventListener('load', function () {
     draw(#{@regulations_count}, #{@violations_count}, 'plotBig', 30);
 
-    /*draw(5, 12, 'plotRegion23');*/
     #{ @regional_reports.map {|r| "draw(#{r.regulations.to_i}, #{r.violations.to_i}, 'plotRegion#{r.region.id}')" }.join("\n") }
-    /*draw(1, 6, 'plotOthers');*/
   }, false);

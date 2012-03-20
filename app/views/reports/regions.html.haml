@@ -4,20 +4,12 @@
 .b-geography
   %ul.b-towns.clearfix
     - @regional_reports.each do |r|
-      %li.b-towns__town
-        %p.b-towns__name= r.region.name
-        %p
-          %canvas{:height => "110", :width => "226", :id => "plotRegion#{r.region.id}"}
-        %p
-          %strong.b-total__yes= r.regulations
-          правил соблюдено,
-          %strong.b-total__no= r.violations
-          нарушений замечено
-        -# FIXME как посчитать наблюдателей?
-        -# %p.b-towns__total
-          67277
-          %br/
-          %span.b-towns__watchers наблюдателей
+      = render 'regional_report', regional_report: r
+
+.b-separator
+  %table.b-separator__table
+    %tr.b-separator__string
+      %td.b-separator__side.b-separator__side_single  
 
 :javascript
   window.addEventListener('load', function () {
